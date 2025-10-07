@@ -1,0 +1,67 @@
+# Environment variables
+.env
+.env.local
+.env.production
+
+# MCP API keys (use .example files as templates)
+.mcp/*-config.json
+!.mcp/*-config.example.json
+
+# AI workflow artifacts (keep archives only)
+ai-docs/plans/*.md
+ai-docs/builds/*.md
+ai-docs/builds/*.log
+ai-docs/builds/*.tmp
+
+# Logs
+ai-docs/logs/*.jsonl
+ai-docs/logs/*.log
+logs/
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.nuxt/
+.vite/
+
+# Testing
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Claude Code permissions (if auto-generated)
+.claude/settings.local.json
+
+# Git
+*.orig
+*.rej
+
+# Keep directory structure with .gitkeep
+!**/.gitkeep

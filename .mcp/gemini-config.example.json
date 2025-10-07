@@ -1,0 +1,58 @@
+{
+  "name": "gemini-mcp-tool",
+  "version": "1.0.0",
+  "description": "Gemini MCP configuration for documentation and summarization",
+  "default_model": "gemini-2.5-flash",
+  "models": {
+    "fast": "gemini-2.5-flash-lite",
+    "standard": "gemini-2.5-flash",
+    "pro": "gemini-2.5-pro"
+  },
+  "api": {
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta",
+    "key_env": "GEMINI_API_KEY",
+    "timeout": 30000,
+    "retry": {
+      "max_attempts": 3,
+      "backoff": "exponential"
+    }
+  },
+  "parameters": {
+    "temperature": 0.7,
+    "top_p": 0.95,
+    "top_k": 40,
+    "max_output_tokens": 8000,
+    "safety_settings": {
+      "HARM_CATEGORY_HATE_SPEECH": "BLOCK_MEDIUM_AND_ABOVE",
+      "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_MEDIUM_AND_ABOVE",
+      "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_MEDIUM_AND_ABOVE",
+      "HARM_CATEGORY_HARASSMENT": "BLOCK_MEDIUM_AND_ABOVE"
+    }
+  },
+  "usage_tracking": {
+    "enabled": true,
+    "log_file": "ai-docs/logs/gemini-usage.jsonl"
+  },
+  "workflow_integration": {
+    "scout": {
+      "model": "gemini-2.5-flash-lite",
+      "max_tokens": 4000,
+      "purpose": "Fast file discovery"
+    },
+    "plan": {
+      "model": "gemini-2.5-flash",
+      "max_tokens": 8000,
+      "purpose": "Documentation analysis"
+    },
+    "build": {
+      "model": "gemini-2.5-flash",
+      "max_tokens": 6000,
+      "purpose": "Documentation generation"
+    },
+    "report": {
+      "model": "gemini-2.5-flash",
+      "max_tokens": 4000,
+      "purpose": "Summary generation"
+    }
+  }
+}
