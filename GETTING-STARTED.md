@@ -60,38 +60,40 @@ node scripts/detect-project-scale.js
 ### → Add Template to Existing Project
 
 **What:** Bring agentic workflow to existing codebase
-**Time:** 15 minutes
+**Time:** ~5-10 minutes (automated)
 **Frequency:** Once per existing project
 
+To integrate the template into your existing project, navigate to your project's root directory and run the automated setup script:
+
 ```bash
-# 1. Copy template files to existing project
-cd ~/my-existing-project
-cp -r ~/agentic-workflow-template/ai-docs ./
-cp -r ~/agentic-workflow-template/app-docs ./
-cp -r ~/agentic-workflow-template/scripts ./
-cp -r ~/agentic-workflow-template/.claude ./
-cp ~/agentic-workflow-template/.gitignore ./.gitignore-template
+# 1. Navigate to your existing project's root directory
+cd /path/to/your/existing-project
 
+# 2. Copy the init-agentic-workflow.sh script into your project's scripts directory
+#    (Assuming you have a 'scripts' directory, if not, create one or adjust path)
+mkdir -p scripts # Ensure scripts directory exists
+cp /path/to/agentic-development-workflow/scripts/init-agentic-workflow.sh scripts/
 
-# 2. Merge .gitignore
-cat .gitignore-template >> .gitignore
-
-# 3. Create project memory
-cp ~/agentic-workflow-template/CLAUDE-TEMPLATE.md ./CLAUDE.md
-# Edit CLAUDE.md with your project details
-
-# 4. Detect scale
-node scripts/detect-project-scale.js
-
-# 5. Organize existing docs (optional)
-mv docs/* app-docs/  # or organize manually
-
-# 6. Try first workflow
-# In Claude Code:
-/scout "Find all API endpoints" "2"
+# 3. Run the setup script
+#    This script will copy necessary files, merge configurations, and install dependencies.
+bash scripts/init-agentic-workflow.sh
 ```
 
-**You get:** Template integrated with your existing code
+**What the script does:**
+- Copies core template files (ai-docs/, app-docs/, .claude/, .eslintrc.js, .prettierrc.js, etc.).
+- Merges template-specific scripts and devDependencies into your `package.json`.
+- Merges template-specific ignore patterns into your `.gitignore`.
+- Installs Node.js dependencies.
+- Initializes `CLAUDE.md` from `CLAUDE-TEMPLATE.md`.
+
+**After running the script, follow these crucial steps:**
+1.  **Customize `CLAUDE.md`:** Open `CLAUDE.md` in your project root. Update `[Project Name]` and fill in your project's architecture, key file locations (e.g., where your `src/` and `tests/` folders are), and custom commands. This is vital for the AI agents to understand your project's context.
+2.  **Organize Existing Documentation:** Review any existing project documentation (e.g., in a `docs/` folder). Move or adapt relevant parts into the `app-docs/` directory for AI consumption. Refer to `app-docs/guides/MEMORY-MANAGEMENT-DOCUMENT-TYPES.md` for guidance on structuring AI-readable documentation.
+3.  **Set up User Memory (if not already done):** Refer to the "→ Set Up User Memory (Global, One-Time)" section in this document for instructions.
+4.  **Detect Project Scale:** Run `node scripts/detect-project-scale.js` to get workflow recommendations tailored to your project.
+5.  **Start Developing!** You are now ready to use the agentic workflow. Try a slash command, e.g., `/scout_plan_build "Add a health check endpoint" ""`.
+
+**You get:** An automated integration of the agentic workflow template with your existing codebase, ready for AI-powered development.
 
 ---
 
