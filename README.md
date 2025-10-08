@@ -1,4 +1,4 @@
-# Agentic Development Workflow Template
+# Budget Agentic Workflow Template
 
 **Version**: 1.0 | **Status**: Production Ready | **Compatible with**: Claude Code Agent SDK, Gemini
 
@@ -77,11 +77,11 @@ Review [AGENTS.md](AGENTS.md) before running workflows; it documents the templat
 
 ```bash
 # Clone this template
-git clone https://github.com/your-org/agentic-development-workflow.git my-project
+git clone https://github.com/your-org/budget-agentic-workflow.git my-project
 cd my-project
 
 # Or copy files to existing project
-cp -r agentic-development-workflow/. my-existing-project/
+cp -r budget-agentic-workflow/. my-existing-project/
 ```
 
 ### 2. Setup Directory Structure
@@ -101,11 +101,12 @@ my-project/
 │   ├── mappings/         # Feature to source code mappings
 │   ├── operations/       # Operational procedures and data fix queries
 │   ├── qa/               # Quality assurance documents
-│   ├── releases/         # Release notes and procedures
+│   ├── releases/         # Release notes (copy RELEASE-TEMPLATE.md per milestone)
 │   └── specs/            # Feature specifications
 ├── scripts/              # Project automation (scale detection, health checks, etc.)
 │   └── detect-project-scale.js
-├── vector-store/         # Vector store for semantic search
+├── vector-store.json     # Semantic search embeddings (regenerate with npm run vectorize)
+├── vector-store/         # Optional auxiliary indexes (if you maintain multiple stores)
 ├── node_modules/         # Project dependencies
 ├── AGENTS.md             # Guidelines for agents
 ├── CLAUDE.md             # Project memory (copy from CLAUDE-TEMPLATE.md)
@@ -145,6 +146,14 @@ node scripts/detect-project-scale.js
 ---
 
 ## 📖 Usage
+
+### Budget-Friendly Workflow Tips
+- Trigger the trimmed workflow with `/scout_plan_build "<prompt>" "<doc urls>" "budget"`; fall back to `standard` only when new architecture is involved.
+- Set `budget=true` when launching multi-agent commands to keep scout/researcher results concise and limit parallel personas.
+- Use Gemini or local CLI tools for discovery, then reserve Claude/GPT for plan/build reasoning.
+- Reuse artifacts from `ai-docs/` (plans, reports) instead of re-running `/scout_plan_build` when iterating on the same feature.
+- Cap search output with `npm run search -- "<query>" --limit=3`; rerun with a higher limit only when you truly need more context.
+- Read `app-docs/guides/budget-mode.md` for the detailed playbook.
 
 ### Workflow Selection by Project Scale
 
@@ -232,7 +241,7 @@ These are standalone commands that can be used to perform specific tasks.
 
 | Command | Purpose | Token Budget |
 |---------|---------|--------------|
-| `/scout_plan_build "[task]" "[doc urls]" "[ask_questions]"` | End-to-end scout → plan → build (with optional questions) | ~90K |
+| `/scout_plan_build "[task]" "[doc urls]" "[mode]"` | End-to-end scout → plan → build (`budget`, `questions`, or `standard`) | ~90K |
 | `/prepare_for_task "[task]"` | Gathers context and primes the AI before starting a new task. | ~15K |
 | `/scout "[task]" "4"` | Multi-agent file discovery | ~10K |
 | `/plan_w_docs "[task]" "[docs]" "[files]"` | Documentation-aware implementation plan | ~30K |
@@ -483,9 +492,10 @@ Check `ai-docs/` after your first few workflows to see:
 cat ai-docs/logs/workflow-metrics.jsonl
 
 # Options:
-# 1. Use smaller workflow (`/scout_plan_build "[task]" ""`) instead of full
-# 2. Simplify task scope
-# 3. Break into multiple smaller tasks
+# 1. Switch to budget mode (`/scout_plan_build "[task]" "" "budget"`)
+# 2. Use smaller workflow (`/scout_plan_build "[task]" ""`) instead of full
+# 3. Simplify task scope
+# 4. Break into multiple smaller tasks
 ```
 
 ### "Tests failing in build"
@@ -578,8 +588,8 @@ MIT License - See [LICENSE](LICENSE) file
 ## 🆘 Support
 
 ### Issues with Template
-- GitHub Issues: [your-repo/issues](https://github.com/your-org/agentic-development-workflow/issues)
-- Discussions: [your-repo/discussions](https://github.com/your-org/agentic-development-workflow/discussions)
+- GitHub Issues: [your-repo/issues](https://github.com/your-org/budget-agentic-workflow/issues)
+- Discussions: [your-repo/discussions](https://github.com/your-org/budget-agentic-workflow/discussions)
 
 ### Issues with Claude Code
 - Claude Code Docs: https://docs.claude.com/claude-code

@@ -23,14 +23,14 @@ To use this framework, you would typically follow these steps:
 
 1.  **Copy the template to your project:**
     ```bash
-    cp -r agentic-development-workflow/. my-existing-project/
+    cp -r budget-agentic-workflow/. my-existing-project/
     ```
 2.  **Customize `CLAUDE.md`:** This file serves as the "memory" for the AI agents, and you should update it with information about your project.
 3.  **Run the project scale detection script:**
     ```bash
     node scripts/detect-project-scale.js
     ```
-4.  **Follow the recommended workflow:** The script will recommend a slash command to run, such as `/scout_plan_build`, to start the AI-powered development workflow.
+4.  **Follow the recommended workflow:** The script will recommend a slash command to run, such as `/scout_plan_build "<task>" "<docs>" "budget"`, to start the AI-powered development workflow without burning unnecessary tokens.
 
 ## Development Conventions
 
@@ -41,3 +41,10 @@ The project also includes a number of safety features, such as pre-deployment va
 *   **Testing:** The framework includes scripts for running pre-deployment validation checks and post-deployment health checks.
 
 *   **Commits and Pull Requests:** The `AGENTS.md` file provides guidelines on how to write commit messages and pull requests that are easy for both humans and AI agents to understand.
+
+
+## Gemini Budget Guidance
+
+- Use `npm run search -- "<query>" --limit=3` for reconnaissance and share only the top hits.
+- When passing prompts to slash commands, append `"budget"` as the third argument unless the user explicitly asks for the full plan.
+- If a teammate requests more depth, re-run the relevant command in `standard` mode and note the reason in the report.

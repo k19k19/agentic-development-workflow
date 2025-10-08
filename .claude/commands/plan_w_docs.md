@@ -24,15 +24,16 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/
   - Require each subagent to return the saved path for future reference.
 - Think deeply about the optimal implementation strategy using the gathered context.
 - Read the referenced source files using the provided offsets and limits. Respect token budgets and only pull the necessary ranges.
+- **Budget Mode:** If `USER_PROMPT` contains `[BUDGET MODE]`, skip external scraping unless a URL is explicitly provided, cap the written plan at ~350 words, and limit the section list to: Summary, Key Steps (max 4 bullets), Risks, Tests.
 
 ## Workflow
 1. Analyze Requirements - extract the problem statement, constraints, and success criteria from `USER_PROMPT`.
-2. Scrape Documentation - parallelize downloads of `DOCUMENT_URLS` to the documentation directory and log their paths.
+2. Scrape Documentation - parallelize downloads of `DOCUMENT_URLS` to the documentation directory and log their paths (Budget Mode: only when URLs are present).
 3. Design Solution - outline architecture choices, data flow, and tool delegation strategy.
-4. Document Plan - draft a markdown plan that includes summary, implementation steps, risks, testing strategy, and next actions.
+4. Document Plan - draft a markdown plan that includes summary, implementation steps, risks, testing strategy, and next actions (Budget Mode: use the trimmed section set and stay concise).
 5. Generate Filename - derive a descriptive kebab-case filename based on the plan's focus area.
 6. Save & Report - write the plan to `PLAN_OUTPUT_DIRECTORY/<filename>.md` and follow the Report section.
 
 ## Report
 - Provide the saved plan path and list any documentation files retrieved.
-- Summarize the major implementation phases and testing strategy.
+- Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).

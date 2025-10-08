@@ -73,8 +73,8 @@ node -e "
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
   pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
   pkg.devDependencies = pkg.devDependencies || {};
-  pkg.devDependencies.eslint = pkg.devDependencies.eslint || '^8.0.0';
-  pkg.devDependencies.prettier = pkg.devDependencies.prettier || '^3.0.0';
+  pkg.devDependencies.eslint = pkg.devDependencies.eslint || '^9.37.0';
+  pkg.devDependencies.prettier = pkg.devDependencies.prettier || '^3.6.2';
   pkg.dependencies = pkg.dependencies || {};
   pkg.dependencies['@xenova/transformers'] = pkg.dependencies['@xenova/transformers'] || '^2.17.2';
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));

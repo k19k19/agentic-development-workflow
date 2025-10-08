@@ -1,24 +1,31 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repo is a starter template: keep coordination docs (e.g., `CLAUDE.md`, orchestrator prompts, memory guides) at the root. Runtime sources belong in `app/` when you add them, automation scripts in `scripts/` (see `scripts/detect-project-scale.js`), and shared docs in `app-docs/` (guides, specs, mappings, architecture, debugging). Store generated reports or run artifacts in `ai-docs/`. Add tests beside their targets (`tests/` or `app/<feature>/__tests__/`).
-
-## Command Orchestration
-Use `/scout_plan_build "<prompt>" "<doc urls>"` as the entry point; it chains `/scout`, `/plan_w_docs`, and `/build_w_report` for full Reduce & Delegate execution. Standalone helpers like `/quick-plan`, `/build`, or `/parallel_subagents` remain available but are not part of the primary loop—call them explicitly only when you need a lightweight pass or targeted follow-up. Reference `.claude/commands/` for the latest prompt wiring before extending workflows.
+Keep coordination and playbook files (e.g., `CLAUDE.md`, `GEMINI.md`) in the repository root. Runtime code lives under `app/` when introduced, with feature docs, specs, and guides organized in `app-docs/`. Store generated reports in `ai-docs/` and automation or helper scripts in `scripts/` (see `scripts/detect-project-scale.js` for an example). Co-locate tests with their targets inside `tests/` or `app/<feature>/__tests__/`.
 
 ## Build, Test, and Development Commands
-- `node scripts/detect-project-scale.js` — size the project to decide when the full pipeline is warranted.
-- *(Add project-specific build/test runners when code appears; document the exact command here once you introduce them.)*
-- `/scout_plan_build "<prompt>" "<doc urls>"` — launch the standard Scout→Plan→Build run, producing a report in `ai-docs/reports/`.
+- `node scripts/detect-project-scale.js` — gauges project size to decide whether to run the full workflow.
+- `npm run vectorize` — rebuilds the chunked vector store (with headings, line ranges, and labels) after meaningful documentation edits.
+- `npm run search -- "<query>" [--root=app-docs] [--doc=guides] [--limit=3]` — fetches semantically ranked context slices from the vector store for scout/researcher agents.
+- `/scout_plan_build "<prompt>" "<doc urls>"` — runs the standard Scout→Plan→Build sequence and writes reports to `ai-docs/reports/`.
+- `/scout_plan_build "<prompt>" "<doc urls>" "budget"` — trims the loop for Budget Mode (reduced scout scale, concise plan, short build report).
+- `/quick-plan "<prompt>"` or `/build "<spec>"` — lightweight helpers for follow-up passes when a full orchestration is unnecessary.
+
+## Model & Token Budget Tips
+- Treat `budget=true` as the default for small fixes: run scout + researcher only, and hand code changes to Claude or GPT once you know the file list.
+- Prefer Gemini or the local CLI for reconnaissance; reserve Claude/GPT messages for plan/build reasoning where quality matters most.
+- Reuse prior plans and build reports from `ai-docs/` when iterating on the same feature to avoid rerunning `/scout_plan_build`.
+- Limit vector search output with `--limit=<n>` and keep persona prompts under 3 follow-ups to cap chat tokens.
+- Read `app-docs/guides/budget-mode.md` for the step-by-step workflow when budget is the priority.
 
 ## Coding Style & Naming Conventions
-Default to modern JavaScript/TypeScript with 2-space indentation, single quotes, and async/await. Use kebab-case for utility files, PascalCase for components or classes, and mirror spec names (e.g., `app-docs/specs/1st-backend-user-auth.md`). Keep Markdown headings in Title Case and follow the provided templates when adding docs.
+Favor modern TypeScript/JavaScript with 2-space indentation, single quotes, strict async/await, and descriptive naming. Use kebab-case for utilities (`scripts/project-audit.js`), PascalCase for components or classes, and align doc names with their specs (e.g., `app-docs/specs/1st-backend-user-auth.md`). Keep Markdown headings in Title Case and reuse the provided templates when extending documentation.
 
 ## Testing Guidelines
-Bootstrap Jest (or the framework specified in the feature spec) when you add executable code. Name suites `feature-name.test.ts` and colocate them under `tests/` or the feature’s directory. Record scenarios and edge cases in the spec’s Testing section, then append the new suite paths to `app-docs/mappings/feature-to-source.md`.
+Bootstrap Jest—or the framework specified in the relevant spec—once executable code lands. Name suites `feature-name.test.ts`, colocate them with their feature, and capture edge cases in the spec’s Testing section. After writing tests, append the suite path to `app-docs/mappings/feature-to-source.md` so downstream agents can trace coverage.
 
 ## Commit & Pull Request Guidelines
-Write concise, active-voice commits such as `Implement scout plan workflow`, referencing the supporting spec or doc updates. Pull requests should cite the triggering prompt, include validation evidence (logs, screenshots, or test output), and capture follow-up tasks for downstream agents.
+Write concise, active commit messages such as `Implement scout plan workflow`, referencing supporting docs when applicable. Pull requests should cite the initiating prompt, summarize the change, include validation evidence (test output, logs, or screenshots), and note follow-up tasks for later agents.
 
 ## Knowledge Base Hygiene
-Before implementation, read the relevant spec in `app-docs/specs/`, scan `app-docs/mappings/feature-to-source.md` to avoid duplication, and check `app-docs/guides/common-patterns.md` for reusable approaches. After delivery, update mappings, log the run under `ai-docs/reports/`, and refresh `CLAUDE.md` or other guides if command wiring changes.
+Review `app-docs/specs/` and `app-docs/guides/common-patterns.md` before building, and confirm that new work does not duplicate entries listed in `app-docs/mappings/feature-to-source.md`. After delivery, update the mapping, drop a run summary in `ai-docs/reports/`, copy `app-docs/releases/RELEASE-TEMPLATE.md` to `app-docs/releases/<version>.md` for milestone notes, and refresh guidance documents if command wiring or workflows change.

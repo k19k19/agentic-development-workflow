@@ -76,7 +76,7 @@ Claude: [uses Codex MCP to generate endpoint]
 In Claude Code, run:
 
 ```bash
-/scout_plan_build "Add logging to all API endpoints" ""
+/scout_plan_build "Add logging to all API endpoints" "" "budget"
 ```
 
 **What happens:**
@@ -90,7 +90,7 @@ In Claude Code, run:
 In Claude Code, run:
 
 ```bash
-/scout_plan_build "Add user authentication with JWT" "https://jwt.io/introduction"
+/scout_plan_build "Add user authentication with JWT" "https://jwt.io/introduction" "budget" # remove "budget" if you need the full plan
 ```
 
 **What happens:**

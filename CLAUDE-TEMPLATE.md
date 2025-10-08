@@ -158,41 +158,41 @@ External research? → Firecrawl MCP
 
 ## 🎯 Workflow Execution
 
-### Option 1: Full Workflow (Large projects)
+### Option 0: Budget Mode (Default Lean Loop)
+
+```bash
+/scout_plan_build "[task description]" "[doc-urls]" "budget"
+```
+
+**Executes:**
+1. Scout (scale 2) — returns a trimmed hit list and appends `[BUDGET MODE]` downstream.
+2. Plan (~350 words) — Summary, up to four key steps, risks, and tests.
+3. Build (40–50K tokens) — Standard build command with a concise report.
+4. Report (short) — Minimal summary and follow-up actions.
+
+**Use when:** follow-up fixes, documentation updates, or scoped feature work. Drop the `"budget"` argument only if reviewers request a full plan.
+
+### Option 1: Delegate Chain (Standard Plan)
 
 ```bash
 /scout_plan_build "[task description]" "[doc-urls]"
 ```
 
 **Executes:**
-1. Scout (10K tokens) - Find relevant files
-2. Plan (30K tokens) - Create implementation plan
-3. Build (50K tokens) - Execute with tool delegation
-4. Report (5K tokens) - Summarize and update docs
+1. Scout (10K tokens) — full file discovery.
+2. Plan (30K tokens) — detailed implementation plan.
+3. Build + Report (40K tokens) — implementation and summary.
 
-**Total**: ~100K tokens
+**Total**: ~80–100K tokens (use doc URLs for large projects).
 
-### Option 2: Delegate Chain (Medium projects, no external docs)
-
-```bash
-/scout_plan_build "[task description]" ""
-```
-
-**Executes:**
-1. Scout (10K tokens)
-2. Plan (30K tokens)
-3. Build + Report (40K tokens)
-
-**Total**: ~80K tokens
-
-### Option 3: Direct Implementation (Small projects)
+### Option 2: Direct Implementation (Small projects)
 
 ```bash
-# No slash commands, just describe task
-# Claude will use Codex/Gemini MCP directly
+# No slash commands, just describe the task.
+# Claude/GPT will delegate to Codex/Gemini MCP directly.
 ```
 
-**Total**: ~10K tokens
+**Total**: ~10K tokens.
 
 ---
 
@@ -258,7 +258,7 @@ npm run build        # Build for production
 ```bash
 # Full workflow
 
-/scout_plan_build "Add user authentication" "https://docs.example.com/auth"
+/scout_plan_build "Add user authentication" "https://docs.example.com/auth" "budget"  # remove "budget" for full plan
 
 # Partial workflow
 /scout "Fix login bug" "4"
@@ -293,7 +293,7 @@ git status --porcelain
 1. ✅ **Read**: app-docs/specs/[feature].md (Gemini MCP)
 2. ✅ **Check**: app-docs/mappings/feature-to-source.md for patterns (create if missing)
 3. ✅ **Confirm**: Approach with user
-4. 🚀 **Execute**: `/scout_plan_build "[feature]" "[docs]"`
+4. 🚀 **Execute**: `/scout_plan_build "[feature]" "[docs]" "budget"`
 
 ### "Fix bug"
 1. ✅ **Check**: app-docs/debugging/known-issues.md
@@ -533,7 +533,7 @@ Error in build?
 3. **Test Workflow**
    ```bash
    # Run a simple task through full workflow
-   /scout_plan_build "Add health check endpoint" ""
+   /scout_plan_build "Add health check endpoint" "" "budget"  # drop "budget" if you need the full plan
    ```
 
 4. **Refine Token Budgets**

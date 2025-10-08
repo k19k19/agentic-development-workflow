@@ -68,7 +68,7 @@ Per [README.md](README.md), the intended organization is:
 
 - **Parallel Agent Execution**: When scouting or searching, spawn multiple agents simultaneously using different models/tools
 - **Argument Quoting**: Slash command arguments must be in double quotes; nested quotes become single quotes
-- **No Prompt Alteration**: Pass USER_PROMPT variables unchanged through the workflow chain
+- **No Prompt Alteration**: Pass USER_PROMPT variables unchanged through the workflow chain (append ` [BUDGET MODE]` only when running budget workflows)
 - **Sequential Workflow Steps**: Each workflow phase must complete before the next begins
 - **Git Safety**: Always check for unintended changes after agent operations
 

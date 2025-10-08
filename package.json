@@ -1,7 +1,7 @@
 {
-  "name": "agentic-development-workflow",
+  "name": "budget-agentic-workflow",
   "version": "1.0.0",
-  "description": "**Version**: 1.0 | **Status**: Production Ready | **Compatible with**: Claude Code Agent SDK",
+  "description": "Lean agentic development workflow focused on budget-first execution.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,15 +13,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/k19k19/agentic-development-workflow.git"
+    "url": "git+https://github.com/k19k19/budget-agentic-workflow.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/k19k19/agentic-development-workflow/issues"
+    "url": "https://github.com/k19k19/budget-agentic-workflow/issues"
   },
-  "homepage": "https://github.com/k19k19/agentic-development-workflow#readme",
+  "homepage": "https://github.com/k19k19/budget-agentic-workflow#readme",
   "dependencies": {
     "@xenova/transformers": "^2.17.2"
   },

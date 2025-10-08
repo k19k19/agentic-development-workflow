@@ -13,6 +13,7 @@
 - Delegate to specialized tools (Gemini, Codex, Chrome DevTools)
 - Reserve Claude for complex logic and architecture
 - Achieve 90%+ token efficiency
+- Default multi-agent workflows to budget mode; escalate to standard only when lean output is insufficient
 
 ---
 
@@ -41,9 +42,9 @@ Step 1: Identify scope
   - Logic/architecture? → Claude
 
 Step 2: Choose workflow by project scale
-  - Small (<10 files): Direct implementation
-  - Medium (10-50 files): /scout_plan_build
-  - Large (>50 files): /scout_plan_build
+  - Small (<10 files): Direct implementation or `/scout_plan_build "<task>" "" "budget"` when you need extra context
+  - Medium (10-50 files): `/scout_plan_build "<task>" "" "budget"` (upgrade to `standard` only if architecture changes)
+  - Large (>50 files): `/scout_plan_build "<task>" "<docs>" "budget"`; rerun with `standard` after review if more depth is required
 
 Step 3: Execute with minimal context
   - Read ONLY affected files
@@ -101,17 +102,23 @@ Claude: [uses Codex MCP directly]
 
 **Medium Projects** (10-50 files, 5K-20K LOC):
 ```bash
-/scout_plan_build "Add user authentication" ""
+/scout_plan_build "Add user authentication" "" "budget"  # drop "budget" for full plan
 # Scout (10K) → Plan (30K) → Build + Report (40K) = ~80K total
 ```
 
 **Large Projects** (>50 files, >20K LOC):
 ```bash
-/scout_plan_build "Implement OAuth2" "https://oauth.net/2/"
+/scout_plan_build "Implement OAuth2" "https://oauth.net/2/" "budget"  # rerun with "standard" if more detail needed
 # Scout (10K) → Plan (30K) → Build (50K) → Report (5K) = ~95K total
 ```
 
 
+
+### Budget Mode Defaults
+- Start every multi-agent run with `/scout_plan_build "<task>" "<docs>" "budget"` unless the user explicitly asks for a full plan.
+- Expect scout scale 2 and a ~350-word plan; escalate to `standard` only when the lean summary is insufficient.
+- Cap vector search output at 3 results and avoid secondary `rg` passes unless the primary search fails.
+- Reference `app-docs/guides/budget-mode.md` inside each repo for the detailed checklist.
 
 ### Pre-Flight Checks (Before ANY deployment)
 
@@ -359,7 +366,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### When Starting New Project Type
 
 ```
-1. Copy template: agentic-development-workflow
+1. Copy template: budget-agentic-workflow
 2. Customize CLAUDE.md for tech stack
 3. Run 2-3 small tasks to learn patterns
 4. Document patterns in app-docs/guides/
@@ -573,7 +580,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 **Template location:**
 - GitHub: [your-template-repo]
-- Local: `~/templates/agentic-development-workflow/`
+- Local: `~/templates/budget-agentic-workflow/`
 
 **Key documents:**
 - [README.md](README.md) - Complete template docs

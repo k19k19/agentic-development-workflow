@@ -72,7 +72,7 @@ cd /path/to/your/existing-project
 # 2. Copy the init-agentic-workflow.sh script into your project's scripts directory
 #    (Assuming you have a 'scripts' directory, if not, create one or adjust path)
 mkdir -p scripts # Ensure scripts directory exists
-cp /path/to/agentic-development-workflow/scripts/init-agentic-workflow.sh scripts/
+cp /path/to/budget-agentic-workflow/scripts/init-agentic-workflow.sh scripts/
 
 # 3. Run the setup script
 #    This script will copy necessary files, merge configurations, and install dependencies.
@@ -91,7 +91,7 @@ bash scripts/init-agentic-workflow.sh
 2.  **Organize Existing Documentation:** Review any existing project documentation (e.g., in a `docs/` folder). Move or adapt relevant parts into the `app-docs/` directory for AI consumption. Refer to `app-docs/guides/MEMORY-MANAGEMENT-DOCUMENT-TYPES.md` for guidance on structuring AI-readable documentation.
 3.  **Set up User Memory (if not already done):** Refer to the "→ Set Up User Memory (Global, One-Time)" section in this document for instructions.
 4.  **Detect Project Scale:** Run `node scripts/detect-project-scale.js` to get workflow recommendations tailored to your project.
-5.  **Start Developing!** You are now ready to use the agentic workflow. Try a slash command, e.g., `/scout_plan_build "Add a health check endpoint" ""`.
+5.  **Start Developing!** You are now ready to use the agentic workflow. Try a slash command, e.g., `/scout_plan_build "Add a health check endpoint" "" "budget"` to stay in Budget Mode by default.
 
 **You get:** An automated integration of the agentic workflow template with your existing codebase, ready for AI-powered development.
 
