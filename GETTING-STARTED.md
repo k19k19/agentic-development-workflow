@@ -50,11 +50,11 @@ cp CLAUDE-TEMPLATE.md CLAUDE.md
 # - Update architecture section
 
 # 4. Detect scale
-node ai-docs/helpers/detect-project-scale.js
+node scripts/detect-project-scale.js
 
 # 5. Start coding!
 # In Claude Code, try:
-/scout_plan_build_report "Add health check endpoint" ""
+/scout_plan_build "Add health check endpoint" ""
 ```
 
 **You get:** Full workflow template ready to use
@@ -74,7 +74,6 @@ cp -r ~/agentic-workflow-template/ai-docs ./
 cp -r ~/agentic-workflow-template/app-docs ./
 cp -r ~/agentic-workflow-template/scripts ./
 cp -r ~/agentic-workflow-template/.claude ./
-cp -r ~/agentic-workflow-template/.mcp ./
 cp ~/agentic-workflow-template/.gitignore ./.gitignore-template
 cp ~/agentic-workflow-template/.env.example ./
 
@@ -90,7 +89,7 @@ cp ~/agentic-workflow-template/CLAUDE-TEMPLATE.md ./CLAUDE.md
 # Edit CLAUDE.md with your project details
 
 # 5. Detect scale
-node ai-docs/helpers/detect-project-scale.js
+node scripts/detect-project-scale.js
 
 # 6. Organize existing docs (optional)
 mv docs/* app-docs/  # or organize manually
@@ -149,22 +148,20 @@ Claude will:
 
 **Medium project example:**
 ```bash
-/scout_build "Add logging to all API routes"
+/scout_plan_build "Add logging to all API routes" ""
 
 # Scout: Finds routes (10K)
-# Build: Adds logging with Codex (30K)
-# Total: ~40K tokens
+# Plan: Documents approach (30K)
+# Build + Report: Implements changes and summarizes results (40K)
 ```
 
 **Large project example:**
 ```bash
-/scout_plan_build_report "Add JWT authentication" "https://jwt.io"
+/scout_plan_build "Add JWT authentication" "https://jwt.io"
 
 # Scout: Multi-agent search (10K)
 # Plan: Architecture + YOUR APPROVAL (30K)
-# Build: Implementation (50K)
-# Report: Summary + docs (5K)
-# Total: ~95K tokens
+# Build + Report: Implementation plus summary (55K)
 ```
 
 ---
@@ -174,7 +171,7 @@ Claude will:
 **What:** Update from Bash agent calls to Agent SDK
 **Time:** 30 minutes
 
-**Read:** [ai-docs/MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md)
+**Read:** [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md)
 
 **Quick summary:**
 
@@ -262,7 +259,7 @@ SAVINGS: 57K tokens (39% less!)
 
 2. **Execute workflow:**
    ```bash
-   /scout_plan_build_report "Add rate limiting to API" "https://expressjs.com/en/advanced/best-practice-security.html"
+   /scout_plan_build "Add rate limiting to API" "https://expressjs.com/en/advanced/best-practice-security.html"
    ```
 
 3. **What happens:**
@@ -270,8 +267,7 @@ SAVINGS: 57K tokens (39% less!)
    - Plan: Creates implementation plan (5 min)
    - **⏸️ STOPS: Asks for your approval**
    - You: Review plan, approve
-   - Build: Implements with tool delegation (15 min)
-   - Report: Updates docs, shows metrics (1 min)
+   - Build + Report: Implements with tool delegation and records the summary (16 min)
 
 4. **Review results:**
    ```bash
@@ -394,14 +390,9 @@ echo "golangci-lint" >> CLAUDE.md
 - Docs: https://docs.claude.com/claude-code
 - Issues: https://github.com/anthropics/claude-code/issues
 
-**MCP tool issues:**
-- Check: [.mcp/README.md](.mcp/README.md) → Troubleshooting
-- Verify: API keys in `.env`
-- Test: Each tool individually
-
 **Workflow questions:**
 - Read: [MEMORY-COMPARISON.md](MEMORY-COMPARISON.md)
-- Read: Workflow docs in `ai-docs/workflows/`
+- Read: Slash command prompts in `.claude/commands/`
 - Review: Example in [README.md](README.md)
 
 ---
@@ -417,15 +408,15 @@ echo "golangci-lint" >> CLAUDE.md
 - [ ] Read MEMORY-COMPARISON.md (10 min)
 
 ### Day 2: Practice (2 hours)
-- [ ] Try `/scout_build` on medium task (30 min)
-- [ ] Review build report (15 min)
+- [ ] Run `/scout_plan_build "<medium task>" ""` (30 min)
+- [ ] Spot-check the generated plan before implementation (15 min)
 - [ ] Check token efficiency (5 min)
 - [ ] Add pattern to app-docs/guides/ (10 min)
 - [ ] Read migration guide (30 min)
 
 ### Day 3: Full Workflow (3 hours)
 - [ ] Write feature spec (30 min)
-- [ ] Run `/scout_plan_build_report` (1 hour)
+- [ ] Run `/scout_plan_build "<complex task>" "<doc urls>"` (1 hour)
 - [ ] Review all artifacts (30 min)
 - [ ] Update project CLAUDE.md (15 min)
 - [ ] Document lessons learned (15 min)
@@ -454,13 +445,13 @@ echo "golangci-lint" >> CLAUDE.md
 - [CLAUDE-TEMPLATE.md](CLAUDE-TEMPLATE.md) - Project memory
 
 **Workflows:**
-- [ai-docs/workflows/scout.md](ai-docs/workflows/scout.md)
-- [ai-docs/workflows/plan.md](ai-docs/workflows/plan.md)
-- [ai-docs/workflows/build.md](ai-docs/workflows/build.md)
-- [ai-docs/workflows/report.md](ai-docs/workflows/report.md)
+- [.claude/commands/scout_plan_build.md](.claude/commands/scout_plan_build.md)
+- [.claude/commands/scout.md](.claude/commands/scout.md)
+- [.claude/commands/plan_w_docs.md](.claude/commands/plan_w_docs.md)
+- [.claude/commands/build.md](.claude/commands/build.md)
 
 **Migration:**
-- [ai-docs/MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md)
+- [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md)
 
 ---
 

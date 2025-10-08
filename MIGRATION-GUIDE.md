@@ -252,55 +252,6 @@ Use Task tool:
 
 ---
 
-## MCP Integration
-
-### Setting Up MCP Tools
-
-1. **Install MCP Servers**
-   ```bash
-   # Example installations (adjust for actual tools)
-   npm install -g @google/gemini-mcp
-   npm install -g @openai/codex-mcp
-   ```
-
-2. **Configure MCP Tools**
-
-   Create `.mcp/gemini-config.json`:
-   ```json
-   {
-     "name": "gemini-mcp-tool",
-     "default_model": "gemini-2.5-flash",
-     "api_key_env": "GEMINI_API_KEY"
-   }
-   ```
-
-3. **Reference in Task Prompts**
-   ```markdown
-   TOOL: Use Gemini MCP (configured in .mcp/gemini-config.json)
-   ```
-
-### Accessing MCP Tools in Agents
-
-The `general-purpose` agent type has access to all configured MCP tools:
-
-```markdown
-Use Task tool:
-  subagent_type: general-purpose
-  description: "Multi-tool task"
-  prompt: |
-    You have access to these MCP tools:
-    - gemini-mcp-tool: Fast documentation/search
-    - codex-mcp-tool: Code generation
-    - playwright-mcp: Testing
-    - firecrawl-mcp: Web scraping
-
-    TASK: [your task]
-
-    Choose the appropriate tool for each sub-task.
-```
-
----
-
 ## Parallel Execution Migration
 
 ### OLD: Sequential Bash Calls
@@ -427,7 +378,7 @@ Use Task tool (Agent 2):
 
 ```bash
 # Run full scout-plan-build-report workflow
-/scout_plan_build_report "Add simple health endpoint" ""
+/scout_plan_build "Add simple health endpoint" ""
 
 # Verify:
 # - Scout phase uses Task tool (not Bash)
@@ -439,24 +390,6 @@ Use Task tool (Agent 2):
 ---
 
 ## Troubleshooting
-
-### Issue: "MCP tool not found"
-
-**Cause:** MCP server not configured
-
-**Fix:**
-1. Check `.mcp/[tool]-config.json` exists
-2. Verify API keys in `.env`
-3. Test MCP tool directly: `[tool] --version`
-
-### Issue: "Agent timeout"
-
-**Cause:** Task too complex or MCP server slow
-
-**Fix:**
-1. Simplify agent prompt
-2. Increase timeout in prompt: "Timeout: 5 minutes"
-3. Split into smaller sub-tasks
 
 ### Issue: "Invalid response format"
 
@@ -612,7 +545,7 @@ Use Task tool (Agent 3):
 - **Claude Agent SDK docs**: https://docs.anthropic.com/agent-sdk
 - **Task tool documentation**: Built into Claude Code
 - **MCP server specs**: Model Context Protocol documentation
-- **Example migrations**: See `/ai-docs/workflows/` for full examples
+- **Example migrations**: See `.claude/commands/` for full examples
 
 ---
 

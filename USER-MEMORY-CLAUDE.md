@@ -8,7 +8,7 @@
 
 **R&D Framework** (Reduce and Delegate):
 - Use token-efficient models for discovery and boilerplate
-- Delegate to specialized tools (Gemini, Codex, Playwright)
+- Delegate to specialized tools (Gemini, Codex, Chrome DevTools)
 - Reserve Claude for complex logic and architecture
 - Achieve 90%+ token efficiency
 
@@ -27,7 +27,7 @@
 | Complex debugging (multi-file) | Claude | Requires architectural understanding |
 | Architectural decisions | Claude | Strategic, long-term impact |
 | Security/performance review | Claude | Critical, requires deep analysis |
-| E2E testing | Playwright MCP | Testing specialty |
+| E2E testing | Chrome DevTools MCP | Testing specialty |
 
 ### Decision Tree
 
@@ -40,8 +40,8 @@ Step 1: Identify scope
 
 Step 2: Choose workflow by project scale
   - Small (<10 files): Direct implementation
-  - Medium (10-50 files): /scout_build
-  - Large (>50 files): /scout_plan_build_report
+  - Medium (10-50 files): /scout_plan_build
+  - Large (>50 files): /scout_plan_build
 
 Step 3: Execute with minimal context
   - Read ONLY affected files
@@ -58,7 +58,7 @@ Step 3: Execute with minimal context
 1. ✅ **Read project documentation** (via Gemini MCP)
    - `app-docs/specs/[feature].md` if exists
    - `app-docs/guides/implementation-guidelines.md`
-   - `app-docs/mappings/feature-to-source.md`
+   - `app-docs/mappings/feature-to-source.md` (create if missing)
 
 2. ✅ **Check existing patterns**
    ```bash
@@ -99,13 +99,13 @@ Claude: [uses Codex MCP directly]
 
 **Medium Projects** (10-50 files, 5K-20K LOC):
 ```bash
-/scout_build "Add user authentication"
-# Scout (10K) → Build (30K) = ~40K total
+/scout_plan_build "Add user authentication" ""
+# Scout (10K) → Plan (30K) → Build + Report (40K) = ~80K total
 ```
 
 **Large Projects** (>50 files, >20K LOC):
 ```bash
-/scout_plan_build_report "Implement OAuth2" "https://oauth.net/2/"
+/scout_plan_build "Implement OAuth2" "https://oauth.net/2/"
 # Scout (10K) → Plan (30K) → Build (50K) → Report (5K) = ~95K total
 ```
 
@@ -145,7 +145,7 @@ Claude: [uses Codex MCP directly]
 ### Testing Requirements
 - **Unit tests**: >80% coverage on business logic
 - **Integration tests**: API, database, external services
-- **E2E tests**: Critical user flows (use Playwright MCP)
+- **E2E tests**: Critical user flows (use Chrome DevTools MCP)
 
 ### Security Checklist
 - [ ] No secrets in version control (.env + .gitignore)
@@ -175,7 +175,7 @@ Claude: [uses Codex MCP directly]
 2. **README.md** - Setup, usage, quick reference
 3. **app-docs/specs/** - Feature specifications
 4. **app-docs/guides/** - Implementation patterns
-5. **app-docs/mappings/feature-to-source.md** - File locations
+5. **app-docs/mappings/feature-to-source.md** (create if missing) - File locations
 
 ### Documentation Workflow
 
@@ -186,7 +186,7 @@ Claude: [uses Codex MCP directly]
 
 **After implementation:**
 - `/report` phase auto-updates:
-  - `app-docs/mappings/feature-to-source.md`
+  - `app-docs/mappings/feature-to-source.md` (create if missing)
   - `README.md` (if needed)
   - Architecture docs (if structural changes)
 
@@ -257,12 +257,12 @@ git diff --stat
 
 ```bash
 # Run on every new project
-node ai-docs/helpers/detect-project-scale.js
+node scripts/detect-project-scale.js
 
 # Follow recommendation:
 # SMALL → Direct implementation (~10K)
-# MEDIUM → /scout_build (~40K)
-# LARGE → /scout_plan_build_report (~95K)
+# MEDIUM → /scout_plan_build (~80K)
+# LARGE → /scout_plan_build (~95K)
 ```
 
 ### 2. Delegate to Cheap Tools First
@@ -270,7 +270,7 @@ node ai-docs/helpers/detect-project-scale.js
 **Order of preference:**
 1. Gemini MCP (2-4K tokens/task)
 2. Codex MCP (2-5K tokens/task)
-3. Playwright MCP (3-6K tokens/task)
+3. Chrome DevTools MCP (3-6K tokens/task)
 4. Claude (5-15K tokens/task)
 
 **Reserve Claude for:**
@@ -408,11 +408,11 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### When Joining Existing Project
 
 ```
-1. Run: node ai-docs/helpers/detect-project-scale.js
+1. Run: node scripts/detect-project-scale.js
 2. Read: app-docs/guides/ (existing patterns)
-3. Read: app-docs/mappings/feature-to-source.md
+3. Read: app-docs/mappings/feature-to-source.md (when available)
 4. Start with small bug fix (learn codebase)
-5. Then try medium feature (use /scout_build)
+5. Then try medium feature (use /scout_plan_build with empty doc list)
 6. Add new patterns to app-docs/guides/
 ```
 
@@ -487,7 +487,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Architectural decisions (use Claude)
 - Complex algorithms (use Claude)
 
-### Playwright MCP
+### Chrome DevTools MCP
 **Best for:**
 - E2E test generation
 - User flow testing
@@ -540,7 +540,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 1. Lower scale: /scout "[task]" "2"
 2. Or manual: List files yourself
-3. Skip to plan: /plan "[task]" "" "[manual-files]"
+3. Skip to plan: /plan_w_docs "[task]" "" "[manual-files]"
 4. Learn: Add patterns to app-docs/guides/
 ```
 
@@ -616,7 +616,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 **Key documents:**
 - [README.md](README.md) - Complete template docs
 - [QUICK-START.md](QUICK-START.md) - 5-minute setup
-- [MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md) - Old SDK → New
+- [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md) - Old SDK → New
 
 **Support:**
 - Claude Code: https://docs.claude.com/claude-code

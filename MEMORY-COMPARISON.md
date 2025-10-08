@@ -197,7 +197,7 @@ Small projects (<10 files):
   → Direct implementation (~10K tokens)
 
 Medium projects (10-50 files):
-  → /scout_build (~40K tokens)
+  → /scout_plan_build (~80K tokens)
 
 Large projects (>50 files):
   → /scout_plan_build_report (~95K tokens)

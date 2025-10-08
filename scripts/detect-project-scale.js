@@ -240,28 +240,28 @@ class ProjectScaleDetector {
 
     const recommendations = {
       SMALL: {
-        workflow: 'Direct Implementation',
-        command: 'Just describe task to Claude (no slash commands needed)',
+        workflow: 'Direct Implementation or Quick Plan',
+        command: 'Describe task directly or run /quick-plan "[task]" "[relevant-files]"',
         tokenBudget: '~10K tokens',
-        tools: ['Codex MCP for boilerplate', 'Gemini MCP for docs'],
-        skipPhases: ['scout', 'plan', 'report'],
-        rationale: 'Small project with straightforward structure. Direct implementation is fastest.'
+        tools: ['Codex MCP for light edits', 'Gemini MCP for reference lookups'],
+        skipPhases: ['scout', 'plan_w_docs', 'build_w_report'],
+        rationale: 'Small, low-risk changes can proceed without the full delegate chain.'
       },
       MEDIUM: {
-        workflow: 'Scout + Build',
-        command: '/scout_build "[task description]"',
+        workflow: 'Scout -> Plan -> Build',
+        command: '/scout_plan_build "[task]" "[doc urls or \"\"]"',
         tokenBudget: '~40K tokens',
-        tools: ['Gemini for scout', 'Codex + Claude for build'],
-        skipPhases: ['plan (for simple tasks)', 'report (optional)'],
-        rationale: 'Medium complexity. Scout helps find relevant files, but full planning may be overkill for simple tasks.'
+        tools: ['Task-launched Gemini and Codex scouts', 'plan_w_docs for specs', 'build_w_report for implementation'],
+        skipPhases: [],
+        rationale: 'Moderate complexity benefits from the standard Reduce and Delegate chain with documentation awareness.'
       },
       LARGE: {
-        workflow: 'Full Workflow (Scout → Plan → Build → Report)',
-        command: '/scout_plan_build_report "[task]" "[docs]"',
+        workflow: 'Full Workflow with Reporting',
+        command: '/scout_plan_build "[task]" "[doc urls]"',
         tokenBudget: '~100K tokens',
-        tools: ['All MCP tools', 'Multi-agent delegation', 'Comprehensive documentation'],
+        tools: ['Parallel subagents via Task tool', 'plan_w_docs with external docs', 'build_w_report for audited delivery'],
         skipPhases: [],
-        rationale: 'Large, complex project. Full workflow ensures thorough analysis, planning, and documentation.'
+        rationale: 'Large or high-risk work needs the full Reduce and Delegate sequence plus formal reporting.'
       }
     };
 

@@ -18,7 +18,7 @@ The repository implements a three-phase workflow orchestrated through custom sla
    - Format: `<path> (offset: N, limit: M)`
    - Uses token-efficient fast models for initial discovery
 
-2. **Plan Phase** ([scout_build_plan.md](scout_build_plan.md)): Task planning based on scouted files
+2. **Plan Phase** ([scout_plan_build.md](scout_plan_build.md)): Task planning based on scouted files
    - Takes user prompt, documentation URLs, and relevant files collection
    - Produces a detailed implementation plan
 

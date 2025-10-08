@@ -17,17 +17,6 @@ cp .env.example .env
 # - OPENAI_API_KEY
 ```
 
-### Configure MCP Tools
-
-```bash
-# Copy MCP configs
-cp .mcp/gemini-config.example.json .mcp/gemini-config.json
-cp .mcp/codex-config.example.json .mcp/codex-config.json
-
-# Verify configs are valid JSON
-cat .mcp/gemini-config.json | jq .
-```
-
 ### Customize Project Memory
 
 ```bash
@@ -46,18 +35,18 @@ cp CLAUDE-TEMPLATE.md CLAUDE.md
 
 ```bash
 # Run scale detector
-node ai-docs/helpers/detect-project-scale.js
+node scripts/detect-project-scale.js
 
 # Example output:
 # 📊 Project Scale: MEDIUM
-# 💡 Recommended: /scout_build "[task]"
+# 💡 Recommended: /scout_plan_build "[task]" "[doc urls]"
 # 🎯 Token Budget: ~40K
 ```
 
 **Based on result:**
-- **SMALL**: Use direct implementation (no slash commands)
-- **MEDIUM**: Use `/scout_build "[task]"`
-- **LARGE**: Use `/scout_plan_build_report "[task]" "[docs]"`
+- **SMALL**: Let Claude implement directly (no slash commands)
+- **MEDIUM**: Run `/scout_plan_build "[task]" ""`
+- **LARGE**: Run `/scout_plan_build "[task]" "[docs]"`
 
 ---
 
@@ -80,20 +69,21 @@ Claude: [uses Codex MCP to generate endpoint]
 In Claude Code, run:
 
 ```bash
-/scout_build "Add logging to all API endpoints"
+/scout_plan_build "Add logging to all API endpoints" ""
 ```
 
 **What happens:**
 1. Scout agents find all API files (10K tokens)
-2. Build phase adds logging with Codex (25K tokens)
-3. Total: ~35K tokens
+2. Plan documents the approach for review (30K tokens)
+3. Build step applies changes and reports results (40K tokens)
+4. Total: ~80K tokens (delegate chain)
 
 ### Large Project Example
 
 In Claude Code, run:
 
 ```bash
-/scout_plan_build_report "Add user authentication with JWT" "https://jwt.io/introduction"
+/scout_plan_build "Add user authentication with JWT" "https://jwt.io/introduction"
 ```
 
 **What happens:**
@@ -139,13 +129,13 @@ curl http://localhost:3000/health
 
 - **Small project workflow**: Just describe tasks to Claude
 - **Medium workflow**: Read [.claude/commands/scout.md](.claude/commands/scout.md) and [.claude/commands/build.md](.claude/commands/build.md)
-- **Large workflow**: Read full workflow in [.claude/commands/scout_plan_build_report.md](.claude/commands/scout_plan_build_report.md)
+- **Large workflow**: Read full workflow in [.claude/commands/scout_plan_build.md](.claude/commands/scout_plan_build.md)
 
 ### Customize for Your Project
 
 1. **Add specs**: Create `app-docs/specs/[feature].md` for planned features
 2. **Document patterns**: Add to `app-docs/guides/implementation-guidelines.md`
-3. **Map features**: Update `app-docs/mappings/feature-to-source.md`
+3. **Map features**: Create or update `app-docs/mappings/feature-to-source.md`
 
 ### Optimize Token Usage
 
@@ -161,20 +151,6 @@ cat ai-docs/logs/workflow-metrics.jsonl | jq '.efficiency'
 
 ## Common Issues
 
-### "MCP tool not found"
-
-```bash
-# Check configs exist
-ls -la .mcp/*.json
-
-# Verify API keys set
-cat .env | grep API_KEY
-
-# Expected: Keys should be set (not "your_key_here")
-```
-
-**Fix**: Add real API keys to `.env`
-
 ### "Scout phase failed"
 
 ```bash
@@ -182,7 +158,7 @@ cat .env | grep API_KEY
 /scout "[task]" "2"
 
 # Or manually list files and skip to plan
-/plan "[task]" "" "[manual file list]"
+/plan_w_docs "[task]" "" "[manual file list]"
 ```
 
 ### "Tests failing"
@@ -203,7 +179,7 @@ npm test
 ## Tips for Success
 
 ### 1. Start Small
-- Don't use `/scout_plan_build_report` for trivial tasks
+- Don't use `/scout_plan_build` for trivial tasks
 - Let project scale detection guide you
 - Build confidence with simple tasks first
 
@@ -219,7 +195,7 @@ npm test
 
 ### 4. Document as You Go
 - Add specs BEFORE features (saves tokens in plan phase)
-- Keep `feature-to-source.md` updated
+- Keep `feature-to-source.md` updated (create if missing)
 - Document patterns for reuse
 
 ---
@@ -228,13 +204,13 @@ npm test
 
 ```bash
 # Detect scale
-$ node ai-docs/helpers/detect-project-scale.js
+$ node scripts/detect-project-scale.js
 📊 Project Scale: LARGE
-💡 Recommended: /scout_plan_build_report
+💡 Recommended: /scout_plan_build
 
 # Run workflow
 $ # In Claude Code:
-/scout_plan_build_report "Add rate limiting to API endpoints" "https://expressjs.com/en/advanced/best-practice-security.html"
+/scout_plan_build "Add rate limiting to API endpoints" "https://expressjs.com/en/advanced/best-practice-security.html"
 
 # Scout phase (10K tokens, 2 minutes)
 ✅ Found 12 relevant files
@@ -288,13 +264,13 @@ You're now set up with:
 For detailed documentation, see:
 - [README.md](README.md) - Full documentation
 - [CLAUDE-TEMPLATE.md](CLAUDE-TEMPLATE.md) - Project memory template
-- [ai-docs/MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md) - Migrating from old SDK
+- [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md) - Migrating from old SDK
 
 ---
 
 **Questions?**
 - Check [README.md](README.md) Troubleshooting section
-- Review workflow docs in `ai-docs/workflows/`
+- Review workflow docs in `.claude/commands/`
 - Open GitHub issue for template bugs
 
 **Happy coding! 🚀**

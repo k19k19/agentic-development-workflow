@@ -30,7 +30,7 @@ Perfect for solo developers handling enterprise-scale projects.
 ### 🔧 MCP Tool Integration
 - Gemini MCP (documentation, summarization)
 - Codex MCP (code generation, syntax fixes, UI/UX)
-- Playwright MCP (E2E testing)
+- Chrome DevTools MCP (E2E testing)
 - Shadcn (UI components)
 - Firecrawl (web scraping/docs)
 
@@ -49,6 +49,10 @@ Perfect for solo developers handling enterprise-scale projects.
 
 ## 🚀 Quick Start
 
+## 🧭 Contributor Guide
+
+Review [AGENTS.md](AGENTS.md) before running workflows; it documents the template structure, required slash-command sequences, and agent handoff conventions.
+
 ### 1. Copy Template to Your Project
 
 ```bash
@@ -64,45 +68,18 @@ cp -r agentic-development-workflow/. my-existing-project/
 
 ```
 my-project/
-├── ai-docs/              # AI workflow artifacts
-│   ├── workflows/        # Scout, plan, build, report processes
-│   ├── plans/            # Generated implementation plans
-│   ├── builds/           # Build logs and reports
-│   ├── reports/          # Workflow summaries
-│   └── logs/             # Token usage metrics
-├── app-docs/             # Application documentation
-│   ├── specs/            # Feature specifications
-│   ├── guides/           # Implementation patterns
-│   ├── mappings/         # Feature-to-source relationships
-│   ├── architecture/     # System design
-│   ├── deployment/       # Deployment guides
-│   └── debugging/        # Known issues, troubleshooting
+├── ai-docs/              # Populated by workflows (scout results, plans, reports)
+├── app-docs/             # Team-authored specs/guides (starts empty, add as needed)
+├── specs/
 ├── app/                  # Your application code
-├── scripts/              # Utility scripts
-│   ├── validation/       # Pre-deployment checks
-│   └── health-check/     # Post-deployment validation
-├── .claude/              # Claude Code configuration
-│   └── commands/         # Slash command implementations
-├── .mcp/                 # MCP tool configs
+├── scripts/              # Project automation (scale detection)
+│   └── detect-project-scale.js
+├── .claude/              # Claude Code configuration and slash commands
 ├── CLAUDE.md             # Project memory (copy from CLAUDE-TEMPLATE.md)
 └── README.md             # This file
 ```
 
-### 3. Configure MCP Tools
-
-```bash
-# Copy example configs
-cp .mcp/gemini-config.example.json .mcp/gemini-config.json
-cp .mcp/codex-config.example.json .mcp/codex-config.json
-
-# Add API keys to .env (DO NOT commit!)
-echo "GEMINI_API_KEY=your_key_here" >> .env
-echo "OPENAI_API_KEY=your_key_here" >> .env
-```
-
-See [.mcp/README.md](.mcp/README.md) for detailed setup.
-
-### 4. Customize CLAUDE.md
+### 3. Customize CLAUDE.md
 
 ```bash
 # Copy template
@@ -115,15 +92,15 @@ cp CLAUDE-TEMPLATE.md CLAUDE.md
 # - Add project-specific navigation
 ```
 
-### 5. Test the Workflow
+### 4. Test the Workflow
 
 ```bash
 # Detect your project scale
-node ai-docs/helpers/detect-project-scale.js
+node scripts/detect-project-scale.js
 
 # Run a simple task
 # In Claude Code, run:
-/scout_plan_build_report "Add health check endpoint at /health" ""
+/scout_plan_build "Add health check endpoint at /health" ""
 ```
 
 ---
@@ -152,16 +129,17 @@ Claude: [uses Codex MCP directly]
 
 #### Medium Projects (10-50 files, 5K-20K LOC)
 
-**Scout + Build** - Skip planning for simple tasks
+**Delegate Chain (no external docs)**
 
 ```bash
-/scout_build "Add user authentication"
+/scout_plan_build "Add user authentication" ""
 ```
 
 **Process:**
 1. Scout (10K): Multi-agent file discovery
-2. Build (30K): Implementation with tool delegation
-**Total**: ~40K tokens
+2. Plan (30K): Lightweight plan with approval gate
+3. Build + Report (40K): Implementation with summary
+**Total**: ~80K tokens
 
 **When to use:**
 - Known patterns exist
@@ -175,7 +153,7 @@ Claude: [uses Codex MCP directly]
 **Full Workflow** - Complete Scout → Plan → Build → Report
 
 ```bash
-/scout_plan_build_report "Implement OAuth2 authentication" "https://docs.example.com/oauth"
+/scout_plan_build "Implement OAuth2 authentication" "https://docs.example.com/oauth"
 ```
 
 **Process:**
@@ -199,12 +177,12 @@ Claude: [uses Codex MCP directly]
 
 | Command | Purpose | Token Budget |
 |---------|---------|--------------|
+| `/scout_plan_build "[task]" "[doc urls]"` | End-to-end scout → plan → build (with report) | ~90K |
 | `/scout "[task]" "4"` | Multi-agent file discovery | ~10K |
-| `/plan "[task]" "[docs]" "[files]"` | Create implementation plan | ~30K |
-| `/build "[plan-path]"` | Execute plan with tool delegation | ~50K |
-| `/report "[build-report]"` | Generate summary & update docs | ~5K |
-| `/scout_plan_build_report "[task]" "[docs]"` | Full workflow | ~100K |
-| `/scout_build "[task]"` | Quick workflow (skip plan) | ~40K |
+| `/plan_w_docs "[task]" "[docs]" "[files]"` | Documentation-aware implementation plan | ~30K |
+| `/quick-plan "[task]" "[files]"` | Lightweight plan for small changes | ~15K |
+| `/build "[plan-path]"` | Implement plan with standard reporting | ~50K |
+| `/build_w_report "[plan-path]"` | Implement plan with detailed audit log | ~55K |
 
 ### Individual Phase Commands
 
@@ -216,23 +194,23 @@ Claude: [uses Codex MCP directly]
 
 **Plan Phase:**
 ```bash
-/plan "Add OAuth2" "https://docs.oauth.net" "ai-docs/scout-results/[timestamp]/files-collection.txt"
+/plan_w_docs "Add OAuth2" "https://docs.oauth.net" "ai-docs/scout-results/[timestamp]/files-collection.txt"
 # ⚠️ WAITS FOR USER APPROVAL before proceeding
-# Returns: ai-docs/plans/[timestamp]-oauth2.md
+# Returns: specs/[timestamp]-oauth2-plan.md
 ```
 
 **Build Phase:**
 ```bash
-/build "ai-docs/plans/[timestamp]-oauth2.md"
-# Uses: Codex, Gemini, Claude, Playwright based on plan
-# Returns: ai-docs/builds/[timestamp]/build-report.md
+/build "specs/[timestamp]-oauth2-plan.md"
+# Uses: Codex, Gemini, Claude based on plan
+# Returns: ai-docs/reports/[timestamp]-build-summary.md
 ```
 
-**Report Phase:**
+**Build with Audit Report:**
 ```bash
-/report "ai-docs/builds/[timestamp]/build-report.md"
-# Updates: app-docs/mappings/, README.md
-# Returns: ai-docs/reports/[timestamp]-summary.md
+/build_w_report "specs/[timestamp]-oauth2-plan.md"
+# Captures validation evidence + git diff summary
+# Returns: ai-docs/reports/[timestamp]-build-report.md
 ```
 
 ---
@@ -246,7 +224,7 @@ Claude: [uses Codex MCP directly]
 | **Gemini MCP** | Docs, specs, summaries | Low | "Summarize API docs" |
 | **Codex MCP** | Boilerplate, syntax, UI | Low | "Generate CRUD endpoints" |
 | **Claude** | Complex logic, integration | High | "Refactor service layer" |
-| **Playwright** | E2E testing | Medium | "Generate login flow tests" |
+| **Chrome DevTools** | E2E testing | Medium | "Generate login flow tests" |
 | **Shadcn** | UI components | Low | "Add button component" |
 | **Firecrawl** | External docs | Low | "Fetch OAuth2 spec" |
 
@@ -256,7 +234,7 @@ Claude: [uses Codex MCP directly]
 Single file + syntax? → Codex MCP
 Documentation? → Gemini MCP
 Multi-file + logic? → Claude
-Testing? → Playwright MCP
+Testing? → Chrome DevTools MCP
 UI components? → Shadcn MCP
 External research? → Firecrawl MCP
 ```
@@ -384,10 +362,10 @@ Validates:
 
 If you have existing scout/plan/build commands using Bash calls to external agents:
 
-1. **Read the migration guide**: [ai-docs/MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md)
+1. **Read the migration guide**: [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md)
 2. **Convert Bash calls to Task tool**: See examples in migration guide
 3. **Test each phase**: Start with `/scout`, then `/plan`, `/build`, `/report`
-4. **Full workflow test**: Run `/scout_plan_build_report` on a simple task
+4. **Full workflow test**: Run `/scout_plan_build` on a simple task
 
 **Key changes:**
 - OLD: `gemini -p "[prompt]"` via Bash
@@ -404,47 +382,33 @@ If you have existing scout/plan/build commands using Bash calls to external agen
    "Add a /health endpoint that returns { status: 'ok' }"
    ```
 
-2. **Try Scout + Build** (Medium project):
+2. **Try the delegate chain** (Medium project):
    ```bash
-   /scout_build "Add logging to all API endpoints"
+   /scout_plan_build "Add logging to all API endpoints" ""
    ```
 
-3. **Try Full Workflow** (Large project):
+3. **Add reporting for audits** (Large or regulated work):
    ```bash
-   /scout_plan_build_report "Add user authentication with JWT" "https://jwt.io/introduction"
+   /scout_plan_build "Add user authentication with JWT" "https://jwt.io/introduction"
    ```
 
 ### Key Documents
 
 - **Template CLAUDE.md**: [CLAUDE-TEMPLATE.md](CLAUDE-TEMPLATE.md) - Project memory template
-- **Migration Guide**: [ai-docs/MIGRATION-GUIDE.md](ai-docs/MIGRATION-GUIDE.md) - Old → New SDK
-- **Workflow Specs**: `ai-docs/workflows/*.md` - Detailed phase documentation
-- **MCP Setup**: [.mcp/README.md](.mcp/README.md) - Tool configuration
+- **Migration Guide**: [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md) - Old → New SDK
+- **Contributor Guide**: [AGENTS.md](AGENTS.md) - Structure, workflows, doc skeletons
+- **Slash Command Prompts**: `.claude/commands/*.md` - Orchestration details
 
 ### Example Workflows
 
-Check `ai-docs/archives/` after your first few workflows to see:
-- How plans are structured
-- How tasks are delegated to tools
-- Token usage patterns
-- Lessons learned
+Check `ai-docs/` after your first few workflows to see:
+- Saved scout results and plans (`ai-docs/scout-results/`, `specs/`)
+- Build and report summaries (`ai-docs/reports/`)
+- Token usage logs if you wire them in (`ai-docs/logs/`)
 
 ---
 
 ## 🐛 Troubleshooting
-
-### "MCP tool not found"
-```bash
-# Check MCP config
-ls -la .mcp/*.json
-
-# Verify API keys
-cat .env | grep API_KEY
-
-# Test tool directly
-gemini --version
-codex --version
-```
 
 ### "All scout agents failed"
 ```bash
@@ -461,7 +425,7 @@ codex --version
 cat ai-docs/logs/workflow-metrics.jsonl
 
 # Options:
-# 1. Use smaller workflow (scout_build instead of full)
+# 1. Use smaller workflow (`/scout_plan_build "[task]" ""`) instead of full
 # 2. Simplify task scope
 # 3. Break into multiple smaller tasks
 ```
@@ -521,7 +485,7 @@ After each workflow, check the report for:
 - ⚠️ What could improve
 - 🚀 Try next time
 
-Update your token budgets in `ai-docs/workflows/*.md` based on actual usage.
+Update your token budgets in `.claude/commands/*.md` based on actual usage.
 
 ---
 
@@ -602,9 +566,8 @@ MIT License - See [LICENSE](LICENSE) file
 ## Quick Links
 
 - 📖 [Template CLAUDE.md](CLAUDE-TEMPLATE.md)
-- 🔧 [MCP Setup](.mcp/README.md)
-- 🔄 [Migration Guide](ai-docs/MIGRATION-GUIDE.md)
-- 📊 [Workflow Specs](ai-docs/workflows/)
+- 🔄 [Migration Guide](MIGRATION-GUIDE.md)
+- 📊 [Slash Command Prompts](.claude/commands/)
 - ✅ [Pre-Deploy Check](scripts/validation/pre-deploy-check.sh)
 - 🏥 [Health Check](scripts/health-check/health-check.sh)
 
