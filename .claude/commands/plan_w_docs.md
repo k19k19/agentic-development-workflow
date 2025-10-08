@@ -16,8 +16,9 @@ PLAN_OUTPUT_DIRECTORY: specs/
 DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/
 
 ## Instructions
+- **Read the Spec:** Before planning, read the feature specification from `app-docs/specs/[round-type]-[feature].md`.
 - If any of `USER_PROMPT`, `DOCUMENT_URLS`, or `RELEVANT_FILES_COLLECTION` is missing, stop and ask the user to provide it.
-- Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries.
+- Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the scout phase.
 - Use the Task tool in parallel to scrape each URL in `DOCUMENT_URLS` with Firecrawl (fallback to Webfetch when Firecrawl is unavailable).
   - Instruct subagents to save each document to `DOCUMENTATION_OUTPUT_DIRECTORY/<name-of-document>`.
   - Require each subagent to return the saved path for future reference.

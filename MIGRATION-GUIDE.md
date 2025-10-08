@@ -534,7 +534,7 @@ Use Task tool (Agent 3):
 
 ## Post-Execution
 - Aggregate results (automatic in Claude Code)
-- Git safety check: git diff --stat
+
 - Save to ai-docs/scout-results/
 ```
 

@@ -6,6 +6,8 @@
 
 ## 🎯 Core Philosophy
 
+**Shift Knowledge from Context to Retrieval**—making all project intelligence persistent, structured, and instantly accessible via targeted retrieval (scouting/planning agents) rather than relying on the limited AI context window.
+
 **R&D Framework** (Reduce and Delegate):
 - Use token-efficient models for discovery and boilerplate
 - Delegate to specialized tools (Gemini, Codex, Chrome DevTools)
@@ -56,7 +58,7 @@ Step 3: Execute with minimal context
 **BEFORE ANY CODE CHANGES, Claude must:**
 
 1. ✅ **Read project documentation** (via Gemini MCP)
-   - `app-docs/specs/[feature].md` if exists
+   - `app-docs/specs/[round-type]-[feature].md` if exists
    - `app-docs/guides/implementation-guidelines.md`
    - `app-docs/mappings/feature-to-source.md` (create if missing)
 
@@ -64,7 +66,7 @@ Step 3: Execute with minimal context
    ```bash
    # Search for similar implementations
    grep -r "pattern_keyword" app/
-   grep -r "related_feature" app-docs/
+   grep -r "related_feature" app-docs/mappings/
    ```
 
 3. ✅ **Confirm approach with user**
@@ -109,21 +111,7 @@ Claude: [uses Codex MCP directly]
 # Scout (10K) → Plan (30K) → Build (50K) → Report (5K) = ~95K total
 ```
 
-### Pre-Flight Checks (Before ANY deployment)
 
-```bash
-# Always run before deployment
-./scripts/validation/pre-deploy-check.sh
-
-# Checks:
-# - Git status
-# - Environment config
-# - Dependencies
-# - Build success
-# - Tests passing
-# - Linting
-# - Port availability
-```
 
 ### Post-Deployment Validation
 
@@ -253,54 +241,10 @@ git diff --stat
 
 ## 🚀 Token Optimization Rules
 
-### 1. Use Project Scale Detection
-
-```bash
-# Run on every new project
-node scripts/detect-project-scale.js
-
-# Follow recommendation:
-# SMALL → Direct implementation (~10K)
-# MEDIUM → /scout_plan_build (~80K)
-# LARGE → /scout_plan_build (~95K)
-```
-
-### 2. Delegate to Cheap Tools First
-
-**Order of preference:**
-1. Gemini MCP (2-4K tokens/task)
-2. Codex MCP (2-5K tokens/task)
-3. Chrome DevTools MCP (3-6K tokens/task)
-4. Claude (5-15K tokens/task)
-
-**Reserve Claude for:**
-- Architectural decisions
-- Complex multi-file logic
-- Strategic planning
-- Security/performance reviews
-
-### 3. Read Documentation Efficiently
-
-```
-❌ DON'T: Have Claude read entire docs
-   - 50K+ tokens wasted
-
-✅ DO: Use Gemini MCP to summarize
-   - "Summarize app-docs/specs/*.md"
-   - 2K tokens, same outcome
-```
-
-### 4. Avoid Reading Entire Directories
-
-```
-❌ DON'T: Read all files in app/
-   - Exceeds token limits
-
-✅ DO: Use scout phase
-   - Multi-agent parallel search
-   - Returns only relevant files with line ranges
-   - 10K tokens vs 100K+
-```
+1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /scout_build, Large  /scout_plan_build_report).
+2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
+3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
+4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **scouting phase** and the **feature-to-source.md mapping file** to find the minimal required context.
 
 ---
 
@@ -380,15 +324,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **Details**: Bullet points of key changes
 - **Credit**: Claude Code attribution
 
-### Git Safety Rules
 
-- ✅ Check `git diff --stat` after scout phase
-- ✅ Review all changes before committing
-- ✅ Run tests before committing
-- ✅ Never commit secrets (.env in .gitignore)
-- ✅ Use feature branches for large changes
-- ❌ Never force push to main/master
-- ❌ Never skip pre-commit hooks (unless emergency)
 
 ---
 

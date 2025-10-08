@@ -14,12 +14,14 @@ SCALE: $2 (default 4)
 RELEVANT_FILE_OUTPUT_DIR: agents/scout_files/
 
 ## Instructions
+- **Retrieval First:** Before searching the codebase, check for existing implementations and patterns.
+  - Read `app-docs/mappings/feature-to-source.md` to see if the feature or a similar one has already been implemented.
+  - Read `app-docs/guides/common-patterns.md` to identify any reusable patterns.
 - Use the Task tool to launch subagents in parallel; each subagent should immediately invoke the Bash tool to run the appropriate agentic CLI.
 - Construct a concise prompt describing the search target for each agent and replace `[prompt]` with that string in the commands below.
 - Respect timeouts: instruct each subagent to terminate if it takes more than 3 minutes.
 - Ignore responses that do not follow the required format or are irrelevant to the task.
 - Do not perform any direct searches yourself; rely entirely on the delegated agents.
-- After the agents finish, run `git diff --stat` to confirm the working tree is unchanged. If any files were modified, run `git reset --hard` and inform the user.
 
 ## Workflow
 1. Parse arguments and default `SCALE` to 4 when not provided.

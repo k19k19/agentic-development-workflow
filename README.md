@@ -40,10 +40,22 @@ Perfect for solo developers handling enterprise-scale projects.
 - **Large** (>50 files): Full workflow (~100K tokens)
 
 ### 🛡️ Safety & Quality
-- Pre-deployment validation scripts
-- Post-deployment health checks
-- Git safety checks (auto-reset on unintended changes)
-- Mandatory user approval before implementation
+
+- **Mandatory Pre-Implementation Checks**: Before any code is written, the AI must read the project specs, check for existing patterns, and get user approval.
+- **Structured Knowledge Base**: A centralized documentation structure in `app-docs/` ensures that the AI has a reliable source of truth, which helps prevent repeated mistakes.
+- **Post-Task Updates**: After every implementation, the AI updates the relevant documentation, including code mappings and new patterns, to keep the knowledge base current.
+
+## 🧠 Memory Management
+
+This template implements a sophisticated memory management strategy to ensure high token efficiency and prevent repeated mistakes. The core of this strategy is a structured knowledge base in the `app-docs/` directory, which serves as the single source of truth for the AI.
+
+The AI is trained to follow a multi-phase protocol that relies on targeted retrieval from this knowledge base:
+
+1.  **Pre-Task Retrieval (The Scout):** Before generating any code, the AI uses low-cost tools to gather the necessary context from the knowledge base.
+2.  **Context-Aware Implementation (The Claude Role):** The main AI is engaged only after the minimal context is retrieved, and it's instructed to build upon existing functions and patterns.
+3.  **Post-Task Update (The Historian):** After every successful implementation, the AI updates the knowledge base with new code mappings and patterns.
+
+This retrieval-based approach to memory management is more scalable and efficient than relying on the limited context window of the AI.
 
 ---
 
@@ -284,37 +296,7 @@ User can:
 - Reject → Revise approach
 - Ask questions → Get clarification
 
-### 2. Git Safety
 
-**During scout:**
-```bash
-# Before: git diff --stat > baseline.txt
-# After: git diff --stat > post-scout.txt
-# If changes: git reset --hard
-```
-
-**During build:**
-```bash
-# Continuous monitoring
-# User can review: git diff at any time
-# Auto-reset on failures
-```
-
-### 3. Pre-Deployment Validation
-
-```bash
-./scripts/validation/pre-deploy-check.sh
-```
-
-Checks:
-- Git status
-- Environment config
-- Dependencies
-- Build success
-- Tests passing
-- Linting
-- Port availability
-- Docker (if applicable)
 
 ### 4. Post-Deployment Health Checks
 
@@ -349,12 +331,12 @@ Validates:
 
 | Directory | Purpose | Maintained By |
 |-----------|---------|---------------|
-| `specs/` | Feature specifications | Manual + Report phase |
-| `guides/` | Implementation patterns | Manual + Build phase |
-| `mappings/` | Feature-to-source relationships | Report phase |
+| `specs/` | Feature specifications in the format `[round-type]-[feature].md` | Manual + Report phase |
+| `guides/` | Implementation patterns, and global AI rules. | Manual + Build phase |
+| `mappings/` | A single, indexed file mapping features to their exact file paths. | Report phase |
 | `architecture/` | System design | Manual + Plan phase |
 | `deployment/` | Deployment procedures | Manual |
-| `debugging/` | Known issues | Report phase |
+| `debugging/` | Known issues and their resolutions. | Report phase |
 
 ---
 
@@ -439,14 +421,7 @@ cat ai-docs/builds/[latest]/build-report.md
 # Then re-run build from that point
 ```
 
-### "Git changes detected after scout"
-```
-WARNING: Scout agents modified files
 
-# Automatic: git reset --hard (done by scout phase)
-# Check scout report for details
-# May need to adjust agent prompts
-```
 
 ---
 
@@ -568,7 +543,7 @@ MIT License - See [LICENSE](LICENSE) file
 - 📖 [Template CLAUDE.md](CLAUDE-TEMPLATE.md)
 - 🔄 [Migration Guide](MIGRATION-GUIDE.md)
 - 📊 [Slash Command Prompts](.claude/commands/)
-- ✅ [Pre-Deploy Check](scripts/validation/pre-deploy-check.sh)
+
 - 🏥 [Health Check](scripts/health-check/health-check.sh)
 
 **Ready to 10x your development workflow? Start with a simple task and experience the power of multi-agent orchestration!** 🚀

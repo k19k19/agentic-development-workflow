@@ -12,6 +12,7 @@ Implement the delivered plan and report the resulting changes.
 PATH_TO_PLAN: $1
 
 ## Workflow
+- **Build on Existing Code:** Before writing any new code, check `app-docs/mappings/feature-to-source.md` to see if a similar function or component already exists. If it does, build upon it rather than creating a new one.
 - If no `PATH_TO_PLAN` is provided, stop immediately and request it from the user.
 - Read the plan at `PATH_TO_PLAN`, reason through the steps, and implement them in the codebase using the delegated tools.
 

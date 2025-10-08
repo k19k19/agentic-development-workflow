@@ -43,7 +43,7 @@ The scout phase demonstrates the parallel agent pattern:
 - Each agent calls external agentic coding tools (gemini, claude, codex) via Bash
 - Scale parameter determines number of parallel agents (e.g., "4" = 4 agents)
 - Agents have 3-minute timeout; failures are skipped
-- Git safety: `git diff --stat` check after scout, `git reset --hard` if changes detected
+
 
 ## Repository Structure
 
@@ -70,7 +70,7 @@ Per [README.md](README.md), the intended organization is:
 - **Argument Quoting**: Slash command arguments must be in double quotes; nested quotes become single quotes
 - **No Prompt Alteration**: Pass USER_PROMPT variables unchanged through the workflow chain
 - **Sequential Workflow Steps**: Each workflow phase must complete before the next begins
-- **Git Safety**: Always check for unintended changes after agent operations
+
 - **Structured Output**: Agents should return file paths with specific line ranges for efficient context loading
 
 ## Custom Slash Commands

@@ -18,6 +18,9 @@ PATH_TO_PLAN: $1
 4. Capture validation output (command snippets, screenshots, or logs) for inclusion in the final report.
 
 ## Report
+- **Update Knowledge Base:** After the build is complete, update the structured knowledge base:
+  - Update `app-docs/mappings/feature-to-source.md` with the new file paths and features implemented.
+  - If the implementation introduced a new, reusable utility or pattern, add a brief entry to `app-docs/guides/common-patterns.md`.
 - Provide a bullet list of completed work items tied to plan sections.
 - Include validation evidence (command names and outcomes).
 - Append `git diff --stat` to summarize the change surface.

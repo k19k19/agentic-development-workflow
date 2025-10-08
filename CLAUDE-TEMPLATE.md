@@ -33,7 +33,7 @@
 
 ```
 Use gemini-mcp-tool to summarize:
-1. app-docs/specs/[relevant-feature].md
+1. app-docs/specs/[round-type]-[feature].md
 2. app-docs/guides/implementation-guidelines.md
 3. app-docs/mappings/feature-to-source.md (create if missing)
 ```
@@ -206,8 +206,8 @@ project-root/
 │   └── logs/                   # Token usage, metrics (optional)
 │
 ├── app-docs/                   # Application documentation (starts empty)
-│   ├── specs/                  # Feature specifications
-│   ├── guides/                 # Implementation guidelines
+│   ├── specs/                  # Feature specifications in the format `[round-type]-[feature].md`
+│   ├── guides/                 # Implementation guidelines and common patterns
 │   ├── mappings/               # Feature-to-source relationships
 │   │   └── feature-to-source.md (create when documenting features)
 │   ├── architecture/           # System design, diagrams
@@ -219,7 +219,7 @@ project-root/
 │   ├── [your app structure]
 │   └── ...
 │
-├── scripts/                    # Utility scripts (scale detection, validation, health checks)
+├── scripts/                    # Utility scripts (scale detection, health checks)
 │   └── detect-project-scale.js
 │
 ├── .claude/                    # Claude Code configuration
@@ -270,18 +270,7 @@ npm run build        # Build for production
 /quick-plan "Add tooltip" "[files]"
 ```
 
-### Validation
-```bash
-# Pre-deployment checks
-./scripts/validation/pre-deploy-check.sh
 
-# Health checks
-./scripts/health-check/health-check.sh
-
-# Git safety
-git diff --stat
-git status --porcelain
-```
 
 ---
 

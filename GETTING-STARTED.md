@@ -348,12 +348,7 @@ echo "golangci-lint" >> CLAUDE.md
 **Time:** 5 minutes
 
 ```bash
-# 1. Pre-deployment validation
-./scripts/validation/pre-deploy-check.sh
 
-# If all pass:
-✅ ALL CHECKS PASSED
-🚀 Ready to deploy!
 
 # 2. Deploy (your method)
 # docker-compose up -d
