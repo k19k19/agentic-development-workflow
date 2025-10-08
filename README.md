@@ -59,6 +59,11 @@ The AI is trained to follow a multi-phase protocol that relies on targeted retri
 
 This retrieval-based approach to memory management is more scalable and efficient than relying on the limited context window of the AI.
 
+### Vector Store
+
+The project utilizes a vector store (`vector-store.json`) generated from `app-docs/` and `ai-docs/` using `scripts/vectorize-docs.js`. This vector store enables semantic search capabilities, allowing agents to retrieve highly relevant documentation chunks based on the meaning of a query, rather than just keywords. This significantly improves the efficiency and accuracy of context retrieval for complex tasks.
+
+
 ---
 
 ## 🚀 Quick Start
@@ -197,6 +202,7 @@ These are standalone commands that can be used to perform specific tasks.
 | `/prime_cc` | Primes the AI with the current project state. |
 | `/questions "[task]"` | Asks clarifying questions before implementation begins. |
 | `/quick-plan "[task]" "[files]"` | Generates a lightweight plan for small tasks. |
+| `/search_vector_store "[query]"` | Searches the project's vector store for relevant documentation. |
 
 ---
 
@@ -503,7 +509,7 @@ All workflows log to: `ai-docs/logs/workflow-metrics.jsonl`
 
 ```bash
 # View recent workflows
-tail -10 ai-docs/logs/workflow-metrics.jsonl | jq '.efficiency'
+tail -10 ai-docs/logs/workflow-metrics.jsonl | jq ".efficiency"
 
 # Calculate average
 cat ai-docs/logs/workflow-metrics.jsonl | jq -s 'map(.efficiency) | add/length'

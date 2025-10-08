@@ -29,6 +29,13 @@ cp CLAUDE-TEMPLATE.md CLAUDE.md
 # 3. Customize "Quick Commands" for your project
 ```
 
+### Vectorize Documentation
+
+```bash
+# Generate vector embeddings for your project's documentation
+node scripts/vectorize-docs.js
+```
+
 ---
 
 ## 2. Detect Your Project Scale (30 seconds)

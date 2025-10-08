@@ -3,10 +3,6 @@
 .env.local
 .env.production
 
-# MCP API keys (use .example files as templates)
-.mcp/*-config.json
-!.mcp/*-config.example.json
-
 # AI workflow artifacts (keep archives only)
 ai-docs/plans/*.md
 ai-docs/builds/*.md

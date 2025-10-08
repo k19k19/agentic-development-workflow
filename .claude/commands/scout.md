@@ -1,40 +1,30 @@
-description: Search the codebase for files needed to complete the task
-argument-hint: [user_prompt] [scale]
-allowed-tools: Read, Glob, Grep
+description: Use vector search to find files and context relevant to the task
+argument-hint: [user_prompt]
+allowed-tools: ["run_shell_command"]
 model: claude-sonnet-4-5
 
-# Scout
+# Scout (Vector Search)
 
 ## Purpose
-Launch parallel subagents to quickly find files relevant to the `USER_PROMPT` without editing the workspace.
+Use the project's vectorized knowledge base to instantly find the most relevant files and code snippets needed to complete the `USER_PROMPT`.
 
 ## Variables
 USER_PROMPT: $1
-SCALE: $2 (default 4)
-RELEVANT_FILE_OUTPUT_DIR: agents/scout_files/
 
 ## Instructions
-- **Retrieval First:** Before searching the codebase, check for existing implementations and patterns.
-  - Read `app-docs/mappings/feature-to-source.md` to see if the feature or a similar one has already been implemented.
-  - Read `app-docs/guides/common-patterns.md` to identify any reusable patterns.
-- Use the Task tool to launch subagents in parallel; each subagent should immediately invoke the Bash tool to run the appropriate agentic CLI.
-- Construct a concise prompt describing the search target for each agent and replace `[prompt]` with that string in the commands below.
-- Respect timeouts: instruct each subagent to terminate if it takes more than 3 minutes.
-- Ignore responses that do not follow the required format or are irrelevant to the task.
-- Do not perform any direct searches yourself; rely entirely on the delegated agents.
+- Your primary goal is to use the `npm run search` command to find context for the user's task.
+- Take the `USER_PROMPT` as the search query.
+- Execute the search using the `run_shell_command` tool.
+- The output of the search command is the definitive context. It contains the most relevant file paths and text snippets.
+- You do not need to read any other files or perform any other searches.
 
 ## Workflow
-1. Parse arguments and default `SCALE` to 4 when not provided.
-2. Kick off subagents in round-robin fashion based on `SCALE`:
-   - `>= 1`: `gemini -p "[prompt]" --model gemini-2.5-flash`
-   - `>= 2`: `gemini -p "[prompt]" --model gemini-2.5-flash-lite`
-   - `>= 4`: `codex exec -m gpt-5-codex -s read-only -c model_reasoning_effort="low" "[prompt]"`
-   - `>= 5`: `claude -p "[prompt]" --model sonnet-4.5 --thinking`
-3. Instruct each subagent to return a structured list in the exact format `<path/to/file> (offset: N, limit: M)` and to repeat entries for multiple regions within a file.
-4. Collate successful outputs, skipping errors and malformed responses.
-5. Persist the merged list to `ai-docs/scout-results/<timestamp>/relevant-files.md` and duplicate it to `RELEVANT_FILE_OUTPUT_DIR` for downstream commands.
-6. Follow the Report section below.
+1.  Take the `USER_PROMPT` provided by the user.
+2.  Construct the shell command: `npm run search -- "[USER_PROMPT]"`.
+3.  Execute the command using `run_shell_command`.
+4.  The standard output of this command is your result. Pass this context directly to the next phase (e.g., the Plan phase).
 
 ## Report
-- Summarize how many agents completed successfully and list the top files discovered.
-- Provide the path to the saved results file.
+- Summarize the top search results found.
+- List the source files identified as most relevant.
+- This context will be used to inform the next step of the workflow.
