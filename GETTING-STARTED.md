@@ -39,20 +39,16 @@ cp USER-MEMORY-CLAUDE.md ~/claude-user-memory.md
 git clone [template-repo] my-new-project
 cd my-new-project
 
-# 2. Setup MCP tools
-cp .env.example .env
-# Edit .env - add your API keys
-
-# 3. Customize project memory
+# 2. Customize project memory
 cp CLAUDE-TEMPLATE.md CLAUDE.md
 # Edit CLAUDE.md:
 # - Replace [Project Name]
 # - Update architecture section
 
-# 4. Detect scale
+# 3. Detect scale
 node scripts/detect-project-scale.js
 
-# 5. Start coding!
+# 4. Start coding!
 # In Claude Code, try:
 /scout_plan_build "Add health check endpoint" ""
 ```
@@ -80,21 +76,17 @@ cp ~/agentic-workflow-template/.env.example ./
 # 2. Merge .gitignore
 cat .gitignore-template >> .gitignore
 
-# 3. Setup MCP
-cp .env.example .env
-# Add your API keys to .env
-
-# 4. Create project memory
+# 3. Create project memory
 cp ~/agentic-workflow-template/CLAUDE-TEMPLATE.md ./CLAUDE.md
 # Edit CLAUDE.md with your project details
 
-# 5. Detect scale
+# 4. Detect scale
 node scripts/detect-project-scale.js
 
-# 6. Organize existing docs (optional)
+# 5. Organize existing docs (optional)
 mv docs/* app-docs/  # or organize manually
 
-# 7. Try first workflow
+# 6. Try first workflow
 # In Claude Code:
 /scout "Find all API endpoints" "2"
 ```
@@ -344,29 +336,64 @@ echo "golangci-lint" >> CLAUDE.md
 
 ### → Deploy to Production
 
+
+
 **What:** Use validation scripts before deployment
+
 **Time:** 5 minutes
+
+
 
 ```bash
 
+# 1. Pre-deployment validation
 
-# 2. Deploy (your method)
-# docker-compose up -d
-# or ./deploy.sh
-# or git push heroku main
+./scripts/validation/pre-deploy-check.sh
 
-# 3. Post-deployment health check
-./scripts/health-check/health-check.sh
+
 
 # If all pass:
+
 ✅ ALL CHECKS PASSED
+
+🚀 Ready to deploy!
+
+
+
+# 2. Deploy (your method)
+
+# docker-compose up -d
+
+# or ./deploy.sh
+
+# or git push heroku main
+
+
+
+# 3. Post-deployment health check
+
+./scripts/health-check/health-check.sh
+
+
+
+# If all pass:
+
+✅ ALL CHECKS PASSED
+
 🎉 Application is healthy!
+
 ```
 
+
+
 **If checks fail:**
+
 - Review script output
+
 - Fix identified issues
+
 - Re-run validation
+
 - Never skip validation for "speed"
 
 ---
@@ -397,7 +424,6 @@ echo "golangci-lint" >> CLAUDE.md
 ### Day 1: Setup (1 hour)
 - [ ] Set up user memory (5 min)
 - [ ] Copy template to test project (10 min)
-- [ ] Configure MCP tools (10 min)
 - [ ] Try simple task (10 min)
 - [ ] Review results (5 min)
 - [ ] Read MEMORY-COMPARISON.md (10 min)

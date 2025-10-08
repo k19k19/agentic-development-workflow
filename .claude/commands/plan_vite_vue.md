@@ -12,7 +12,7 @@ Generate a development plan focused on Vite-powered Vue applications, covering c
 1. Parse the `USER_PROMPT` and identify the affected areas (components, composables, routes, store, tests).
 2. Read the supplied relevant files list and inspect critical paths (e.g., `app/src`, `app/src/router`, `app/src/components`, `app/tests`).
 3. Outline updates required to maintain Vite configuration, TypeScript support, and hot-module reload safety.
-4. Address UI/UX implications (component layout, props, emit contracts) and testing approach (Vitest / Playwright).
+4. Address UI/UX implications (component layout, props, emit contracts) and testing approach (Vitest / Chrome DevTools).
 5. Save the plan as `specs/vite-vue-<slug>.md`, including migration steps, acceptance criteria, and validation commands.
 
 ## Report

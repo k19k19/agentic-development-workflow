@@ -41,9 +41,9 @@ This executes sequentially:
 The scout phase demonstrates the parallel agent pattern:
 - Uses the `Task` tool to spawn multiple agents simultaneously
 - Each agent calls external agentic coding tools (gemini, claude, codex) via Bash
-- Scale parameter determines number of parallel agents (e.g., "4" = 4 agents)
-- Agents have 3-minute timeout; failures are skipped
-
+   - Scale parameter determines number of parallel agents (e.g., "4" = 4 agents)
+   - Agents have 3-minute timeout; failures are skipped
+   - Git safety: `git diff --stat` check after scout, `git reset --hard` if changes detected
 
 ## Repository Structure
 
@@ -70,6 +70,7 @@ Per [README.md](README.md), the intended organization is:
 - **Argument Quoting**: Slash command arguments must be in double quotes; nested quotes become single quotes
 - **No Prompt Alteration**: Pass USER_PROMPT variables unchanged through the workflow chain
 - **Sequential Workflow Steps**: Each workflow phase must complete before the next begins
+- **Git Safety**: Always check for unintended changes after agent operations
 
 - **Structured Output**: Agents should return file paths with specific line ranges for efficient context loading
 
@@ -85,7 +86,7 @@ The repository uses custom slash commands stored in `.claude/` that chain togeth
 - ✅ Complete directory structure (ai-docs, app-docs, app, scripts)
 - ✅ All workflow documents (scout, plan, build, report) with token budgets
 - ✅ Slash command implementations using Agent SDK Task tool
-- ✅ MCP configuration templates (Gemini, Codex, Playwright, Shadcn, Firecrawl)
+- ✅ MCP configuration templates (Gemini, Codex, Chrome DevTools, Shadcn, Firecrawl)
 - ✅ Project scale detection helper
 - ✅ Validation and health-check scripts
 - ✅ Migration guide (old SDK → new Agent SDK)
@@ -93,7 +94,6 @@ The repository uses custom slash commands stored in `.claude/` that chain togeth
 
 **Ready to Use:**
 - Copy this template to any project
-- Configure MCP tools (.env with API keys)
 - Customize CLAUDE.md for your project
 - Run workflows based on project scale
 

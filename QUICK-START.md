@@ -254,7 +254,6 @@ $ curl -X POST http://localhost:3000/api/test
 ## Ready to Go!
 
 You're now set up with:
-- ✅ MCP tools configured
 - ✅ Project memory (CLAUDE.md) customized
 - ✅ Project scale detected
 - ✅ First workflow completed

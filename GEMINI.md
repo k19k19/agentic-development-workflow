@@ -13,6 +13,8 @@ The project is structured to support a multi-agent workflow, with different agen
 
 
 
+The project also includes a number of safety features, such as pre-deployment validation scripts and Git safety checks, to ensure the quality and integrity of the codebase.
+
 ## Building and Running
 
 This project is not a traditional application that you build and run. Instead, it's a collection of scripts and configuration files that you use to manage other projects. The main entry point for the workflow is the `scripts/detect-project-scale.js` script, which analyzes your project and recommends a workflow.
@@ -32,9 +34,10 @@ To use this framework, you would typically follow these steps:
 
 ## Development Conventions
 
-The `AGENTS.md` file provides detailed guidelines on how to use this framework. Some of the key conventions include:
+The project also includes a number of safety features, such as pre-deployment validation scripts and Git safety checks, to ensure the quality and integrity of the codebase.
 
 *   **Directory Structure:** The project has a well-defined directory structure that separates configuration files, AI-generated documents, application code, and scripts.
 *   **Documentation:** The framework includes templates for creating feature specifications, architecture documents, and other important documentation.
+*   **Testing:** The framework includes scripts for running pre-deployment validation checks and post-deployment health checks.
 
 *   **Commits and Pull Requests:** The `AGENTS.md` file provides guidelines on how to write commit messages and pull requests that are easy for both humans and AI agents to understand.

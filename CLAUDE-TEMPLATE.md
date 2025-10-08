@@ -139,7 +139,7 @@ Deployment: Docker + nginx
 | UI/UX work | Codex MCP | Medium | Component styling, layouts |
 | Complex logic | Claude | High | Multi-file integration |
 | Architectural decisions | Claude | High | Strategic, long-term impact |
-| Testing | Playwright + Codex | Medium | E2E + unit tests |
+| Testing | Chrome DevTools + Codex | Medium | E2E + unit tests |
 | Web scraping | Firecrawl MCP | Low | External docs, research |
 | UI components | Shadcn MCP | Low | Standard UI patterns |
 
@@ -149,7 +149,7 @@ Deployment: Docker + nginx
 Single file + syntax? → Codex MCP
 Documentation task? → Gemini MCP
 Multi-file + logic? → Claude
-Testing? → Playwright MCP + Codex MCP
+Testing? → Chrome DevTools MCP + Codex MCP
 UI components? → Shadcn MCP + Codex MCP
 External research? → Firecrawl MCP
 ```
@@ -232,10 +232,10 @@ project-root/
 │   │   └── build_w_report.md
 │   └── settings.local.json
 │
-├── .mcp/                       # MCP tool configs
+configs
 │   ├── gemini-config.json
 │   ├── codex-config.json
-│   └── playwright-config.json
+│   └── Chrome DevTools-config.json
 │
 ├── CLAUDE.md                   # This file (project memory)
 ├── README.md                   # Project documentation
@@ -270,6 +270,19 @@ npm run build        # Build for production
 /quick-plan "Add tooltip" "[files]"
 ```
 
+### Validation
+```bash
+# Pre-deployment checks
+./scripts/validation/pre-deploy-check.sh
+
+# Health checks
+./scripts/health-check/health-check.sh
+
+# Git safety
+git diff --stat
+git status --porcelain
+```
+
 
 
 ---
@@ -296,7 +309,7 @@ npm run build        # Build for production
 
 ### "Add tests"
 1. 🎯 **Target**: Identify component to test
-2. 🤖 **Generate**: Playwright MCP + Codex MCP
+2. 🤖 **Generate**: Chrome DevTools MCP + Codex MCP
 3. ✅ **Run**: Verify all tests pass
 4. 📊 **Report**: Coverage metrics
 
@@ -320,7 +333,7 @@ npm run build        # Build for production
 - Build: 50K
 - Report: 5K
 - **Total**: ~95K tokens
-- Tools: All (Gemini, Codex, Claude, MCP tools)
+- Tools: All (Gemini, Codex, Claude)
 
 ### Enterprise Task (Architectural changes)
 - Scout: 15K
@@ -510,26 +523,20 @@ Error in build?
    # Update [Project Name], [Architecture], [Commands]
    ```
 
-2. **Configure MCP Tools**
-   ```bash
-   # Setup .mcp/ configs for your tools
-   # See ai-docs/mcp-configs/ for templates
-   ```
-
-3. **Create Initial Documentation**
+2. **Create Initial Documentation**
    ```bash
    # Add specs to app-docs/specs/
    # Add implementation guides to app-docs/guides/
    # Create feature-to-source.md mapping if it does not exist
    ```
 
-4. **Test Workflow**
+3. **Test Workflow**
    ```bash
    # Run a simple task through full workflow
    /scout_plan_build "Add health check endpoint" ""
    ```
 
-5. **Refine Token Budgets**
+4. **Refine Token Budgets**
    ```bash
    # After a few builds, review ai-docs/logs/workflow-metrics.jsonl
    # Adjust token budgets in workflow docs if needed

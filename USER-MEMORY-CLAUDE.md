@@ -113,6 +113,22 @@ Claude: [uses Codex MCP directly]
 
 
 
+### Pre-Flight Checks (Before ANY deployment)
+
+```bash
+# Always run before deployment
+./scripts/validation/pre-deploy-check.sh
+
+# Checks:
+# - Git status
+# - Environment config
+# - Dependencies
+# - Build success
+# - Tests passing
+# - Linting
+# - Port availability
+```
+
 ### Post-Deployment Validation
 
 ```bash
@@ -325,6 +341,16 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **Credit**: Claude Code attribution
 
 
+
+### Git Safety Rules
+
+- ✅ Check `git diff --stat` after scout phase
+- ✅ Review all changes before committing
+- ✅ Run tests before committing
+- ✅ Never commit secrets (.env in .gitignore)
+- ✅ Use feature branches for large changes
+- ❌ Never force push to main/master
+- ❌ Never skip pre-commit hooks (unless emergency)
 
 ---
 

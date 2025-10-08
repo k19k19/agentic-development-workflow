@@ -428,12 +428,9 @@ Message 1:
 ### Before Migration
 - [ ] Identify all external agent calls in slash commands
 - [ ] Document current behavior and output format
-- [ ] Set up MCP tool configurations
-- [ ] Test MCP tools individually
 
 ### During Migration
 - [ ] Convert Bash calls to Task tool calls
-- [ ] Update prompts to reference MCP tools
 - [ ] Enable parallel execution where applicable
 - [ ] Add error handling to agent prompts
 - [ ] Update documentation
@@ -533,7 +530,10 @@ Use Task tool (Agent 3):
     TIMEOUT: 3 minutes
 
 ## Post-Execution
+
 - Aggregate results (automatic in Claude Code)
+
+- Git safety check: git diff --stat
 
 - Save to ai-docs/scout-results/
 ```

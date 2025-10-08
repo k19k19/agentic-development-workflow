@@ -1,5 +1,5 @@
 description: Run a three step engineering workflow to deliver on the user_prompt
-argument-hint: [user_prompt] [document-urls]
+argument-hint: [user_prompt] [document-urls] [ask_questions]
 model: claude-sonnet-4-5
 
 # Scout Plan Build
@@ -13,6 +13,7 @@ Then build the task based on the plan.
 ## Variables
 USER_PROMPT: $1
 DOCUMENTATION_URLS: $2
+ASK_QUESTIONS: $3 (default: false)
 
 ## Instructions
 - Execute each step in order, top to bottom, without pausing between stages.
@@ -22,6 +23,7 @@ DOCUMENTATION_URLS: $2
 
 ## Workflow
 1. Run SlashCommand(`/scout "[USER_PROMPT]" "4"`) -> `relevant_files_collection_path`.
-2. Run SlashCommand(`/plan_w_docs "[USER_PROMPT]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"`) -> `path_to_plan`.
-3. Run SlashCommand(`/build_w_report "[path_to_plan]"`) -> `build_report`.
-4. Report your work based on the `Report` section defined in the downstream commands.
+2. If `ASK_QUESTIONS` is true, run SlashCommand(`/questions "[USER_PROMPT]"`).
+3. Run SlashCommand(`/plan_w_docs "[USER_PROMPT]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"`) -> `path_to_plan`.
+4. Run SlashCommand(`/build_w_report "[path_to_plan]"`) -> `build_report`.
+5. Report your work based on the `Report` section defined in the downstream commands.

@@ -2,7 +2,7 @@
 
 **Version**: 1.0 | **Status**: Production Ready | **Compatible with**: Claude Code Agent SDK
 
-A comprehensive template for enterprise-scale development using Claude Code with multi-agent orchestration, MCP tool integration, and token-optimized workflows.
+A comprehensive template for enterprise-scale development using Claude Code with multi-agent orchestration, and token-optimized workflows.
 
 ---
 
@@ -27,7 +27,7 @@ Perfect for solo developers handling enterprise-scale projects.
 - **Build**: Hybrid tool delegation (Codex for code, Gemini for docs, Claude for logic)
 - **Report**: Automated documentation and metrics tracking
 
-### 🔧 MCP Tool Integration
+### 🔧 MCP Tool
 - Gemini MCP (documentation, summarization)
 - Codex MCP (code generation, syntax fixes, UI/UX)
 - Chrome DevTools MCP (E2E testing)
@@ -44,6 +44,8 @@ Perfect for solo developers handling enterprise-scale projects.
 - **Mandatory Pre-Implementation Checks**: Before any code is written, the AI must read the project specs, check for existing patterns, and get user approval.
 - **Structured Knowledge Base**: A centralized documentation structure in `app-docs/` ensures that the AI has a reliable source of truth, which helps prevent repeated mistakes.
 - **Post-Task Updates**: After every implementation, the AI updates the relevant documentation, including code mappings and new patterns, to keep the knowledge base current.
+- **Pre-deployment validation scripts**
+- **Git safety checks (auto-reset on unintended changes)**
 
 ## 🧠 Memory Management
 
@@ -179,7 +181,22 @@ Claude: [uses Codex MCP directly]
 - Complex features
 - Architectural changes
 - Unfamiliar codebase areas
-- Enterprise-scale implementations
+### Helper Commands
+
+These are standalone commands that can be used to perform specific tasks.
+
+| Command | Purpose |
+|---------|---------|
+| `/prepare_for_task "[task]"` | Gathers context and primes the AI before starting a new task. |
+| `/all_tools` | Lists all available tools. |
+| `/background "[focus-area]"` | Gathers high-level project background. |
+| `/load_ai_docs "[task]"` | Loads relevant AI workflow documentation. |
+| `/load_bundle "[bundle-name]" "[file-globs]"` | Creates a curated set of files for analysis. |
+| `/parallel_subagents "[task]" "[agent-list]"` | Launches multiple specialized agents for a single task. |
+| `/plan_vite_vue "[task]" "[files]"` | Generates a development plan for a Vite and Vue project. |
+| `/prime_cc` | Primes the AI with the current project state. |
+| `/questions "[task]"` | Asks clarifying questions before implementation begins. |
+| `/quick-plan "[task]" "[files]"` | Generates a lightweight plan for small tasks. |
 
 ---
 
@@ -189,7 +206,8 @@ Claude: [uses Codex MCP directly]
 
 | Command | Purpose | Token Budget |
 |---------|---------|--------------|
-| `/scout_plan_build "[task]" "[doc urls]"` | End-to-end scout → plan → build (with report) | ~90K |
+| `/scout_plan_build "[task]" "[doc urls]" "[ask_questions]"` | End-to-end scout → plan → build (with optional questions) | ~90K |
+| `/prepare_for_task "[task]"` | Gathers context and primes the AI before starting a new task. | ~15K |
 | `/scout "[task]" "4"` | Multi-agent file discovery | ~10K |
 | `/plan_w_docs "[task]" "[docs]" "[files]"` | Documentation-aware implementation plan | ~30K |
 | `/quick-plan "[task]" "[files]"` | Lightweight plan for small changes | ~15K |
@@ -297,6 +315,38 @@ User can:
 - Ask questions → Get clarification
 
 
+
+### 2. Git Safety
+
+**During scout:**
+```bash
+# Before: git diff --stat > baseline.txt
+# After: git diff --stat > post-scout.txt
+# If changes: git reset --hard
+```
+
+**During build:**
+```bash
+# Continuous monitoring
+# User can review: git diff at any time
+# Auto-reset on failures
+```
+
+### 3. Pre-Deployment Validation
+
+```bash
+./scripts/validation/pre-deploy-check.sh
+```
+
+Checks:
+- Git status
+- Environment config
+- Dependencies
+- Build success
+- Tests passing
+- Linting
+- Port availability
+- Docker (if applicable)
 
 ### 4. Post-Deployment Health Checks
 
@@ -421,6 +471,15 @@ cat ai-docs/builds/[latest]/build-report.md
 # Then re-run build from that point
 ```
 
+### "Git changes detected after scout"
+```
+WARNING: Scout agents modified files
+
+# Automatic: git reset --hard (done by scout phase)
+# Check scout report for details
+# May need to adjust agent prompts
+```
+
 
 
 ---
@@ -543,7 +602,7 @@ MIT License - See [LICENSE](LICENSE) file
 - 📖 [Template CLAUDE.md](CLAUDE-TEMPLATE.md)
 - 🔄 [Migration Guide](MIGRATION-GUIDE.md)
 - 📊 [Slash Command Prompts](.claude/commands/)
-
+- ✅ [Pre-Deploy Check](scripts/validation/pre-deploy-check.sh)
 - 🏥 [Health Check](scripts/health-check/health-check.sh)
 
 **Ready to 10x your development workflow? Start with a simple task and experience the power of multi-agent orchestration!** 🚀
