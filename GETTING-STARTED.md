@@ -71,7 +71,7 @@ cp -r ~/agentic-workflow-template/app-docs ./
 cp -r ~/agentic-workflow-template/scripts ./
 cp -r ~/agentic-workflow-template/.claude ./
 cp ~/agentic-workflow-template/.gitignore ./.gitignore-template
-cp ~/agentic-workflow-template/.env.example ./
+
 
 # 2. Merge .gitignore
 cat .gitignore-template >> .gitignore
@@ -100,7 +100,7 @@ mv docs/* app-docs/  # or organize manually
 **What:** Learn user memory vs project memory
 **Time:** 5 minutes
 
-**Read:** [MEMORY-COMPARISON.md](MEMORY-COMPARISON.md)
+**Read:** [MEMORY-COMPARISON.md](app-docs/guides/MEMORY-COMPARISON.md)
 
 **Quick answer:**
 - **User Memory** (global): Tool rules, workflows, standards
@@ -413,7 +413,7 @@ echo "golangci-lint" >> CLAUDE.md
 - Issues: https://github.com/anthropics/claude-code/issues
 
 **Workflow questions:**
-- Read: [MEMORY-COMPARISON.md](MEMORY-COMPARISON.md)
+- Read: [MEMORY-COMPARISON.md](app-docs/guides/MEMORY-COMPARISON.md)
 - Read: Slash command prompts in `.claude/commands/`
 - Review: Example in [README.md](README.md)
 
@@ -426,7 +426,7 @@ echo "golangci-lint" >> CLAUDE.md
 - [ ] Copy template to test project (10 min)
 - [ ] Try simple task (10 min)
 - [ ] Review results (5 min)
-- [ ] Read MEMORY-COMPARISON.md (10 min)
+- [ ] Read app-docs/guides/MEMORY-COMPARISON.md (10 min)
 
 ### Day 2: Practice (2 hours)
 - [ ] Run `/scout_plan_build "<medium task>" ""` (30 min)
@@ -455,11 +455,11 @@ echo "golangci-lint" >> CLAUDE.md
 
 **Start Here:**
 - [QUICK-START.md](QUICK-START.md) - 5-minute setup
-- [MEMORY-COMPARISON.md](MEMORY-COMPARISON.md) - What goes where
+- [MEMORY-COMPARISON.md](app-docs/guides/MEMORY-COMPARISON.md) - What goes where
 
 **Complete Reference:**
 - [README.md](README.md) - Full documentation
-- [TEMPLATE-SUMMARY.md](TEMPLATE-SUMMARY.md) - What's included
+
 
 **Templates:**
 - [USER-MEMORY-CLAUDE.md](USER-MEMORY-CLAUDE.md) - Global memory
@@ -481,7 +481,7 @@ echo "golangci-lint" >> CLAUDE.md
 **I'm ready to start when:**
 - [ ] User memory set up in Claude Code
 - [ ] Template copied to project
-- [ ] API keys added to `.env`
+
 - [ ] CLAUDE.md customized for project
 - [ ] Project scale detected
 - [ ] First simple task completed successfully

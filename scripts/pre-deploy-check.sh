@@ -53,39 +53,12 @@ fi
 success "Git status checked"
 echo ""
 
-# ============================================================================
-# 2. Environment Configuration
-# ============================================================================
-
-echo "2️⃣  Checking environment configuration..."
-
-# Check if .env file exists
-if [ ! -f .env ]; then
-    error ".env file not found"
-else
-    success ".env file exists"
-
-    # Check for placeholder values
-    if grep -q "your_.*_here\|CHANGEME\|TODO" .env; then
-        error "Placeholder values found in .env file"
-        grep "your_.*_here\|CHANGEME\|TODO" .env
-    fi
-
-    # Check for secrets in git (should be ignored)
-    if git check-ignore .env > /dev/null 2>&1; then
-        success ".env properly ignored by git"
-    else
-        error ".env is NOT in .gitignore - SECURITY RISK!"
-    fi
-fi
-
-echo ""
 
 # ============================================================================
-# 3. Dependencies Check
+# 2. Dependencies Check
 # ============================================================================
 
-echo "3️⃣  Checking dependencies..."
+echo "2️⃣  Checking dependencies..."
 
 # Check if package.json exists
 if [ -f package.json ]; then
@@ -114,10 +87,10 @@ fi
 echo ""
 
 # ============================================================================
-# 4. Build Check
+# 3. Build Check
 # ============================================================================
 
-echo "4️⃣  Checking build..."
+echo "3️⃣  Checking build..."
 
 if [ -f package.json ]; then
     if grep -q '"build":' package.json; then
@@ -135,10 +108,10 @@ fi
 echo ""
 
 # ============================================================================
-# 5. Test Suite
+# 4. Test Suite
 # ============================================================================
 
-echo "5️⃣  Running tests..."
+echo "4️⃣  Running tests..."
 
 if [ -f package.json ]; then
     if grep -q '"test":' package.json; then
@@ -156,10 +129,10 @@ fi
 echo ""
 
 # ============================================================================
-# 6. Linting
+# 5. Linting
 # ============================================================================
 
-echo "6️⃣  Running linter..."
+echo "5️⃣  Running linter..."
 
 if [ -f package.json ]; then
     if grep -q '"lint":' package.json; then
@@ -167,7 +140,7 @@ if [ -f package.json ]; then
         if npm run lint > /dev/null 2>&1; then
             success "Linting passed"
         else
-            warning "Linting errors found - run 'npm run lint' to fix"
+            error "Linting errors found - run 'npm run lint' to fix"
         fi
     else
         echo "   No lint script defined (skipping)"
@@ -177,10 +150,10 @@ fi
 echo ""
 
 # ============================================================================
-# 7. Port Availability (for services)
+# 6. Port Availability (for services)
 # ============================================================================
 
-echo "7️⃣  Checking port availability..."
+echo "6️⃣  Checking port availability..."
 
 # Common ports to check (customize for your app)
 PORTS_TO_CHECK=(80 443 3000 3001 3002 3003 4000 5000 8080)
@@ -196,10 +169,10 @@ success "Port check complete"
 echo ""
 
 # ============================================================================
-# 8. Docker Configuration (if applicable)
+# 7. Docker Configuration (if applicable)
 # ============================================================================
 
-echo "8️⃣  Checking Docker configuration..."
+echo "7️⃣  Checking Docker configuration..."
 
 if [ -f docker-compose.yml ]; then
     success "docker-compose.yml found"
@@ -233,10 +206,10 @@ fi
 echo ""
 
 # ============================================================================
-# 9. Database Migrations (if applicable)
+# 8. Database Migrations (if applicable)
 # ============================================================================
 
-echo "9️⃣  Checking database migrations..."
+echo "8️⃣  Checking database migrations..."
 
 # Check for migration files
 if [ -d migrations ] || [ -d db/migrations ]; then
@@ -258,10 +231,10 @@ fi
 echo ""
 
 # ============================================================================
-# 10. Documentation Check
+# 9. Documentation Check
 # ============================================================================
 
-echo "🔟 Checking documentation..."
+echo "9️⃣  Checking documentation..."
 
 # Check README
 if [ -f README.md ]; then

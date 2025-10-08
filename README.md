@@ -1,6 +1,6 @@
 # Agentic Development Workflow Template
 
-**Version**: 1.0 | **Status**: Production Ready | **Compatible with**: Claude Code Agent SDK
+**Version**: 1.0 | **Status**: Production Ready | **Compatible with**: Claude Code Agent SDK, Gemini
 
 A comprehensive template for enterprise-scale development using Claude Code with multi-agent orchestration, and token-optimized workflows.
 
@@ -28,6 +28,7 @@ Perfect for solo developers handling enterprise-scale projects.
 - **Report**: Automated documentation and metrics tracking
 
 ### 🔧 MCP Tool
+These Model Context Protocol (MCP) tools are external and need to be installed and configured separately by the user to enable their functionality within the workflow.
 - Gemini MCP (documentation, summarization)
 - Codex MCP (code generation, syntax fixes, UI/UX)
 - Chrome DevTools MCP (E2E testing)
@@ -87,15 +88,34 @@ cp -r agentic-development-workflow/. my-existing-project/
 
 ```
 my-project/
+├── .claude/              # Claude Code configuration and slash commands
+│   ├── agents/           # Agent-specific configurations
+│   └── commands/         # Slash command definitions
 ├── ai-docs/              # Populated by workflows (scout results, plans, reports)
 ├── app-docs/             # Team-authored specs/guides (starts empty, add as needed)
-├── specs/
-├── app/                  # Your application code
-├── scripts/              # Project automation (scale detection)
+│   ├── api/              # API specifications
+│   ├── architecture/     # System design documents
+│   ├── data/             # Data schemas and models
+│   ├── debugging/        # Known issues and troubleshooting guides
+│   ├── guides/           # Implementation patterns and guidelines
+│   ├── mappings/         # Feature to source code mappings
+│   ├── operations/       # Operational procedures and data fix queries
+│   ├── qa/               # Quality assurance documents
+│   ├── releases/         # Release notes and procedures
+│   └── specs/            # Feature specifications
+├── scripts/              # Project automation (scale detection, health checks, etc.)
 │   └── detect-project-scale.js
-├── .claude/              # Claude Code configuration and slash commands
+├── vector-store/         # Vector store for semantic search
+├── node_modules/         # Project dependencies
+├── AGENTS.md             # Guidelines for agents
 ├── CLAUDE.md             # Project memory (copy from CLAUDE-TEMPLATE.md)
-└── README.md             # This file
+├── CLAUDE-TEMPLATE.md    # Template for CLAUDE.md
+├── GEMINI.md             # Gemini-specific documentation
+├── GETTING-STARTED.md    # Getting started guide
+├── MIGRATION-GUIDE.md    # Migration guide
+├── QUICK-START.md        # Quick start guide
+├── README.md             # This file
+└── package.json          # Project dependencies and scripts
 ```
 
 ### 3. Customize CLAUDE.md
