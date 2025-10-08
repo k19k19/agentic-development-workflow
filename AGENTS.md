@@ -1,60 +1,24 @@
 # Repository Guidelines
 
-## Reduce & Delegate Workflow
-Operate in the R&D mindset: trim the ask, then hand it to the right agents. Default to `/scout_plan_build "<user prompt>" "<doc urls>"`; break it into `/scout`, `/plan_w_docs`, and `/build` only for targeted follow-ups. Log every run under `ai-docs/reports/` so the next agent can replay decisions.
-
 ## Project Structure & Module Organization
-Keep only configs in the root (`package.json`, `.mcp/`, `CLAUDE.md`). `.claude/commands/` hosts orchestrator prompts. `ai-docs/` starts empty until workflows populate it. `app-docs/` is the structured knowledge base for the project, and includes `guides`, `specs`, `mappings`, `architecture`, and `debugging` directories. Ship runtime code in `app/`, and keep automation scripts in `scripts/`.
+This repo is a starter template: keep coordination docs (e.g., `CLAUDE.md`, orchestrator prompts, memory guides) at the root. Runtime sources belong in `app/` when you add them, automation scripts in `scripts/` (see `scripts/detect-project-scale.js`), and shared docs in `app-docs/` (guides, specs, mappings, architecture, debugging). Store generated reports or run artifacts in `ai-docs/`. Add tests beside their targets (`tests/` or `app/<feature>/__tests__/`).
 
-## Documentation Templates
-Seed new docs with predictable structure so agents can parse them fast:
+## Command Orchestration
+Use `/scout_plan_build "<prompt>" "<doc urls>"` as the entry point; it chains `/scout`, `/plan_w_docs`, and `/build_w_report` for full Reduce & Delegate execution. Standalone helpers like `/quick-plan`, `/build`, or `/parallel_subagents` remain available but are not part of the primary loop—call them explicitly only when you need a lightweight pass or targeted follow-up. Reference `.claude/commands/` for the latest prompt wiring before extending workflows.
 
-```markdown
-# Feature Spec (app-docs/specs/[round-type]-[feature].md)
-## Purpose
-## Requirements
-## Interfaces (API/UI)
-## Testing
-```
+## Build, Test, and Development Commands
+- `node scripts/detect-project-scale.js` — size the project to decide when the full pipeline is warranted.
+- *(Add project-specific build/test runners when code appears; document the exact command here once you introduce them.)*
+- `/scout_plan_build "<prompt>" "<doc urls>"` — launch the standard Scout→Plan→Build run, producing a report in `ai-docs/reports/`.
 
-```markdown
-# Mapping Entry (append to app-docs/mappings/feature-to-source.md)
-## <Feature>
-- Code: `app/...` :10-40
-- Tests: `tests/...`
-- Docs: `app-docs/specs/[round-type]-[feature].md`
-```
+## Coding Style & Naming Conventions
+Default to modern JavaScript/TypeScript with 2-space indentation, single quotes, and async/await. Use kebab-case for utility files, PascalCase for components or classes, and mirror spec names (e.g., `app-docs/specs/1st-backend-user-auth.md`). Keep Markdown headings in Title Case and follow the provided templates when adding docs.
 
-## Retrieval Protocol
-
-To ensure high token efficiency, the AI must be trained to follow a multi-phase protocol that relies on **targeted retrieval** from the structured knowledge base.
-
-### **Phase A: Pre-Task Retrieval (The Scout) 🔎**
-
-Before the AI engages in *any* expensive code generation, it must execute targeted searches using low-cost tools (grep, indexing agent) to gather only the necessary context.
-
-1. **Read Current Spec**: Retrieve the specific spec for the current task (e.g., `2nd-frontend-billing.md`).
-2. **Check Mappings (Anti-Duplication)**: Search **app-docs/mappings/feature-to-source.md** for related features. This instantly tells the AI if a component or function already exists and where to find it.
-3. **Check Patterns**: Retrieve relevant sections from **app-docs/guides/common-patterns.md** to ensure the new code adheres to project standards and avoids duplicating utilities.
-4. **Identify Minimal Files**: Use an internal tool to identify **only** the specific files and line ranges required for the modification.
-
-### **Phase B: Context-Aware Implementation (The Claude Role) 🏗️**
-
-The main AI (e.g., Claude) is engaged only after the minimal context is retrieved.
-
-* The prompt sent to the AI includes the **full AI User Memory** and the **minimal, highly-relevant file snippets** retrieved in Phase A.
-* **Mandatory Rule:** The AI must be programmed to **build upon the existing functions** identified in the Mappings file rather than creating new, slightly different versions.
-
-### **Phase C: Post-Task Update (The Historian) ✍️**
-
-Every successful feature completion or major fix must automatically update the knowledge base.
-
-1. **Update Mappings**: Update app-docs/mappings/feature-to-source.md with the new file paths and features implemented.
-2. **Log New Patterns**: If the implementation introduced a new, reusable utility or pattern, add a brief entry to app-docs/guides/common-patterns.md.
-3. **Final Report**: Save the detailed build report to ai-docs/reports/ for historical logging and metric tracking.
+## Testing Guidelines
+Bootstrap Jest (or the framework specified in the feature spec) when you add executable code. Name suites `feature-name.test.ts` and colocate them under `tests/` or the feature’s directory. Record scenarios and edge cases in the spec’s Testing section, then append the new suite paths to `app-docs/mappings/feature-to-source.md`.
 
 ## Commit & Pull Request Guidelines
-Write concise, active-voice commits ("Implement scout plan workflow") and group related agent outputs together. Reference the supporting plan in `specs/` plus any documentation you touched in `app-docs/`. Pull requests should list the triggering prompt, validation evidence, and follow-up tasks queued for other agents.
+Write concise, active-voice commits such as `Implement scout plan workflow`, referencing the supporting spec or doc updates. Pull requests should cite the triggering prompt, include validation evidence (logs, screenshots, or test output), and capture follow-up tasks for downstream agents.
 
-## Agent Workflow Tips
-Refresh `CLAUDE.md` whenever structure, commands, or tooling shifts. Organize concurrent initiatives with timestamped subfolders inside `ai-docs/workflows/`, and archive stale artifacts instead of deleting them so parallel devices preserve traceability without bloating active context.
+## Knowledge Base Hygiene
+Before implementation, read the relevant spec in `app-docs/specs/`, scan `app-docs/mappings/feature-to-source.md` to avoid duplication, and check `app-docs/guides/common-patterns.md` for reusable approaches. After delivery, update mappings, log the run under `ai-docs/reports/`, and refresh `CLAUDE.md` or other guides if command wiring changes.
