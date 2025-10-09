@@ -95,6 +95,12 @@ bash scripts/init-agentic-workflow.sh
 
 **You get:** An automated integration of the agentic workflow template with your existing codebase, ready for AI-powered development.
 
+**Need backend + frontend structure?**
+- Keep coordination and playbook docs in the repository root (`CLAUDE.md`, `GEMINI.md`, etc.).
+- Place runtime code under `app/`, splitting surfaces into folders such as `app/backend/`, `app/frontend/`, and `app/shared/` for cross-cutting utilities.
+- Co-locate surface-specific docs inside `app-docs/` (for example, `app-docs/specs/backend/...` and `app-docs/specs/frontend/...`) while keeping generated reports in `ai-docs/`.
+- Leave `scripts/init-agentic-workflow.sh` unchanged; it bootstraps the workflow but does not rearrange your existing code so you can adapt the layout manually without surprises.
+
 ---
 
 ### → Understand What Goes Where
