@@ -90,7 +90,25 @@ bash /path/to/budget-agentic-workflow/scripts/init-agentic-workflow.sh
 2.  **Organize Existing Documentation:** Review any existing project documentation (e.g., in a `docs/` folder). Move or adapt relevant parts into the `app-docs/` directory for AI consumption. Refer to `app-docs/guides/MEMORY-MANAGEMENT-DOCUMENT-TYPES.md` for guidance on structuring AI-readable documentation.
 3.  **Set up User Memory (if not already done):** Refer to the "→ Set Up User Memory (Global, One-Time)" section in this document for instructions.
 4.  **Detect Project Scale:** Run `node scripts/detect-project-scale.js` to get workflow recommendations tailored to your project.
-5.  **Start Developing!** You are now ready to use the agentic workflow. Try a slash command, e.g., `/scout_plan_build "Add a health check endpoint" "" "budget"` to stay in Budget Mode by default.
+5.  **Verify Installation (Claude Code CLI users):** If using Claude Code CLI, **you must restart your session** for slash commands to load:
+   ```bash
+   # Exit current Claude Code session
+   exit
+
+   # Navigate to your project directory
+   cd /path/to/your/project
+
+   # Start Claude Code
+   claude-code
+
+   # Verify slash commands are loaded
+   /help
+   # Look for commands marked with (project)
+   ```
+
+   **If slash commands don't appear:** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) → "Slash Commands Not Appearing"
+
+6.  **Start Developing!** You are now ready to use the agentic workflow. Try a slash command, e.g., `/scout_plan_build "Add a health check endpoint" "" "budget"` to stay in Budget Mode by default.
 
 **You get:** An automated integration of the agentic workflow template with your existing codebase, ready for AI-powered development.
 
@@ -411,6 +429,7 @@ echo "golangci-lint" >> CLAUDE.md
 **Time:** 5 minutes
 
 **Template issues:**
+- Check: [TROUBLESHOOTING.md](TROUBLESHOOTING.md) → Complete troubleshooting guide
 - Check: [README.md](README.md) → Troubleshooting
 - Check: [QUICK-START.md](QUICK-START.md) → Common Issues
 - Open: GitHub issue on template repo
@@ -488,7 +507,7 @@ echo "golangci-lint" >> CLAUDE.md
 **I'm ready to start when:**
 - [ ] User memory set up in Claude Code
 - [ ] Template copied to project
-
+- [ ] Slash commands verified (run `/help` and see project commands)
 - [ ] CLAUDE.md customized for project
 - [ ] Project scale detected
 - [ ] First simple task completed successfully

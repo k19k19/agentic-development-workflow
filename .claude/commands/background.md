@@ -1,6 +1,8 @@
+---
 description: Load high-level project background before starting scoped work
 argument-hint: [focus-area]
 model: claude-sonnet-4-5
+---
 
 # Background Briefing
 

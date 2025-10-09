@@ -1,6 +1,8 @@
+---
 description: Run a three step engineering workflow to deliver on the user_prompt
 argument-hint: [user_prompt] [document-urls] [mode]
 model: claude-sonnet-4-5
+---
 
 # Scout Plan Build
 

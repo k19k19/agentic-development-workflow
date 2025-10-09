@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This is a template that will be copied to another project folder to provide agentic development workflow guidance to Claude Code (claude.ai/code).
 
 ## Repository Overview
 

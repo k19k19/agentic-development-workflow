@@ -1,7 +1,9 @@
+---
 description: Load and summarize AI workflow documentation relevant to the task
 argument-hint: [user_prompt]
 allowed-tools: Read, Glob, Grep
 model: claude-sonnet-4-5
+---
 
 # Load AI Docs
 

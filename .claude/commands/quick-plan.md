@@ -1,7 +1,9 @@
+---
 description: Generate a lightweight plan when full documentation is unnecessary
 argument-hint: [user_prompt] [relevant files]
 allowed-tools: Read, Write, Edit
 model: claude-sonnet-4-5
+---
 
 # Quick Plan
 

@@ -477,6 +477,19 @@ Check `ai-docs/` after your first few workflows to see:
 
 ## 🐛 Troubleshooting
 
+**For complete troubleshooting guide, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md)**
+
+### Quick Fixes
+
+#### "Slash commands not appearing"
+```bash
+# Most common: Restart Claude Code CLI session
+exit
+cd /path/to/project
+claude-code
+/help  # Verify commands loaded
+```
+
 ### "All scout agents failed"
 ```bash
 # Lower scale (use fewer agents)
@@ -637,6 +650,7 @@ MIT License - See [LICENSE](LICENSE) file
 
 - 📖 [Template CLAUDE.md](CLAUDE-TEMPLATE.md)
 - 🔄 [Migration Guide](MIGRATION-GUIDE.md)
+- 🐛 [Troubleshooting Guide](TROUBLESHOOTING.md)
 - 📊 [Slash Command Prompts](.claude/commands/)
 - ✅ [Pre-Deploy Check](scripts/validation/pre-deploy-check.sh)
 - 🏥 [Health Check](scripts/health-check/health-check.sh)

@@ -1,7 +1,9 @@
+---
 description: Build the codebase based on the plan and produce a detailed report
 argument-hint: [path-to-plan]
 allowed-tools: Read, Write, Bash
 model: claude-sonnet-4-5
+---
 
 # Build with Report
 

@@ -1,5 +1,7 @@
+---
 description: End-to-end workflow to add a new feature with planning, building, testing, and documentation.
 argument-hint: [feature_description]
+---
 
 ## Instructions
 

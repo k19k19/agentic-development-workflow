@@ -1,7 +1,9 @@
+---
 description: Use vector search to find files and context relevant to the task
 argument-hint: [user_prompt]
 allowed-tools: ["run_shell_command"]
 model: claude-sonnet-4-5
+---
 
 # Scout (Vector Search)
 

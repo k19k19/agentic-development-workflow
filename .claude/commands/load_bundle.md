@@ -1,7 +1,9 @@
+---
 description: Prepare a focused bundle of source files for deep context loading
 argument-hint: [bundle-name] [file-globs]
 allowed-tools: Read, Glob, Grep
 model: claude-sonnet-4-5
+---
 
 # Load Bundle
 

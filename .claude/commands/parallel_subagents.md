@@ -1,6 +1,8 @@
+---
 description: Coordinate multiple specialized subagents on a single task
 argument-hint: [user_prompt] [agent-list]
 model: claude-sonnet-4-5
+---
 
 # Parallel Subagents
 

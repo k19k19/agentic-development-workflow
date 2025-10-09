@@ -1,6 +1,8 @@
+---
 description: Prime Claude Code with current project state before delegating work
 argument-hint: []
 model: claude-sonnet-4-5
+---
 
 # Prime Claude Code
 

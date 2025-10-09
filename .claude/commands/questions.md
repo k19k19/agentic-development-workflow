@@ -1,6 +1,8 @@
+---
 description: Collect clarifying questions before implementation begins
 argument-hint: [user_prompt]
 model: claude-sonnet-4-5
+---
 
 # Clarifying Questions
 

@@ -1,6 +1,8 @@
+---
 description: Prepare for a new task by gathering context and priming the AI.
 argument-hint: [user_prompt]
 model: claude-sonnet-4-5
+---
 
 # Prepare for Task
 

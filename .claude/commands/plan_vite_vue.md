@@ -1,7 +1,9 @@
+---
 description: Produce an implementation plan tailored to Vite + Vue projects
 argument-hint: [user_prompt] [relevant files]
 allowed-tools: Read, Write, Edit, Glob, Grep
 model: claude-sonnet-4-5
+---
 
 # Plan for Vite + Vue
 

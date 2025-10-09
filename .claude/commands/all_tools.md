@@ -1,6 +1,8 @@
+---
 description: Enumerate every available tool and capability for quick reference
 argument-hint: []
 model: claude-sonnet-4-5
+---
 
 # All Tools Overview
 

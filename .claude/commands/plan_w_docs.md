@@ -1,7 +1,9 @@
+---
 description: Create a concise engineering implementation plan based on user requirements and saves it to specs directory
 argument-hint: [user_prompt] [documentation_urls] [relevant files]
 allowed-tools: Read, Write, Edit, Glob, Grep, MultiEdit
 model: claude-sonnet-4-5
+---
 
 # Plan with Documentation
 
