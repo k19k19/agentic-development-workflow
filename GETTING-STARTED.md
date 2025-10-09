@@ -69,14 +69,13 @@ To integrate the template into your existing project, navigate to your project's
 # 1. Navigate to your existing project's root directory
 cd /path/to/your/existing-project
 
-# 2. Copy the init-agentic-workflow.sh script into your project's scripts directory
-#    (Assuming you have a 'scripts' directory, if not, create one or adjust path)
-mkdir -p scripts # Ensure scripts directory exists
-cp /path/to/budget-agentic-workflow/scripts/init-agentic-workflow.sh scripts/
+# 2. Run the setup script directly from the template clone
+#    (Adjust the path if you keep the template elsewhere.)
+bash /path/to/budget-agentic-workflow/scripts/init-agentic-workflow.sh
 
-# 3. Run the setup script
-#    This script will copy necessary files, merge configurations, and install dependencies.
-bash scripts/init-agentic-workflow.sh
+# Optional: If you copy the script into your project, point it to the template root:
+# export AGENTIC_TEMPLATE_ROOT=/path/to/budget-agentic-workflow
+# bash scripts/init-agentic-workflow.sh
 ```
 
 **What the script does:**
