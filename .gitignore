@@ -1,39 +1,30 @@
-# Environment variables
-.env
-.env.local
-.env.production
-
-# AI workflow artifacts (keep archives only)
-ai-docs/plans/*.md
-ai-docs/builds/*.md
-ai-docs/builds/*.log
-ai-docs/builds/*.tmp
-
-# Logs
-ai-docs/logs/*.jsonl
-ai-docs/logs/*.log
-logs/
-*.log
-npm-debug.log*
-
 # Dependencies
 node_modules/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Build outputs
-dist/
-build/
-out/
-.next/
-.nuxt/
-.vite/
+# Environment
+.env
+.env.local
+.env.*.local
 
-# Testing
-coverage/
-.nyc_output/
-test-results/
+# AI Artifacts (ephemeral, not committed)
+ai-docs/scout/
+ai-docs/plans/
+ai-docs/builds/
+ai-docs/sessions/
+ai-docs/failures/
+ai-docs/logs/
+
+# But keep directory structure
+!ai-docs/.gitkeep
+!ai-docs/**/.gitkeep
+!ai-docs/README.md
+
+# Vector store (regenerable)
+vector-store/
+vector-store.json
 
 # OS files
 .DS_Store
@@ -46,17 +37,21 @@ Thumbs.db
 *.swo
 *~
 
+# Logs
+*.log
+logs/
+
+# Build outputs (if applicable)
+dist/
+build/
+.next/
+out/
+
+# Testing
+coverage/
+.nyc_output/
+
 # Temporary files
+tmp/
+temp/
 *.tmp
-*.temp
-.cache/
-
-# Claude Code permissions (if auto-generated)
-.claude/settings.local.json
-
-# Git
-*.orig
-*.rej
-
-# Keep directory structure with .gitkeep
-!**/.gitkeep

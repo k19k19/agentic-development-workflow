@@ -12,6 +12,8 @@ Execute the implementation plan and compile a structured report covering changes
 
 ## Variables
 PATH_TO_PLAN: $1
+BUILD_OUTPUT_DIRECTORY: ai-docs/builds/
+MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.

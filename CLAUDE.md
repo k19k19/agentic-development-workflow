@@ -18,23 +18,31 @@ The repository implements a three-phase workflow orchestrated through custom sla
    - Format: `<path> (offset: N, limit: M)`
    - Uses token-efficient fast models for initial discovery
 
-2. **Plan Phase** ([scout_plan_build.md](scout_plan_build.md)): Task planning based on scouted files
+2. **Plan Phase** ([plan.md](plan.md)): Task planning with complexity assessment
    - Takes user prompt, documentation URLs, and relevant files collection
    - Produces a detailed implementation plan
+   - Includes complexity check and approval gate
 
-3. **Build Phase**: Executes the plan from the previous step
+3. **Build Phase** ([build.md](build.md)): Executes the plan from the previous step
 
 ### Workflow Execution
 
 The primary workflow is invoked via slash command with this structure:
 ```
-/scout_plan_build "[user_prompt]" "[document-urls]"
+/full "[user_prompt]" "[document-urls]" "[mode]"
 ```
 
 This executes sequentially:
 1. `/scout "[user_prompt]" "4"` → returns `relevant_files_collection_path`
-2. `/plan_w_docs "[user_prompt]" "[docs]" "[files]"` → returns `path_to_plan`
+2. `/plan "[user_prompt]" "[docs]" "[files]"` → returns `path_to_plan` (with approval gate)
 3. `/build "[path_to_plan]"` → returns `build_report`
+
+### Budget Shortcuts
+
+For faster, token-optimized workflows:
+- `/quick "[task]"` - Direct Codex implementation (~5K tokens) for small tasks
+- `/scout_build "[task]"` - Scout + Build without plan approval (~30K tokens) for medium tasks
+- `/full "[task]" "[docs]" "budget"` - Budget mode for large tasks (~90K tokens with reduced scale)
 
 ### Multi-Agent Orchestration
 
@@ -99,5 +107,7 @@ The repository uses custom slash commands stored in `.claude/` that chain togeth
 
 **See Also:**
 - [README.md](README.md) - Complete documentation
-- [QUICK-START.md](QUICK-START.md) - 5-minute setup guide
-- [TEMPLATE-SUMMARY.md](TEMPLATE-SUMMARY.md) - What's included
+- [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
+- [app-docs/guides/COMMAND-MAPPING.md](app-docs/guides/COMMAND-MAPPING.md) - Command reference
+- [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) - Budget optimization guide
+- [app-docs/guides/CROSS-SESSION-GUIDE.md](app-docs/guides/CROSS-SESSION-GUIDE.md) - Cross-session workflow patterns

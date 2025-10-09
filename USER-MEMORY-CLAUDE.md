@@ -584,7 +584,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 **Key documents:**
 - [README.md](README.md) - Complete template docs
-- [QUICK-START.md](QUICK-START.md) - 5-minute setup
+- [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
 - [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md) - Old SDK → New
 
 **Support:**

@@ -1,151 +1,314 @@
 #!/bin/bash
 
 # init-agentic-workflow.sh
-# This script automates the integration of the Agentic Development Workflow Template
-# into an existing project.
+# BMAD-style one-command setup - no manual steps required
+# This script automates the complete integration of the Agentic Development Workflow Template
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
 # --- Configuration ---
-TEMPLATE_ROOT="$(dirname "$(realpath "$0")")"/.. # Assumes script is in scripts/ and template root is one level up
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TEMPLATE_ROOT="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(pwd)"
 
 # --- Utility Functions ---
-log_info() { echo "\033[0;34m[INFO]\033[0m $1"; }
-log_success() { echo "\033[0;32m[SUCCESS]\033[0m $1"; }
-log_warn() { echo "\033[0;33m[WARN]\033[0m $1"; }
-log_error() { echo "\033[0;31m[ERROR]\033[0m $1"; exit 1; }
+log_info() { echo -e "\033[0;34m[INFO]\033[0m $1"; }
+log_success() { echo -e "\033[0;32m[SUCCESS]\033[0m $1"; }
+log_warn() { echo -e "\033[0;33m[WARN]\033[0m $1"; }
+log_error() { echo -e "\033[0;31m[ERROR]\033[0m $1"; exit 1; }
+
+# --- Detect Execution Context ---
+detect_context() {
+    # Check if we're running from within the template directory
+    if [ "$PROJECT_ROOT" = "$TEMPLATE_ROOT" ]; then
+        log_error "⚠️  Cannot run from template directory itself.\n   Please run from your target project directory:\n   \$ cd /path/to/your/project\n   \$ bash /path/to/template/scripts/init-agentic-workflow.sh"
+    fi
+
+    # Check if template files exist
+    if [ ! -d "$TEMPLATE_ROOT/.claude" ]; then
+        log_error "Template files not found. Please ensure the script is in the template's scripts/ directory."
+    fi
+
+    log_info "✓ Template location: $TEMPLATE_ROOT"
+    log_info "✓ Target project: $PROJECT_ROOT"
+}
 
 # --- Welcome Message ---
-log_info "🚀 Starting Agentic Development Workflow Template integration..."
-log_info "This script will copy necessary files, merge configurations, and install dependencies."
-log_info "Please ensure you are running this script from your existing project's root directory."
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_info "🚀 Budget Agentic Workflow - One-Command Setup"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+detect_context
 
 # --- 1. Copy Core Template Files ---
-log_info "1. Copying core template files..."
+log_info "📁 Step 1/7: Copying core template files..."
 
-# Directories
-cp -r "$TEMPLATE_ROOT/ai-docs" "$PROJECT_ROOT/ai-docs" || log_warn "ai-docs already exists or could not be copied."
-cp -r "$TEMPLATE_ROOT/app-docs" "$PROJECT_ROOT/app-docs" || log_warn "app-docs already exists or could not be copied."
-cp -r "$TEMPLATE_ROOT/.claude" "$PROJECT_ROOT/.claude" || log_warn ".claude already exists or could not be copied."
+# Directories (merge if exists, create if not)
+for dir in "app-docs" ".claude" "scripts"; do
+    if [ ! -d "$PROJECT_ROOT/$dir" ]; then
+        cp -r "$TEMPLATE_ROOT/$dir" "$PROJECT_ROOT/$dir"
+        log_success "Created $dir/"
+    else
+        # Merge directory contents
+        cp -rn "$TEMPLATE_ROOT/$dir/"* "$PROJECT_ROOT/$dir/" 2>/dev/null || true
+        log_info "Merged $dir/ (existing files preserved)"
+    fi
+done
 
-# Scripts directory (excluding this script itself)
-mkdir -p "$PROJECT_ROOT/scripts"
-find "$TEMPLATE_ROOT/scripts" -maxdepth 1 -type f ! -name "init-agentic-workflow.sh" -exec cp {} "$PROJECT_ROOT/scripts/" \; || log_warn "Scripts already exist or could not be copied."
+# Create ai-docs structure (empty, populated on first run)
+if [ ! -d "$PROJECT_ROOT/ai-docs" ]; then
+    mkdir -p "$PROJECT_ROOT/ai-docs"/{plans,builds,sessions,failures,logs,scout}
+    touch "$PROJECT_ROOT/ai-docs"/{.gitkeep,plans/.gitkeep,builds/.gitkeep,sessions/.gitkeep,failures/.gitkeep,logs/.gitkeep,scout/.gitkeep}
+    cp "$TEMPLATE_ROOT/ai-docs/README.md" "$PROJECT_ROOT/ai-docs/README.md" 2>/dev/null || true
+    log_success "Created ai-docs/ structure (empty)"
+else
+    log_info "Preserved existing ai-docs/"
+fi
 
-# Root-level Markdown files
-cp "$TEMPLATE_ROOT/AGENTS.md" "$PROJECT_ROOT/AGENTS.md" || log_warn "AGENTS.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/CLAUDE-TEMPLATE.md" "$PROJECT_ROOT/CLAUDE-TEMPLATE.md" || log_warn "CLAUDE-TEMPLATE.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/GEMINI.md" "$PROJECT_ROOT/GEMINI.md" || log_warn "GEMINI.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/GETTING-STARTED.md" "$PROJECT_ROOT/GETTING-STARTED.md" || log_warn "GETTING-STARTED.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/MIGRATION-GUIDE.md" "$PROJECT_ROOT/MIGRATION-GUIDE.md" || log_warn "MIGRATION-GUIDE.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/QUICK-START.md" "$PROJECT_ROOT/QUICK-START.md" || log_warn "QUICK-START.md already exists or could not be copied."
-cp "$TEMPLATE_ROOT/USER-MEMORY-CLAUDE.md" "$PROJECT_ROOT/USER-MEMORY-CLAUDE.md" || log_warn "USER-MEMORY-CLAUDE.md already exists or could not be copied."
+# Root-level documentation files (skip if exists to preserve customizations)
+# NOTE: Template-specific docs (GETTING-STARTED, MIGRATION-GUIDE, etc.) are NOT copied
+# They stay in TEMPLATE-DOCS/ and users reference them via GitHub
+DOC_FILES=(
+    "CLAUDE-TEMPLATE.md"
+    "USER-MEMORY-CLAUDE.md"
+)
 
-# Configuration files
-cp "$TEMPLATE_ROOT/.eslintrc.js" "$PROJECT_ROOT/.eslintrc.js" || log_warn ".eslintrc.js already exists or could not be copied."
-cp "$TEMPLATE_ROOT/.prettierrc.js" "$PROJECT_ROOT/.prettierrc.js" || log_warn ".prettierrc.js already exists or could not be copied."
+for file in "${DOC_FILES[@]}"; do
+    if [ ! -f "$PROJECT_ROOT/$file" ]; then
+        cp "$TEMPLATE_ROOT/$file" "$PROJECT_ROOT/$file" 2>/dev/null || log_info "Skipped $file (not in template)"
+        log_success "Created $file"
+    else
+        log_info "Preserved existing $file"
+    fi
+done
 
-# Vector store (empty or initial)
-cp "$TEMPLATE_ROOT/vector-store.json" "$PROJECT_ROOT/vector-store.json" || log_warn "vector-store.json already exists or could not be copied."
+# Configuration files (copy if not exists)
+CONFIG_FILES=(
+    ".eslintrc.js:optional"
+    ".prettierrc.js:optional"
+)
 
-log_success "Core template files copied."
+for entry in "${CONFIG_FILES[@]}"; do
+    file="${entry%%:*}"
+    if [ ! -f "$PROJECT_ROOT/$file" ]; then
+        cp "$TEMPLATE_ROOT/$file" "$PROJECT_ROOT/$file" 2>/dev/null || log_info "Skipped $file (not in template)"
+    else
+        log_info "Preserved existing $file"
+    fi
+done
 
-# --- 2. Merge package.json ---
-log_info "2. Merging package.json..."
+log_success "Core files copied."
+echo ""
+
+# --- 2. Initialize CLAUDE.md from Template ---
+log_info "📝 Step 2/7: Generating CLAUDE.md..."
+
+if [ ! -f "$PROJECT_ROOT/CLAUDE.md" ]; then
+    # Auto-detect project name from package.json or directory name
+    if [ -f "$PROJECT_ROOT/package.json" ]; then
+        PROJECT_NAME=$(node -pe "try { require('$PROJECT_ROOT/package.json').name } catch(e) { '' }" 2>/dev/null || echo "")
+    fi
+
+    if [ -z "$PROJECT_NAME" ]; then
+        PROJECT_NAME=$(basename "$PROJECT_ROOT")
+    fi
+
+    # Generate CLAUDE.md from template
+    cp "$TEMPLATE_ROOT/CLAUDE-TEMPLATE.md" "$PROJECT_ROOT/CLAUDE.md"
+
+    # Replace placeholder with actual project name (works on both macOS and Linux)
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "s/\[Project Name\]/$PROJECT_NAME/g" "$PROJECT_ROOT/CLAUDE.md"
+    else
+        sed -i "s/\[Project Name\]/$PROJECT_NAME/g" "$PROJECT_ROOT/CLAUDE.md"
+    fi
+
+    log_success "Created CLAUDE.md (project: $PROJECT_NAME)"
+else
+    log_info "Preserved existing CLAUDE.md"
+fi
+
+echo ""
+
+# --- 3. Merge package.json ---
+log_info "📦 Step 3/7: Merging package.json..."
 PACKAGE_JSON="$PROJECT_ROOT/package.json"
 
 if [ ! -f "$PACKAGE_JSON" ]; then
     log_warn "package.json not found. Creating a basic one."
-    echo '{ "name": "my-agentic-project", "version": "1.0.0", "description": "", "main": "index.js", "scripts": {}, "keywords": [], "author": "", "license": "ISC", "dependencies": {}, "devDependencies": {} }' > "$PACKAGE_JSON"
+    cat > "$PACKAGE_JSON" <<EOF
+{
+  "name": "$(basename "$PROJECT_ROOT")",
+  "version": "1.0.0",
+  "description": "Agentic workflow project",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}
+EOF
 fi
 
-# Add/update scripts
+# Add/update scripts and dependencies
 node -e "
   const fs = require('fs');
   const path = require('path');
   const pkgPath = path.join(process.cwd(), 'package.json');
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+
   pkg.scripts = pkg.scripts || {};
   pkg.scripts.vectorize = pkg.scripts.vectorize || 'node scripts/vectorize-docs.js';
   pkg.scripts.search = pkg.scripts.search || 'node scripts/search-docs.js';
+  pkg.scripts['scale-detect'] = pkg.scripts['scale-detect'] || 'node scripts/detect-project-scale.js';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
   pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
+
   pkg.devDependencies = pkg.devDependencies || {};
-  pkg.devDependencies.eslint = pkg.devDependencies.eslint || '^9.37.0';
-  pkg.devDependencies.prettier = pkg.devDependencies.prettier || '^3.6.2';
+  if (!pkg.devDependencies.eslint) pkg.devDependencies.eslint = '^9.37.0';
+  if (!pkg.devDependencies.prettier) pkg.devDependencies.prettier = '^3.6.2';
+
   pkg.dependencies = pkg.dependencies || {};
-  pkg.dependencies['@xenova/transformers'] = pkg.dependencies['@xenova/transformers'] || '^2.17.2';
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-" || log_error "Failed to merge package.json. Please check for syntax errors."
+  if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
+
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+  console.log('✓ Scripts added: vectorize, search, scale-detect, lint, format');
+  console.log('✓ Dependencies added: @xenova/transformers, eslint, prettier');
+" || log_error "Failed to merge package.json"
 
 log_success "package.json merged."
+echo ""
 
-# --- 3. Merge .gitignore ---
-log_info "3. Merging .gitignore..."
+# --- 4. Merge .gitignore ---
+log_info "🔒 Step 4/7: Merging .gitignore..."
 GITIGNORE="$PROJECT_ROOT/.gitignore"
 
 if [ ! -f "$GITIGNORE" ]; then
-    log_warn ".gitignore not found. Creating one."
     touch "$GITIGNORE"
+    log_info "Created .gitignore"
 fi
 
 # Patterns to add if not already present
 GIT_IGNORE_PATTERNS=(
     "node_modules/"
     "vector-store/"
-    "ai-docs/"
-    "app-docs/"
     ".env"
-    "CLAUDE.md" # CLAUDE.md is project-specific memory, often not committed
+    ".env.local"
+    "*.log"
+    ".DS_Store"
+    "ai-docs/scout/"
+    "ai-docs/plans/"
+    "ai-docs/builds/"
+    "ai-docs/sessions/"
+    "ai-docs/failures/"
+    "ai-docs/logs/"
+    "!ai-docs/.gitkeep"
+    "!ai-docs/**/.gitkeep"
+    "!ai-docs/README.md"
 )
 
 for pattern in "${GIT_IGNORE_PATTERNS[@]}"; do
     if ! grep -qF "$pattern" "$GITIGNORE"; then
         echo "$pattern" >> "$GITIGNORE"
-        log_info "Added '$pattern' to .gitignore."
-    else
-        log_info "'$pattern' already in .gitignore."
+        log_info "  + $pattern"
     fi
 done
 
 log_success ".gitignore merged."
+echo ""
 
-# --- 4. Install Dependencies ---
-log_info "4. Installing Node.js dependencies..."
+# --- 5. Install Dependencies ---
+log_info "⬇️  Step 5/7: Installing dependencies..."
+
 if command -v npm &> /dev/null; then
-    npm install || log_error "npm install failed. Please check your network connection or package.json."
-    log_success "Node.js dependencies installed."
+    npm install --silent 2>&1 | grep -v "^npm WARN" || true
+    log_success "Dependencies installed."
 else
-    log_warn "npm not found. Please install Node.js and npm to install dependencies."
+    log_warn "npm not found. Please install Node.js and run: npm install"
 fi
 
-# --- 5. Initialize CLAUDE.md ---
-log_info "5. Initializing CLAUDE.md..."
-cp "$TEMPLATE_ROOT/CLAUDE-TEMPLATE.md" "$PROJECT_ROOT/CLAUDE.md" || log_error "Failed to copy CLAUDE-TEMPLATE.md."
-log_success "CLAUDE.md created from template."
+echo ""
 
-# --- Final Instructions ---
-log_info "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_info "🎉 Agentic Workflow Template integration complete!"
-log_info "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-log_info "\nNext Steps:"
-log_info "1. **Customize CLAUDE.md:** Open CLAUDE.md in your project root."
-log_info "   - Update [Project Name] with your project's actual name."
-log_info "   - Fill in your project's architecture, key file locations, and custom commands."
-log_info "   - This is crucial for the AI agents to understand your project's context."
-log_info "2. **Organize Existing Documentation:** Review your existing project documentation."
-log_info "   - Move or adapt relevant parts into the 'app-docs/' directory for AI consumption."
-log_info "   - Refer to 'app-docs/guides/MEMORY-MANAGEMENT-DOCUMENT-TYPES.md' for guidance."
-log_info "3. **Set up User Memory (if not already done):** Refer to 'GETTING-STARTED.md' for instructions."
-log_info "4. **Detect Project Scale:** Run 'node scripts/detect-project-scale.js' to get workflow recommendations."
-log_info "5. **Verify Slash Commands (Claude Code CLI users):**"
-log_info "   - If using Claude Code CLI, EXIT and RESTART your session:"
-log_info "     • Exit current Claude Code session"
-log_info "     • cd to your project directory: cd $(pwd)"
-log_info "     • Start Claude Code: claude-code"
-log_info "   - Verify slash commands are loaded: type '/help' and look for (project) commands"
-log_info "   - If commands don't appear, see TROUBLESHOOTING.md for solutions"
-log_info "6. **Start Developing!** Try a slash command, e.g., '/scout_plan_build "Add a health check endpoint" ""'."
-log_info "\nThank you for using the Agentic Development Workflow Template!"
+# --- 6. Initialize Vector Store ---
+log_info "🔍 Step 6/7: Initializing vector store..."
+
+if [ ! -f "$PROJECT_ROOT/vector-store.json" ]; then
+    echo '{"documents":[],"embeddings":[],"metadata":[]}' > "$PROJECT_ROOT/vector-store.json"
+    log_success "Created empty vector-store.json"
+else
+    log_info "Preserved existing vector-store.json"
+fi
+
+# Run initial vectorization if docs exist
+if command -v npm &> /dev/null && [ -d "$PROJECT_ROOT/app-docs" ]; then
+    log_info "Vectorizing documentation..."
+    npm run vectorize --silent 2>&1 | tail -1 || log_warn "Vectorization skipped (run 'npm run vectorize' later)"
+    log_success "Documentation vectorized."
+else
+    log_info "Vectorization skipped (run 'npm run vectorize' when ready)"
+fi
+
+echo ""
+
+# --- 7. Detect Project Scale ---
+log_info "📊 Step 7/7: Detecting project scale..."
+
+if command -v npm &> /dev/null && [ -f "$PROJECT_ROOT/scripts/detect-project-scale.js" ]; then
+    echo ""
+    npm run scale-detect --silent 2>&1 || log_warn "Scale detection failed"
+    echo ""
+else
+    log_warn "Scale detection skipped (run 'npm run scale-detect' later)"
+fi
+
+# --- Clean Up Template Artifacts ---
+log_info "🧹 Cleaning up template artifacts..."
+
+# Remove QUICK-START.md if it exists (deprecated, merged into GETTING-STARTED)
+if [ -f "$PROJECT_ROOT/QUICK-START.md" ]; then
+    rm "$PROJECT_ROOT/QUICK-START.md"
+    log_info "Removed deprecated QUICK-START.md (merged into GETTING-STARTED.md)"
+fi
+
+log_success "Cleanup complete."
+echo ""
+
+# --- Final Success Message ---
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+log_success "🎉 Setup Complete! Your project is ready."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+log_info "📋 Next Steps:"
+echo ""
+echo "  1. Review CLAUDE.md and customize for your project"
+echo "     \$ open CLAUDE.md  # or 'code CLAUDE.md'"
+echo ""
+echo "  2. Read the template documentation"
+echo "     → Visit: https://github.com/your-org/budget-agentic-workflow/tree/main/TEMPLATE-DOCS"
+echo "     → Or: open $TEMPLATE_ROOT/TEMPLATE-DOCS/GETTING-STARTED.md"
+echo ""
+echo "  3. Start using workflows (choose based on project scale):"
+echo ""
+echo "     Small projects (<10 files):"
+echo "       → Direct implementation or /quick \"[task]\""
+echo ""
+echo "     Medium projects (10-50 files):"
+echo "       → /scout_build \"[task]\""
+echo ""
+echo "     Large projects (>50 files):"
+echo "       → /scout_plan_build \"[task]\" \"[docs]\""
+echo ""
+echo "  4. If using Claude Code CLI, restart your session:"
+echo "     • Exit current session"
+echo "     • cd $PROJECT_ROOT"
+echo "     • claude-code"
+echo ""
+log_info "📚 Documentation:"
+echo "     • app-docs/guides/COMMAND-MAPPING.md - All commands"
+echo "     • app-docs/guides/budget-mode.md - Budget optimization"
+echo "     • app-docs/guides/CROSS-SESSION-GUIDE.md - Multi-session work"
+echo "     • Template docs: $TEMPLATE_ROOT/TEMPLATE-DOCS/"
+echo ""
+log_success "Happy coding! 🚀"
+echo ""
