@@ -3,7 +3,15 @@ const fs = require('fs').promises;
 const path = require('path');
 
 // --- Configuration ---
-const DOCS_DIRECTORIES = ['app-docs', 'ai-docs'];
+// Limit vectorization to current, reusable knowledge instead of every doc artifact.
+const DOCS_DIRECTORIES = [
+  'app-docs/specs/active',
+  'app-docs/specs/reference',
+  'app-docs/guides',
+  'app-docs/architecture',
+  'app-docs/mappings',
+  'app-docs/operations',
+];
 const EXCLUDED_FILES = new Set(['feature-to-source.md']);
 const ALLOWED_EXTENSIONS = new Set(['.md', '.mdx', '.markdown', '.txt', '.yaml', '.yml', '.json', '.sql']);
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Skip files larger than 3 MB

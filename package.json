@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "vectorize": "node scripts/vectorize-docs.js",
     "search": "node scripts/search-docs.js",
+    "manage-knowledge": "node scripts/manage-knowledge.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."

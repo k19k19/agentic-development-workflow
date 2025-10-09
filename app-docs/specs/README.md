@@ -1,112 +1,56 @@
 # Specifications Directory
 
-This directory contains **human-written feature specifications** created BEFORE implementation.
+This folder houses **human-written feature specs** created before implementation so the automation loop can plan, build, and verify accurately.
 
-## Purpose
+## Directory Layout
+- `active/` — Specs that describe features currently in flight; only these are indexed for search.
+- `archive/` — Shipped specs kept for historical context (not indexed unless restored).
+- `reference/` — Evergreen templates or exemplar specs that should remain searchable.
+- `README.md` — This guide.
 
-- Document feature requirements before coding
-- Provide context for `/plan` slash command
-- Track approved vs pending features
-- Create audit trail for decision-making
+Use `npm run manage-knowledge -- list` to inspect the current inventory.
 
-## File Naming Convention
+## Workflow
 
+### 1. Draft in `active/`
+```bash
+cp app-docs/specs/reference/_EXAMPLE-feature-spec.md app-docs/specs/active/round5-caching.md
+vim app-docs/specs/active/round5-caching.md
 ```
-[round-type]-[feature-name].md       # Feature specs
-bug-[id]-[description].md            # Bug fix specs
+
+### 2. Plan & Build
+Specs in `active/` feed `/scout_plan_build`, `/quick-plan`, and related commands. Generated plans live in `ai-docs/` and are not indexed.
+
+### 3. Archive After Ship
+```bash
+npm run manage-knowledge -- archive round5-caching.md
+```
+The helper moves the spec to `archive/` and re-runs `npm run vectorize` so search results stay focused on current work.
+
+## Naming Convention
+```
+[round]-[feature-name].md        # Feature specs
+bug-[id]-[description].md         # Bug fix specs
 ```
 
-**Examples**:
+Examples:
 - `round1-user-authentication.md`
 - `round2-oauth-integration.md`
 - `bug-123-login-timeout-fix.md`
 
-## Template
-
-See `_EXAMPLE-feature-spec.md` for structure.
-
-## Workflow
-
-### 1. Write Spec (Human)
-```bash
-# Create new spec
-vim app-docs/specs/round1-caching.md
-```
-
-### 2. Plan (AI)
-```bash
-# AI reads spec and creates plan
-/plan "Implement caching" "" ""
-# Output: ai-docs/plans/[timestamp]-caching/plan.md
-```
-
-### 3. Approve (Human)
-```bash
-# Review the plan
-cat ai-docs/plans/[timestamp]-caching/plan.md
-# Approve or request changes
-```
-
-### 4. Build (AI)
-```bash
-# AI implements the plan
-/build "ai-docs/plans/[timestamp]-caching/plan.md"
-```
-
-## Spec vs Plan
-
-| Document | Author | Location | Committed |
-|----------|--------|----------|-----------|
-| **Spec** | Human | `app-docs/specs/` | ✅ Yes |
-| **Plan** | AI | `ai-docs/plans/` | ❌ No (gitignored) |
-
-**Spec** = What to build (requirements)
-**Plan** = How to build it (implementation strategy)
-
-## Example Spec Structure
-
-```markdown
-# Feature: User Authentication
-
-## Problem
-Users can't securely access their accounts.
-
-## Requirements
-- JWT-based authentication
-- Login/logout endpoints
-- Password hashing (bcrypt)
-- Token refresh flow
-
-## Constraints
-- Must work with existing API structure
-- No breaking changes
-- Support for OAuth2 (future)
-
-## Success Criteria
-- [ ] Users can login with email/password
-- [ ] Tokens expire after 1 hour
-- [ ] Refresh tokens work correctly
-- [ ] All endpoints are protected
-
-## References
-- [JWT spec](https://jwt.io)
-- [OAuth2 future planning](https://oauth.net/2/)
-```
+## Example Structure
+See `reference/_EXAMPLE-feature-spec.md` for the full template.
 
 ## Tips
+1. **Be specific.** Clear requirements keep plans tight and reduce rework.
+2. **Capture constraints.** Explicitly call out what must not change.
+3. **Keep a checklist.** Success criteria drive report validation.
+4. **Reference sources.** Link to guides, architecture notes, or external docs.
 
-1. **Write specs first** - Don't code before documenting requirements
-2. **Be specific** - Vague specs lead to wrong implementations
-3. **Include constraints** - What NOT to do is as important as what to do
-4. **Reference docs** - Link to external documentation
-5. **Update after changes** - Keep specs in sync with reality
-
-## Related
-
-- **Plans**: `ai-docs/plans/` (AI-generated implementation plans)
-- **Mappings**: `app-docs/mappings/feature-to-source.md` (where code lives)
-- **Guides**: `app-docs/guides/implementation-guidelines.md` (coding standards)
+## Related Resources
+- `app-docs/guides/` — Implementation and style guides.
+- `app-docs/architecture/` — System diagrams and decisions.
+- `app-docs/mappings/feature-to-source.md` — Trace specs to code and tests.
 
 ---
-
-**Last Updated**: October 2025
+**Last Updated**: January 2026
