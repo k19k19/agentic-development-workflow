@@ -29,5 +29,30 @@ Run user acceptance tests on staging environment using Chrome DevTools MCP for E
 - List any failures with screenshots.
 - Suggest next step: `/release` if passing, or fix issues.
 
+## Next Steps
+
+**✅ If all UAT tests pass:**
+```bash
+/finalize "[feature-id]"
+```
+
+Then prepare for production:
+```bash
+/release
+```
+
+**❌ If UAT tests fail:**
+1. Document the failures
+2. Fix the issues
+3. Re-deploy to staging: `/deploy_staging`
+4. Re-test: `/uat`
+
+**🔴 If major issues found:**
+```bash
+/report_failure "[feature-id]"  # Escalate for review
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+
 ## Budget
 ~5K tokens (Chrome DevTools MCP)

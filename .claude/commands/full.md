@@ -32,3 +32,35 @@ MODE: $3 (default: standard)
 3. Wait for user approval of the plan before proceeding.
 4. Run SlashCommand(`/build_w_report "[path_to_plan]"`) -> `build_report`.
 5. Report your work based on the `Report` section defined in the downstream commands.
+
+## Next Steps
+After the full workflow completes:
+
+**→ Review the session summary:**
+```bash
+cat ai-docs/sessions/SESSION-*.md  # Latest session
+git diff --stat                     # See all changes
+```
+
+**→ Run tests:**
+```bash
+/test
+```
+
+**If tests pass → Deploy:**
+```bash
+/deploy_staging
+```
+
+**Then validate:**
+```bash
+/uat
+```
+
+**If all good → Finalize:**
+```bash
+/finalize "[feature-id]"
+/release  # Deploy to production
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`

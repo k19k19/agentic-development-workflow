@@ -29,3 +29,84 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 - Include validation evidence (command names and outcomes).
 - Append `git diff --stat` to summarize the change surface.
 - Note any follow-up tasks or open questions for the next agent.
+
+## Session Memory (Auto-generate)
+After completing the build, automatically generate a detailed session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` using this template:
+
+```markdown
+# Session: [Feature Name]
+
+**Date**: [YYYY-MM-DD]
+**Workflow**: [/scout → /plan → /build_w_report OR other commands used]
+**Status**: ✅ Complete | ⏸️ In Progress | ❌ Blocked
+
+---
+
+## Task Summary
+[1-2 sentences describing what was built]
+
+## Workflow Execution
+- **Scout**: [findings summary or N/A]
+- **Plan**: [approach summary or N/A]
+- **Build**: [implementation summary]
+
+## Files Modified
+[git diff --stat output]
+
+## Key Decisions
+1. **[Decision]**: [Why and what alternatives were considered]
+2. **[Decision]**: [Why and what alternatives were considered]
+
+## Issues & Resolutions
+- **Issue**: [Problem description]
+  - **Resolution**: [How it was solved]
+
+## Token Metrics
+- Scout: ~XK tokens (or N/A)
+- Plan: ~XK tokens (or N/A)
+- Build: ~XK tokens
+- Total: ~XK tokens
+- Efficiency: X%
+
+## Follow-up Tasks
+- [ ] [Task 1]
+- [ ] [Task 2]
+
+---
+
+**Next Session Notes**: [Any context needed for next session]
+```
+
+After writing the session file, automatically run:
+```bash
+npm run vectorize
+```
+
+This makes the session searchable for future AI sessions via vector search.
+
+## Next Steps
+After completing the build with report:
+
+**→ Run tests:**
+```bash
+/test
+```
+
+**If tests pass →** Deploy to staging:
+```bash
+/deploy_staging
+```
+
+**If tests fail →** Fix issues and re-test:
+- Review test output: `ai-docs/builds/[timestamp]/test-output.txt`
+- Make necessary fixes
+- Run `/test` again
+
+**Review your work:**
+```bash
+git diff --stat                    # See what changed
+cat ai-docs/sessions/SESSION-*.md  # Read detailed session summary
+cat app-docs/mappings/feature-to-source.md  # Check updated mappings
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`

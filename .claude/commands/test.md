@@ -33,5 +33,24 @@ TEST_OUTPUT_DIRECTORY: ai-docs/builds/
 - Provide path to full test output.
 - Suggest next step: `/deploy_staging` if passing, or review failures.
 
+## Next Steps
+
+**✅ If all tests pass:**
+```bash
+/deploy_staging
+```
+
+**❌ If tests fail:**
+1. Review test output: `ai-docs/builds/[timestamp]/test-output.txt`
+2. Fix the failing tests
+3. Re-run tests: `/test`
+
+**🔴 If tests keep failing:**
+```bash
+/report_failure "[feature-id]"  # Document for review
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+
 ## Budget
 FREE (no AI calls, just test execution)

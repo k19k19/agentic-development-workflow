@@ -36,5 +36,30 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 - Confirm feature marked as ready for release.
 - Suggest running `/release` to deploy to production.
 
+## Next Steps
+
+**→ Deploy to production:**
+```bash
+/release
+```
+
+**→ Work on next feature:**
+```bash
+/next  # Auto-select from roadmap
+```
+
+Or start a specific feature:
+```bash
+/full "[new-task]" "[docs]" "budget"
+```
+
+**Review what was done:**
+```bash
+cat app-docs/mappings/feature-to-source.md  # Check feature mappings
+cat ai-docs/sessions/SESSION-*.md           # Read session history
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+
 ## Budget
 ~10K tokens (Claude for doc generation)

@@ -41,3 +41,24 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 ## Report
 - Provide the saved plan path and list any documentation files retrieved.
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
+
+## Next Steps
+After reviewing the plan, proceed with implementation:
+
+**→ Execute the plan:**
+```bash
+/build "[path-to-plan]"
+```
+
+**→ Execute with detailed reporting:**
+```bash
+/build_w_report "[path-to-plan]"
+```
+*(Recommended: generates session summary + updates knowledge base)*
+
+**Before building:**
+- Review the plan file at the path shown above
+- Verify the approach makes sense
+- Make manual edits if needed
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`

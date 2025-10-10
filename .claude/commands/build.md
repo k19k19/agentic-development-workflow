@@ -21,3 +21,44 @@ PATH_TO_PLAN: $1
 ## Report
 - Summarize the work you completed in concise bullet points.
 - Run `git diff --stat` and include the resulting file and line change summary.
+
+## Session Memory (Auto-generate)
+After completing the build, automatically generate a session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
+- Task summary (1-2 sentences)
+- Files modified (from git diff --stat)
+- Key decisions made
+- Token usage estimate
+- Follow-up tasks
+
+After writing the session file, automatically run:
+```bash
+npm run vectorize
+```
+
+This makes the session searchable for future AI sessions via vector search.
+
+## Next Steps
+After completing the build:
+
+**→ Run tests:**
+```bash
+/test
+```
+
+**If tests pass →** Deploy to staging:
+```bash
+/deploy_staging
+```
+
+**If tests fail →** Fix issues and re-test:
+- Review test output
+- Make necessary fixes
+- Run `/test` again
+
+**Check your work:**
+```bash
+git diff --stat                    # See what changed
+cat ai-docs/sessions/SESSION-*.md  # Read session summary
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`

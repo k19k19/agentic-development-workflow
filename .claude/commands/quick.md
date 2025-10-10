@@ -33,5 +33,28 @@ TASK: $1
 - Display token usage (~5K target).
 - Provide quick validation command (e.g., `curl` for API endpoints).
 
+## Next Steps
+
+**✅ If implementation successful:**
+```bash
+/deploy_staging
+```
+
+**Test first (if critical):**
+```bash
+/test
+# If tests pass → /deploy_staging
+```
+
+**If task was too complex for quick mode:**
+- Use proper workflow instead:
+```bash
+/scout_build "[task]"  # For medium tasks
+# or
+/full "[task]" "" "budget"  # For large tasks
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+
 ## Budget
 ~5K tokens (Codex MCP)

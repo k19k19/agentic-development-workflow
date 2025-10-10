@@ -36,5 +36,30 @@ TASK: $1
 - Show token usage (~30K target).
 - Note: Approval gate skipped for speed.
 
+## Next Steps
+
+**→ Review and test:**
+```bash
+git diff --stat  # Review changes
+/test            # Run full test suite
+```
+
+**If tests pass:**
+```bash
+/deploy_staging
+```
+
+**If tests fail:**
+- Fix issues
+- Re-run: `/test`
+
+**If build was insufficient:**
+- Use full workflow with plan approval:
+```bash
+/full "[task]" "[docs]" "budget"
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+
 ## Budget
 ~30K tokens (Scout: 5K + Build: 25K)

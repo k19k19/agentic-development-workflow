@@ -21,6 +21,7 @@ const DOCS_DIRECTORIES = isTemplateRepo
       'app-docs/architecture',
       'app-docs/mappings',
       'app-docs/operations',
+      'ai-docs/sessions',  // Production session notes for AI memory persistence
     ];
 
 // Adjust excluded files based on environment

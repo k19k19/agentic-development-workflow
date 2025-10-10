@@ -30,3 +30,20 @@ USER_PROMPT: $1
 - Summarize the top search results found.
 - List the source files identified as most relevant.
 - This context will be used to inform the next step of the workflow.
+
+## Next Steps
+After completing scout, you typically want to:
+
+**→ Create an implementation plan:**
+```bash
+/plan "[your-task]" "[doc-urls]" "[scout-results-path]"
+```
+
+Where `[scout-results-path]` is the file path shown in the scout output.
+
+**Alternative:** If you're in a hurry and the task is straightforward:
+```bash
+/build "[path-to-existing-plan]"
+```
+
+📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
