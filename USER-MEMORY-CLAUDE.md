@@ -359,6 +359,26 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - ❌ Never force push to main/master
 - ❌ Never skip pre-commit hooks (unless emergency)
 
+### When to Suggest Commits
+
+**Always proactively suggest a commit after:**
+- ✅ Completing a logical unit of work (feature, refactor, bug fix)
+- ✅ Moving/reorganizing files (refactoring)
+- ✅ Updating documentation that affects project understanding
+- ✅ Before ending a work session (to avoid losing work)
+- ✅ After successful test runs
+
+**Don't suggest commits:**
+- ❌ In the middle of incomplete work
+- ❌ When user explicitly said "don't commit yet"
+- ❌ During exploratory/experimental changes
+- ❌ When tests are failing
+
+**Protocol:**
+1. Show `git status` and `git diff --stat`
+2. Propose commit message following standards above
+3. Execute commit with proper attribution
+
 ---
 
 ## 🎓 Learning & Adaptation
