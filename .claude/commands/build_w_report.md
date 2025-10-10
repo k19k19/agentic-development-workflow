@@ -135,4 +135,4 @@ cat ai-docs/sessions/SESSION-*.md  # Read detailed session summary
 cat app-docs/mappings/feature-to-source.md  # Check updated mappings
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

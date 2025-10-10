@@ -59,7 +59,7 @@ cat app-docs/mappings/feature-to-source.md  # Check feature mappings
 cat ai-docs/sessions/SESSION-*.md           # Read session history
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 ~10K tokens (Claude for doc generation)

@@ -133,7 +133,7 @@ Commands can invoke other commands sequentially:
 4. Execute: /build "[PLAN_PATH]" → capture BUILD_REPORT
 ```
 
-**Complete documentation**: See [app-docs/guides/slash-command-architecture.md](app-docs/guides/slash-command-architecture.md) for:
+**Complete documentation**: See [TEMPLATE-DOCS/reference/slash-command-architecture.md](TEMPLATE-DOCS/reference/slash-command-architecture.md) for:
 - Detailed execution flow
 - Writing custom commands
 - Tool usage patterns
@@ -162,8 +162,8 @@ Commands can invoke other commands sequentially:
 **See Also:**
 - [README.md](README.md) - Complete documentation
 - [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
-- [app-docs/guides/COMMAND-MAPPING.md](app-docs/guides/COMMAND-MAPPING.md) - Command reference
-- [app-docs/guides/WORKFLOW-DECISION-TREE.md](app-docs/guides/WORKFLOW-DECISION-TREE.md) - Command flow with next steps
-- [app-docs/guides/TASK-MANAGEMENT.md](app-docs/guides/TASK-MANAGEMENT.md) - Task tracking & productivity
-- [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) - Budget optimization guide
-- [app-docs/guides/CROSS-SESSION-GUIDE.md](app-docs/guides/CROSS-SESSION-GUIDE.md) - Cross-session workflow patterns
+- [TEMPLATE-DOCS/reference/COMMAND-MAPPING.md](TEMPLATE-DOCS/reference/COMMAND-MAPPING.md) - Command reference
+- [TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md](TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md) - Command flow with next steps
+- [TEMPLATE-DOCS/reference/TASK-MANAGEMENT.md](TEMPLATE-DOCS/reference/TASK-MANAGEMENT.md) - Task tracking & productivity
+- [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) - Budget optimization guide
+- [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) - Cross-session workflow patterns

@@ -329,7 +329,7 @@ ls -lt ai-docs/sessions/
 ### When Stuck
 ```bash
 # Check documentation:
-cat app-docs/guides/WORKFLOW-DECISION-TREE.md  # This file
+cat TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md  # This file
 
 # Search past sessions:
 npm run search "similar feature name"

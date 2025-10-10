@@ -46,4 +46,4 @@ Where `[scout-results-path]` is the file path shown in the scout output.
 /build "[path-to-existing-plan]"
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

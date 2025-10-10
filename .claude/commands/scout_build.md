@@ -59,7 +59,7 @@ git diff --stat  # Review changes
 /full "[task]" "[docs]" "budget"
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 ~30K tokens (Scout: 5K + Build: 25K)

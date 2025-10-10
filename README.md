@@ -187,7 +187,7 @@ This "instruction-based runtime" enables powerful AI orchestration:
 
 **Requirements**: Slash commands only work in the Claude Code environment. They cannot be run as standalone scripts.
 
-**Learn more**: See [app-docs/guides/slash-command-architecture.md](app-docs/guides/slash-command-architecture.md) for complete architecture details, examples, and how to write custom commands.
+**Learn more**: See [TEMPLATE-DOCS/reference/slash-command-architecture.md](TEMPLATE-DOCS/reference/slash-command-architecture.md) for complete architecture details, examples, and how to write custom commands.
 
 ---
 
@@ -448,8 +448,8 @@ app-docs/mappings/feature-to-source.md
 - [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) - Budget optimization playbook
 - [TEMPLATE-DOCS/reference/COMMAND-MAPPING.md](TEMPLATE-DOCS/reference/COMMAND-MAPPING.md) - All commands reference
 - [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) - Multi-session patterns
-- [app-docs/guides/WORKFLOW-DECISION-TREE.md](app-docs/guides/WORKFLOW-DECISION-TREE.md) - Command flow guide with next steps
-- [app-docs/guides/TASK-MANAGEMENT.md](app-docs/guides/TASK-MANAGEMENT.md) - Task tracking and productivity system
+- [TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md](TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md) - Command flow guide with next steps
+- [TEMPLATE-DOCS/reference/TASK-MANAGEMENT.md](TEMPLATE-DOCS/reference/TASK-MANAGEMENT.md) - Task tracking and productivity system
 
 **Advanced**:
 - [TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md](TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md) - Upgrade from old SDK

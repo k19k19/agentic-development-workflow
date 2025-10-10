@@ -91,9 +91,9 @@ Proceed? (yes/no)
 ### Quick Start
 - **README.md**: Installation and setup
 - **app-docs/specs/**: Feature specifications
-- **app-docs/guides/**: Implementation patterns
-- **app-docs/guides/WORKFLOW-DECISION-TREE.md**: Command flow guide (never forget next steps)
-- **app-docs/guides/TASK-MANAGEMENT.md**: Task tracking & productivity system
+- **app-docs/guides/**: Your project-specific implementation patterns
+- **TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md**: Command flow guide (never forget next steps)
+- **TEMPLATE-DOCS/reference/TASK-MANAGEMENT.md**: Task tracking & productivity system
 - **.claude/commands/**: Slash-command prompts for scout, plan, build, report
 
 ### Active Development

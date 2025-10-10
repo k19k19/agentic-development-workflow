@@ -54,7 +54,7 @@ TASK: $1
 /full "[task]" "" "budget"  # For large tasks
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 ~5K tokens (Codex MCP)

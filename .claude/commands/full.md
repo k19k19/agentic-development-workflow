@@ -63,4 +63,4 @@ git diff --stat                     # See all changes
 /release  # Deploy to production
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

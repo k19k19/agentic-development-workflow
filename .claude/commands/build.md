@@ -61,4 +61,4 @@ git diff --stat                    # See what changed
 cat ai-docs/sessions/SESSION-*.md  # Read session summary
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

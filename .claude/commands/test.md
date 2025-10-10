@@ -50,7 +50,7 @@ TEST_OUTPUT_DIRECTORY: ai-docs/builds/
 /report_failure "[feature-id]"  # Document for review
 ```
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 FREE (no AI calls, just test execution)

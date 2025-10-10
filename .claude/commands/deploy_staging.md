@@ -46,7 +46,7 @@ Deploy the current build to staging environment for user acceptance testing.
 2. Fix configuration issues
 3. Re-deploy: `/deploy_staging`
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 FREE (no AI calls)

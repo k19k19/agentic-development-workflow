@@ -61,4 +61,4 @@ After reviewing the plan, proceed with implementation:
 - Verify the approach makes sense
 - Make manual edits if needed
 
-📖 **Need help?** See: `app-docs/guides/WORKFLOW-DECISION-TREE.md`
+📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
