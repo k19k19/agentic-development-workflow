@@ -92,6 +92,8 @@ Proceed? (yes/no)
 - **README.md**: Installation and setup
 - **app-docs/specs/**: Feature specifications
 - **app-docs/guides/**: Implementation patterns
+- **app-docs/guides/WORKFLOW-DECISION-TREE.md**: Command flow guide (never forget next steps)
+- **app-docs/guides/TASK-MANAGEMENT.md**: Task tracking & productivity system
 - **.claude/commands/**: Slash-command prompts for scout, plan, build, report
 
 ### Active Development
@@ -293,6 +295,22 @@ npm run build        # Build for production
 
 # Production hotfix
 /hotfix "BUG-456"                                                 # Triage + fix
+```
+
+### Productivity & Task Management
+```bash
+# View productivity dashboard (token budget, context window, pending tasks)
+npm run tasks
+
+# Task management
+npm run tasks:add "Task title" "Description" <size> <priority>  # Add task
+npm run tasks:pause TASK-xxx "Checkpoint note"                  # Pause with checkpoint
+npm run tasks:resume TASK-xxx                                   # Resume paused task
+npm run tasks:complete TASK-xxx <tokens-used>                   # Mark done
+
+# Session memory (auto-generated)
+cat ai-docs/sessions/SESSION-*.md                               # Latest session
+npm run search "session oauth"                                   # Find past sessions
 ```
 
 ### Validation

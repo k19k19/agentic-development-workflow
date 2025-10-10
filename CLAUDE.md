@@ -110,5 +110,7 @@ The repository uses custom slash commands stored in `.claude/` that chain togeth
 - [README.md](README.md) - Complete documentation
 - [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
 - [app-docs/guides/COMMAND-MAPPING.md](app-docs/guides/COMMAND-MAPPING.md) - Command reference
+- [app-docs/guides/WORKFLOW-DECISION-TREE.md](app-docs/guides/WORKFLOW-DECISION-TREE.md) - Command flow with next steps
+- [app-docs/guides/TASK-MANAGEMENT.md](app-docs/guides/TASK-MANAGEMENT.md) - Task tracking & productivity
 - [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) - Budget optimization guide
 - [app-docs/guides/CROSS-SESSION-GUIDE.md](app-docs/guides/CROSS-SESSION-GUIDE.md) - Cross-session workflow patterns

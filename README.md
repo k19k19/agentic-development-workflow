@@ -301,6 +301,17 @@ See [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CRO
 
 ### 🧠 Automated Memory Management
 
+**Session notes**: Automatic session summaries with vector search
+```bash
+# Auto-generated after /build and /build_w_report
+# Stored in: ai-docs/sessions/SESSION-[date]-[feature].md
+# Includes: task summary, files modified, decisions, token usage
+
+# Find past sessions
+npm run search "oauth implementation decisions"
+npm run search "session authentication"
+```
+
 **Vector store**: Semantic search across all documentation
 ```bash
 # Rebuild after adding new docs
@@ -309,6 +320,30 @@ npm run vectorize
 # Search for relevant context
 npm run search "authentication patterns"
 ```
+
+**Task management**: Track pending work and optimize productivity
+```bash
+# View productivity dashboard
+npm run tasks
+
+# Add tasks with size estimates
+npm run tasks:add "Implement OAuth" "Add OAuth2 flow" large high
+
+# Pause with checkpoint (never forget where you left off)
+npm run tasks:pause TASK-123 "Scout complete. Ready to plan."
+
+# Resume paused tasks
+npm run tasks:resume TASK-123
+
+# Complete tasks (updates token budget)
+npm run tasks:complete TASK-123 85000
+```
+
+**Productivity dashboard shows**:
+- 💰 Token budget (daily usage, remaining)
+- 🪟 Context window (warns at 75%, critical at 90%)
+- 📋 Task summary (pending, paused, in progress, completed)
+- 💡 Smart recommendations (paused tasks, tasks that fit budget)
 
 **Lifecycle-based spec management**: Keep search focused on current work
 ```bash
@@ -383,6 +418,8 @@ app-docs/mappings/feature-to-source.md
 - [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) - Budget optimization playbook
 - [TEMPLATE-DOCS/reference/COMMAND-MAPPING.md](TEMPLATE-DOCS/reference/COMMAND-MAPPING.md) - All commands reference
 - [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) - Multi-session patterns
+- [app-docs/guides/WORKFLOW-DECISION-TREE.md](app-docs/guides/WORKFLOW-DECISION-TREE.md) - Command flow guide with next steps
+- [app-docs/guides/TASK-MANAGEMENT.md](app-docs/guides/TASK-MANAGEMENT.md) - Task tracking and productivity system
 
 **Advanced**:
 - [TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md](TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md) - Upgrade from old SDK
