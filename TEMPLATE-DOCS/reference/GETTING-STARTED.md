@@ -61,6 +61,26 @@ bash /path/to/budget-agentic-workflow/scripts/init-agentic-workflow.sh
 
 ---
 
+### I shipped a feature and want to clean up
+
+```bash
+npm run manage-knowledge -- archive [feature-name].md
+```
+
+**Example:**
+```bash
+npm run manage-knowledge -- archive round5-caching.md
+```
+
+**What happens:**
+1. Moves spec from `active/` to `archive/`
+2. Rebuilds vector store
+3. Future searches ignore archived specs
+
+**Why:** Keeps AI search focused on current work, not old features.
+
+---
+
 ### I want to understand the structure
 
 Read: [QUICK-REFERENCE.md](QUICK-REFERENCE.md) (1 page, 2 minutes)
@@ -70,6 +90,7 @@ Read: [QUICK-REFERENCE.md](QUICK-REFERENCE.md) (1 page, 2 minutes)
 - What gets copied
 - Common workflows
 - Directory structure
+- Memory management
 
 ---
 

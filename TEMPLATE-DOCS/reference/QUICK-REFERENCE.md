@@ -7,13 +7,15 @@
 ## Where Do Files Go?
 
 ```
-Human writes specs       → app-docs/specs/[feature].md
+Human writes specs       → app-docs/specs/active/[feature].md
 AI generates plans       → ai-docs/plans/[timestamp]-[feature]/plan.md
 AI builds code           → ai-docs/builds/[timestamp]-[feature]/
 AI updates mappings      → app-docs/mappings/feature-to-source.md
 
 Your project guides      → app-docs/guides/
 Template workflow guides → TEMPLATE-DOCS/workflow-guides/ (reference only)
+
+After feature ships      → npm run manage-knowledge -- archive [feature].md
 ```
 
 ---
@@ -85,15 +87,16 @@ your-project/
 
 ---
 
-## Workflow: Spec → Plan → Build
+## Workflow: Spec → Plan → Build → Archive
 
 ```
-1. You write:    app-docs/specs/oauth.md
+1. You write:    app-docs/specs/active/oauth.md
 2. AI scouts:    /scout "OAuth2" → ai-docs/scout/files.txt
 3. AI plans:     /plan → ai-docs/plans/[date]-oauth/plan.md
 4. You approve:  Review the plan
 5. AI builds:    /build → ai-docs/builds/[date]-oauth/report.md
 6. AI updates:   app-docs/mappings/feature-to-source.md
+7. After ship:   npm run manage-knowledge -- archive oauth.md
 ```
 
 ---
@@ -119,6 +122,31 @@ node_modules/       Dependencies
 
 ---
 
+## Memory Management
+
+**Keep vector search focused by managing spec lifecycle:**
+
+```bash
+# List all specs
+npm run manage-knowledge -- list
+
+# Archive completed feature (removes from search index)
+npm run manage-knowledge -- archive round5-caching.md
+
+# Restore archived spec (adds back to search index)
+npm run manage-knowledge -- restore round5-caching.md
+
+# Rebuild vector store manually
+npm run manage-knowledge -- refresh
+```
+
+**Directory structure:**
+- `active/` - Current features (INDEXED for search)
+- `archive/` - Completed features (NOT INDEXED)
+- `reference/` - Templates, examples (ALWAYS INDEXED)
+
+---
+
 ## Common Questions
 
 **Q: Where are the template workflow guides?**
@@ -131,12 +159,15 @@ A: No. Reference them from template repo. Add YOUR patterns to `app-docs/guides/
 A: `ai-docs/plans/` (gitignored, ephemeral)
 
 **Q: Where do I write feature specs?**
-A: `app-docs/specs/` (committed to git)
+A: `app-docs/specs/active/` (committed to git)
+
+**Q: When should I archive specs?**
+A: After a feature ships. Keeps search results focused on current work.
 
 **Q: What's the difference between app-docs and ai-docs?**
 A:
-- `app-docs/` = Human knowledge (committed)
-- `ai-docs/` = AI artifacts (gitignored)
+- `app-docs/` = Human knowledge (committed, partially indexed)
+- `ai-docs/` = AI artifacts (gitignored, NOT indexed)
 
 ---
 
