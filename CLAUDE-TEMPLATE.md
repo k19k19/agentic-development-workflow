@@ -110,6 +110,14 @@ Proceed? (yes/no)
 - 🔄 **Scout Build**: [.claude/commands/scout_build.md](.claude/commands/scout_build.md) - Scout + Build without plan (~30K tokens)
 - 🎯 **Full**: [.claude/commands/full.md](.claude/commands/full.md) - Complete Scout→Plan→Build workflow (~90K tokens)
 
+## 🧠 Operational Intelligence
+
+- Run `npm run tasks` to open the productivity dashboard backed by `ai-docs/tasks/tasks.json`; it tracks checkpoints, resurfacing paused work, daily token budgets, and ready-to-run recommendations.
+- Update the dashboard between sessions with `tasks:add|pause|resume|complete` commands so agents inherit an accurate task ledger.
+- Build commands auto-write session summaries to `ai-docs/sessions/SESSION-[date]-[slug].md` and rerun `npm run vectorize`, making past decisions retrievable through `npm run search`.
+- Watch the dashboard’s context window bar: warnings fire at 75% usage and critical alerts at 90%; pause or restart the session before crossing the limit.
+- Follow the “Next Steps” block at the end of each command (tests, deploy, retries) to keep momentum aligned between agents.
+
 ---
 
 ## 🏗️ Architecture Summary

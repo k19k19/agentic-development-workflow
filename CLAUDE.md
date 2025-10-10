@@ -45,6 +45,13 @@ For faster, token-optimized workflows:
 - `/scout_build "[task]"` - Scout + Build without plan approval (~30K tokens) for medium tasks
 - `/full "[task]" "[docs]" "budget"` - Budget mode for large tasks (~90K tokens)
 
+### Operational Intelligence
+
+- Build commands auto-generate session summaries in `ai-docs/sessions/SESSION-*.md` and rerun `npm run vectorize` so future workflows can query past decisions.
+- `npm run tasks` exposes the task ledger at `ai-docs/tasks/tasks.json`, tracking checkpoints, token budgets, and ready-to-run work across sessions.
+- The dashboard issues token-budget recommendations and warns at 75%/90% context usage, helping decide when to pause or restart a session.
+- Command templates conclude with next-step guidance (tests, deploy, retries) to maintain momentum between agents.
+
 ### Vector Search Implementation
 
 The scout phase uses semantic search:
