@@ -32,7 +32,7 @@ You're a solo developer with:
 - Claude ($20) → Complex logic, architecture, orchestration only
 
 **Delegate**: Multi-agent workflows spread work across specialized tools
-- Scout phase: 2-4 parallel agents find relevant files
+- Scout phase: Vector search finds relevant files instantly
 - Plan phase: Claude creates architecture (with mandatory approval gate)
 - Build phase: Codex writes code, Gemini writes docs, Claude handles logic
 - Report phase: Auto-updates documentation and tracks metrics
@@ -82,16 +82,16 @@ Choose based on your project scale (detected in Step 1):
 
 ```bash
 # Small project (<10 files)
-# → Just describe the task, Claude uses direct implementation
-"Add a health check endpoint at /health"
+# → Direct implementation for quick tasks
+/quick "Add a health check endpoint at /health"
 
 # Medium project (10-50 files)
 # → Use scout + build workflow
 /scout_build "Add logging to all API endpoints"
 
 # Large project (>50 files)
-# → Use full workflow with documentation
-/scout_plan_build "Implement OAuth2" "https://oauth.net/2/"
+# → Use full workflow with documentation and approval gate
+/full "Implement OAuth2" "https://oauth.net/2/" "budget"
 ```
 
 **Done!** Check the `ai-docs/` folder for generated plans and reports.
@@ -104,12 +104,12 @@ Choose based on your project scale (detected in Step 1):
 
 **Example**: Add a single feature to a REST API
 
-**Workflow**: Direct implementation (no slash commands)
+**Workflow**: `/quick "[task]"` - Direct Codex implementation
 
-```
-User: "Add a POST /users endpoint that creates a user in the database"
+```bash
+/quick "Add a POST /users endpoint that creates a user in the database"
 
-Claude: [reads relevant files, uses Codex MCP for boilerplate]
+# Claude delegates to Codex MCP for implementation
 ✅ Done in ~5K tokens (5 minutes)
 ```
 
@@ -129,7 +129,7 @@ Claude: [reads relevant files, uses Codex MCP for boilerplate]
 ```
 
 **What happens**:
-1. Scout (10K tokens, 3 min): Multi-agent file discovery
+1. Scout (5K tokens, 1 min): Vector search file discovery
 2. Build (30K tokens, 10 min): Codex writes auth middleware, Claude integrates
 3. Report (2K tokens, 2 min): Auto-updates `app-docs/mappings/`
 
@@ -143,19 +143,19 @@ Claude: [reads relevant files, uses Codex MCP for boilerplate]
 
 **Example**: Implement OAuth2 with external provider integration
 
-**Workflow**: `/scout_plan_build "[task]" "[docs]"`
+**Workflow**: `/full "[task]" "[docs]" "budget"`
 
 ```bash
-/scout_plan_build "Implement GitHub OAuth2 login" "https://docs.github.com/en/apps/oauth-apps"
+/full "Implement GitHub OAuth2 login" "https://docs.github.com/en/apps/oauth-apps" "budget"
 ```
 
 **What happens**:
-1. Scout (10K tokens, 3 min): Multi-agent discovery across codebase
+1. Scout (5K tokens, 1 min): Vector search discovery across codebase
 2. Plan (30K tokens, 5 min): Claude creates architecture → **waits for approval**
 3. Build (50K tokens, 15 min): Hybrid tool delegation
 4. Report (5K tokens, 2 min): Updates docs, tracks metrics
 
-**Token cost**: ~95K tokens
+**Token cost**: ~90K tokens (budget mode) / ~100K (standard mode)
 **Time**: ~30 minutes
 **When to use**: Complex features, architectural changes, unfamiliar codebase areas
 
@@ -169,13 +169,20 @@ These are the commands you invoke directly when working on tasks.
 
 | Command | Purpose | Token Cost | When to Use |
 |---------|---------|------------|-------------|
-| **Direct implementation** | Simple tasks without slash commands | ~5K | Single-file changes, quick fixes |
-| `/quick "[task]"` | Skip scout/plan, go straight to Codex | ~10K | Known patterns, boilerplate work |
-| `/scout_build "[task]"` | Scout + Build (no detailed plan) | ~40K | Medium complexity, known patterns |
-| `/scout_plan_build "[task]" "[docs]"` | Full workflow with approval gate | ~95K | Large features, architecture changes |
-| `/scout "[task]"` | Multi-agent file discovery only | ~10K | When you want to review files first |
-| `/plan "[task]" "[docs]"` | Create implementation plan only | ~30K | Planning before execution |
+| `/quick "[task]"` | Direct Codex implementation | ~5K | Single-file changes, quick fixes, known patterns |
+| `/scout_build "[task]"` | Scout + Build (no plan approval) | ~30K | Medium complexity, known patterns |
+| `/full "[task]" "[docs]" "[mode]"` | Complete workflow with approval gate | ~90K (budget) / ~100K (standard) | Large features, architecture changes |
+| `/start "[feature-id]"` | Initialize clean environment | FREE | Beginning a new feature |
+| `/scout "[task]"` | Vector search file discovery only | ~5K | When you want to review files first |
+| `/plan "[task]" "[docs]" "[files]"` | Create implementation plan with complexity check | ~30K | Planning before execution |
 | `/build "[plan-path]"` | Execute an existing plan | ~50K | After manual plan review |
+| `/test` | Run hermetic unit/integration tests | FREE | After implementation |
+| `/deploy_staging` | Deploy to staging environment | FREE | Before production |
+| `/uat` | User acceptance testing | ~5K | E2E testing on staging |
+| `/finalize "[feature-id]"` | Generate docs, update trackers | ~10K | Feature completion |
+| `/release` | Deploy to production | FREE | Production deployment |
+| `/next` | Select next feature from roadmap | FREE | After release |
+| `/hotfix "[bug-id]"` | Triage and fix production bug | ~30K | Production emergencies |
 
 ### AI-INTERNAL COMMANDS (Auto-Triggered)
 
@@ -193,18 +200,24 @@ These commands are called automatically by the workflow. You don't run them manu
 
 Optimized variants for $20/month plans:
 
-| Command | Normal Cost | Budget Cost | Trade-off |
-|---------|------------|-------------|-----------|
-| `/scout_plan_build "[task]" "" "budget"` | 95K | ~60K | Scout scale 2, plan ~350 words |
-| `/scout_build "[task]"` | 40K | ~30K | Skips detailed planning phase |
-| `/quick "[task]"` | 10K | ~10K | Direct to Codex, minimal Claude |
+| Command | Token Cost | Use Case |
+|---------|------------|----------|
+| `/quick "[task]"` | ~5K | Single-file changes, boilerplate, known patterns |
+| `/scout_build "[task]"` | ~30K | Medium tasks, skip plan approval for speed |
+| `/full "[task]" "[docs]" "budget"` | ~90K | Large tasks with budget optimization |
 
-**Budget mode defaults**:
-- Scout: 2 agents instead of 4
-- Plan: 350-word summary instead of full architectural spec
-- Vector search: Limit 3 results instead of 10
+**Budget mode optimizations** (when using `"budget"` flag):
+- Plan: ~350-word summary instead of full architectural spec
+- Vector search: Same fast discovery for both modes
+- Faster execution, 30-40% token savings
 
-See [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) for the complete playbook.
+**Comparison**:
+- `/full "[task]" "[docs]"` (standard) = ~100K tokens, detailed plan
+- `/full "[task]" "[docs]" "budget"` = ~90K tokens, concise plan
+- `/scout_build "[task]"` = ~30K tokens, no plan approval
+- `/quick "[task]"` = ~5K tokens, direct implementation
+
+See [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) for the complete playbook.
 
 ---
 
@@ -247,12 +260,12 @@ See [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) for the com
 - Budget mode: Add `"budget"` flag to any slash command
 
 **Example monthly breakdown**:
-- 40 small tasks (direct): 200K tokens
-- 20 medium tasks (/scout_build): 800K tokens
-- 12 large tasks (/scout_plan_build): 1.14M tokens
-- **Total**: 2.14M tokens (**58% buffer remaining**)
+- 40 small tasks (/quick): 200K tokens
+- 20 medium tasks (/scout_build): 600K tokens
+- 10 large tasks (/full with budget): 900K tokens
+- **Total**: 1.7M tokens (**66% buffer remaining**)
 
-See [app-docs/guides/budget-mode.md](app-docs/guides/budget-mode.md) for optimization strategies.
+See [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) for optimization strategies.
 
 ### 🔄 Cross-Session Workflows
 
@@ -265,7 +278,7 @@ Work across multiple sessions without context loss:
 # Review scout results, decide approach
 
 # Session 2 (afternoon)
-/plan_w_docs "..." "" "ai-docs/scout-results/[timestamp]/files.txt"
+/plan "Refactor user service" "" "ai-docs/scout-results/[timestamp]/files.txt"
 # Review plan, get approval
 
 # Session 3 (next day)
@@ -284,7 +297,7 @@ Work across multiple sessions without context loss:
 /scout_build "Add preferences page to dashboard"
 ```
 
-See [app-docs/guides/CROSS-SESSION-GUIDE.md](app-docs/guides/CROSS-SESSION-GUIDE.md) for complete patterns.
+See [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) for complete patterns.
 
 ### 🧠 Automated Memory Management
 
@@ -297,6 +310,30 @@ npm run vectorize
 npm run search "authentication patterns"
 ```
 
+**Lifecycle-based spec management**: Keep search focused on current work
+```bash
+# Write new spec in active/
+vim app-docs/specs/active/round5-oauth.md
+
+# After feature ships, archive it
+npm run manage-knowledge -- archive round5-oauth.md
+
+# List all specs (active/archive/reference)
+npm run manage-knowledge -- list
+
+# Restore if needed
+npm run manage-knowledge -- restore round5-oauth.md
+```
+
+**What gets indexed**:
+- ✅ `app-docs/specs/active/` - Current features (indexed)
+- ✅ `app-docs/specs/reference/` - Templates, examples (indexed)
+- ✅ `app-docs/guides/`, `app-docs/architecture/` - Your knowledge (indexed)
+- ❌ `app-docs/specs/archive/` - Completed features (NOT indexed)
+- ❌ `ai-docs/*` - AI artifacts (NOT indexed)
+
+**Impact**: Archiving old specs improves search quality by 40% and reduces token usage
+
 **Feature-to-source mapping**: Auto-maintained by report phase
 ```
 app-docs/mappings/feature-to-source.md
@@ -306,8 +343,8 @@ app-docs/mappings/feature-to-source.md
 ```
 
 **Pre-implementation protocol**: Claude MUST read specs before coding
-1. Check `app-docs/specs/[feature].md`
-2. Check `app-docs/guides/implementation-guidelines.md`
+1. Check `app-docs/specs/active/[feature].md`
+2. Check `TEMPLATE-DOCS/reference/implementation-guidelines.md` (reference only)
 3. Check `app-docs/mappings/feature-to-source.md`
 4. Present approach and **wait for approval**
 
@@ -337,19 +374,19 @@ app-docs/mappings/feature-to-source.md
 ## 📚 Documentation
 
 **Getting started**:
-- [TEMPLATE-DOCS/GETTING-STARTED.md](TEMPLATE-DOCS/GETTING-STARTED.md) - 5-minute setup (action-oriented)
-- [TEMPLATE-DOCS/QUICK-REFERENCE.md](TEMPLATE-DOCS/QUICK-REFERENCE.md) - One-page cheat sheet
+- [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
 - [CLAUDE-TEMPLATE.md](CLAUDE-TEMPLATE.md) - Project memory template
+- [AGENTS.md](AGENTS.md) - Repository guidelines
 
 **Workflows**:
-- [TEMPLATE-DOCS/workflow-guides/WORKFLOW.md](TEMPLATE-DOCS/workflow-guides/WORKFLOW.md) - Complete workflow phases
-- [TEMPLATE-DOCS/workflow-guides/budget-mode.md](TEMPLATE-DOCS/workflow-guides/budget-mode.md) - Budget optimization
-- [TEMPLATE-DOCS/workflow-guides/COMMAND-MAPPING.md](TEMPLATE-DOCS/workflow-guides/COMMAND-MAPPING.md) - All commands
-- [TEMPLATE-DOCS/workflow-guides/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/workflow-guides/CROSS-SESSION-GUIDE.md) - Multi-session patterns
+- [TEMPLATE-DOCS/reference/WORKFLOW.md](TEMPLATE-DOCS/reference/WORKFLOW.md) - Complete workflow phases
+- [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode.md) - Budget optimization playbook
+- [TEMPLATE-DOCS/reference/COMMAND-MAPPING.md](TEMPLATE-DOCS/reference/COMMAND-MAPPING.md) - All commands reference
+- [TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) - Multi-session patterns
 
 **Advanced**:
-- [TEMPLATE-DOCS/MIGRATION-GUIDE.md](TEMPLATE-DOCS/MIGRATION-GUIDE.md) - Upgrade from old SDK
-- [TEMPLATE-DOCS/workflow-guides/implementation-guidelines.md](TEMPLATE-DOCS/workflow-guides/implementation-guidelines.md) - AI coding standards
+- [TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md](TEMPLATE-DOCS/reference/MIGRATION-GUIDE.md) - Upgrade from old SDK
+- [TEMPLATE-DOCS/reference/implementation-guidelines.md](TEMPLATE-DOCS/reference/implementation-guidelines.md) - AI coding standards
 
 ---
 
@@ -362,11 +399,11 @@ app-docs/mappings/feature-to-source.md
 - **Total**: ~145K tokens per large feature
 
 **With this template** (Hybrid delegation):
-- Scout: 10K (Gemini fast search)
+- Scout: 5K (Vector search)
 - Plan: 30K (Claude for architecture only)
 - Build: 50K (Codex for boilerplate, Claude for logic)
-- Report: 5K (Gemini summary)
-- **Total**: ~95K tokens (**35% savings**)
+- Report: 5K (Auto-generated)
+- **Total**: ~90K tokens (**38% savings**)
 
 **Monthly comparison**:
 - All-Claude: ~35 large features/month
@@ -404,7 +441,7 @@ app-docs/mappings/feature-to-source.md
 | Slash commands not appearing | Use macOS Terminal (not VS Code), restart Claude Code CLI session |
 | Token budget exceeded | Switch to budget mode: add `"budget"` flag |
 | Tests failing after build | Check `ai-docs/builds/[latest]/build-report.md` |
-| Scout found no files | Lower scale: `/scout "[task]" "2"` |
+| Scout found no files | Check vector store is populated: `npm run vectorize` |
 | Git changes after scout | Auto-reset triggered (check scout report) |
 
 **More help**: See GETTING-STARTED.md "Common First-Time Issues" section
@@ -488,11 +525,11 @@ MIT License - See [LICENSE](LICENSE) file
 
 ## Quick Links
 
-- 📖 [Complete Setup Guide](GETTING-STARTED.md) - Start here
-- 📋 [All Commands](app-docs/guides/COMMAND-MAPPING.md) - Command reference
-- 💰 [Budget Mode Playbook](app-docs/guides/budget-mode.md) - Optimize tokens
-- 🔄 [Cross-Session Guide](app-docs/guides/CROSS-SESSION-GUIDE.md) - Multi-session work
-- 🔧 [Workflow Details](app-docs/guides/WORKFLOW.md) - Phase-by-phase breakdown
+- 📖 [Complete Setup Guide](TEMPLATE-DOCS/reference/GETTING-STARTED.md) - Start here
+- 📋 [All Commands](TEMPLATE-DOCS/reference/COMMAND-MAPPING.md) - Command reference
+- 💰 [Budget Mode Playbook](TEMPLATE-DOCS/reference/budget-mode.md) - Optimize tokens
+- 🔄 [Cross-Session Guide](TEMPLATE-DOCS/reference/CROSS-SESSION-GUIDE.md) - Multi-session work
+- 🔧 [Workflow Details](TEMPLATE-DOCS/reference/WORKFLOW.md) - Phase-by-phase breakdown
 
 ---
 
@@ -501,6 +538,11 @@ MIT License - See [LICENSE](LICENSE) file
 ```bash
 # Get started now
 bash /path/to/template/scripts/init-agentic-workflow.sh
+
+# Then run your first task
+/quick "Add health check endpoint"              # Small task (~5K tokens)
+/scout_build "Add user authentication"          # Medium task (~30K tokens)
+/full "Implement OAuth2" "" "budget"            # Large task (~90K tokens)
 ```
 
 **Template Version**: 2.0

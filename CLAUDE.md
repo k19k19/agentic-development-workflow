@@ -12,11 +12,12 @@ This is an **Agentic Development Workflow** repository implementing the "R&D fra
 
 The repository implements a three-phase workflow orchestrated through custom slash commands:
 
-1. **Scout Phase** ([scout.md](scout.md)): Multi-agent parallel search to identify relevant files
-   - Spawns multiple agents (Gemini, GPT, Claude) in parallel using different models
-   - Agents search the codebase and return structured file lists with line ranges
+1. **Scout Phase** ([scout.md](scout.md)): Vector search to identify relevant files
+   - Uses semantic search on indexed documentation and specs
+   - Searches across `app-docs/specs/active/`, `app-docs/guides/`, and other indexed directories
+   - Returns structured file lists with line ranges
    - Format: `<path> (offset: N, limit: M)`
-   - Uses token-efficient fast models for initial discovery
+   - Fast and token-efficient (~5K tokens)
 
 2. **Plan Phase** ([plan.md](plan.md)): Task planning with complexity assessment
    - Takes user prompt, documentation URLs, and relevant files collection
@@ -33,7 +34,7 @@ The primary workflow is invoked via slash command with this structure:
 ```
 
 This executes sequentially:
-1. `/scout "[user_prompt]" "4"` → returns `relevant_files_collection_path`
+1. `/scout "[user_prompt]"` → returns `relevant_files_collection_path`
 2. `/plan "[user_prompt]" "[docs]" "[files]"` → returns `path_to_plan` (with approval gate)
 3. `/build "[path_to_plan]"` → returns `build_report`
 
@@ -42,16 +43,16 @@ This executes sequentially:
 For faster, token-optimized workflows:
 - `/quick "[task]"` - Direct Codex implementation (~5K tokens) for small tasks
 - `/scout_build "[task]"` - Scout + Build without plan approval (~30K tokens) for medium tasks
-- `/full "[task]" "[docs]" "budget"` - Budget mode for large tasks (~90K tokens with reduced scale)
+- `/full "[task]" "[docs]" "budget"` - Budget mode for large tasks (~90K tokens)
 
-### Multi-Agent Orchestration
+### Vector Search Implementation
 
-The scout phase demonstrates the parallel agent pattern:
-- Uses the `Task` tool to spawn multiple agents simultaneously
-- Each agent calls external agentic coding tools (gemini, claude, codex) via Bash
-   - Scale parameter determines number of parallel agents (e.g., "4" = 4 agents)
-   - Agents have 3-minute timeout; failures are skipped
-   - Git safety: `git diff --stat` check after scout, `git reset --hard` if changes detected
+The scout phase uses semantic search:
+- Indexed vector store built from `app-docs/` documentation
+- Command: `npm run search "[query]"`
+- Only searches `app-docs/specs/active/` (not archive) for focused results
+- Lifecycle management: Archive old specs to improve search quality
+- Git safety: `git diff --stat` check after scout, `git reset --hard` if changes detected
 
 ## Repository Structure
 
@@ -74,7 +75,7 @@ Per [README.md](README.md), the intended organization is:
 
 ## Key Principles
 
-- **Parallel Agent Execution**: When scouting or searching, spawn multiple agents simultaneously using different models/tools
+- **Vector Search First**: Scout phase uses semantic search on indexed docs for fast, focused discovery
 - **Argument Quoting**: Slash command arguments must be in double quotes; nested quotes become single quotes
 - **No Prompt Alteration**: Pass USER_PROMPT variables unchanged through the workflow chain (append ` [BUDGET MODE]` only when running budget workflows)
 - **Sequential Workflow Steps**: Each workflow phase must complete before the next begins

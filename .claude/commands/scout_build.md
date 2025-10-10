@@ -16,14 +16,14 @@ TASK: $1
 - **When to use**: Medium projects (10-50 files), known patterns, task well-understood.
 - **When NOT to use**: Unfamiliar features, architectural changes, high-risk tasks.
 - If `TASK` is missing, stop and ask the user to provide it.
-- Execute scout phase with scale=2 (budget mode).
+- Execute scout phase using vector search.
 - Skip plan approval gate for speed.
 - Build using existing patterns found during scout.
 - Run tests automatically after build.
 
 ## Workflow
 1. Validate `TASK` is provided.
-2. Run SlashCommand(`/scout "[TASK]" "2"`) -> `relevant_files_collection_path`.
+2. Run SlashCommand(`/scout "[TASK]"`) -> `relevant_files_collection_path`.
 3. Identify existing patterns from scouted files.
 4. Build directly using identified patterns (no plan approval).
 5. Run tests using `npm test` or appropriate test command.
