@@ -180,7 +180,7 @@ External research? → Firecrawl MCP
 /scout_build "[task description]"
 ```
 
-**Executes:** Scout (scale 2) → Build (no plan approval)
+**Executes:** Scout (vector search) → Build (no plan approval)
 **Total**: ~30K tokens
 **Use when:** Known patterns, medium complexity, 10-50 files
 
@@ -191,7 +191,7 @@ External research? → Firecrawl MCP
 ```
 
 **Executes:**
-1. Scout (scale 2) — returns a trimmed hit list
+1. Scout — vector search returns focused file list
 2. Plan (~350 words) — Summary, key steps, risks, tests + **APPROVAL GATE**
 3. Build (40–50K tokens) — Implementation with continuous vetting
 4. Report (short) — Summary and follow-up actions
@@ -205,7 +205,7 @@ External research? → Firecrawl MCP
 /full "[task description]" "[doc-urls]"
 ```
 
-**Executes:** Full workflow with scale 4 scout and detailed plan
+**Executes:** Full workflow with vector search scout and detailed plan
 **Total**: ~90-100K tokens
 **Use when:** Budget mode insufficient, need deeper analysis
 
@@ -284,7 +284,7 @@ npm run build        # Build for production
 
 # Step-by-step workflow
 /start "FEAT-001-auth"                                            # Initialize
-/scout "Find authentication files" "4"                            # Discover
+/scout "Find authentication files"                                # Discover (vector search)
 /plan "Implement OAuth2" "https://oauth.net/2/"                   # Plan (with approval)
 /build "specs/20251009-oauth2.md"                                 # Implement
 /test                                                             # Validate

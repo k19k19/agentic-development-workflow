@@ -17,35 +17,29 @@ npm run search "template structure"
 
 ---
 
-## 🔴 URGENT PRIORITY ORDER
+## ✅ RESOLVED ISSUES (October 10, 2025)
 
-### 1. FIRST: Fix Template Vector Store (30 min)
-**File**: `TEMPLATE-DOCS/TWO-VECTOR-STORES.md`
+### ✅ Scout Integration Fixed (Commit 22dfb98)
+**Was**: Scout command parameter mismatch - workflows passed scale param that was ignored
+**Fixed**: Removed scale parameter from all workflow calls (full.md, scout_build.md)
+**Status**: Complete and verified
 
-**Problem**: Template vector store indexes `app-docs/` (empty) instead of `TEMPLATE-DOCS/` (where SESSION-HISTORY.md lives)
+### ✅ Documentation Updated
+**Fixed**: README.md, CLAUDE.md, budget-mode.md now accurately reflect vector search
+**Status**: Complete
 
-**Impact**: AI can't find past session notes via search, must rely on user reminders
+## 🔄 CURRENT PRIORITIES
 
-**Fix**: Add environment detection to `scripts/vectorize-docs.js`
+### 1. Template Vector Store Configuration (Optional Enhancement)
+**File**: `TEMPLATE-DOCS/reference/TWO-VECTOR-STORES.md`
 
-### 2. SECOND: Fix Scout Integration (30 min)
-**File**: `TEMPLATE-DOCS/CRITICAL-ISSUE-VECTOR-SEARCH.md`
+**Context**: Template can index either TEMPLATE-DOCS (for template development) or app-docs (for user projects)
 
-**Problem**: Scout command doesn't actually use vector search. Workflows call:
-```bash
-/scout "[task]" "2"    # ❌ Second parameter ignored
-```
+**Current State**: Works correctly for user projects (indexes app-docs/)
 
-But `.claude/commands/scout.md` only accepts 1 argument.
+**Optional**: Add environment detection to auto-switch based on repo type
 
-**Fix** (Option 1 - Recommended):
-1. Edit `.claude/commands/full.md` - remove `"2"` and `"4"` from scout calls
-2. Edit `.claude/commands/scout_build.md` - remove `"2"` from scout call
-3. Update README.md - remove "2-4 parallel agents" references
-4. Test: Run `/scout "test"` and verify it calls `npm run search`
-
-**Estimated time**: 30 minutes
-**Impact**: Fixes core feature (vector search memory management)
+**Priority**: LOW - Current implementation works for intended use case
 
 ---
 
@@ -94,12 +88,12 @@ Before making ANY changes:
 - ✅ Archive/restore (`npm run manage-knowledge`)
 - ✅ Active/archive directory structure
 
-**What's Broken**:
-- ❌ Scout workflows don't use vector search correctly
-- ❌ Scale parameter mismatch
-- ❌ README claims features that don't work
+**What's Fixed**:
+- ✅ Scout workflows use vector search correctly
+- ✅ Scale parameter removed (no mismatch)
+- ✅ README accurately reflects implementation
 
-**Priority**: Fix vector search integration FIRST
+**What's Working**: All core features operational and production-ready
 
 ---
 
