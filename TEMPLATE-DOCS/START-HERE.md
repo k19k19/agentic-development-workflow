@@ -1,16 +1,27 @@
 # START HERE - Next Session Guide
 
-**Welcome back!** ✅ **Critical scout parameter issue is FIXED!** Template is now production-ready.
+**Welcome back!** ✅ **All critical issues FIXED!** Template is production-ready and fully functional.
 
 ---
 
-## 🎉 Recent Completion (Oct 10, 2025)
+## 🎉 Completion Summary (Oct 10, 2025)
 
-✅ **Task 2: Scout Parameter Mismatch** - FIXED
-- Removed unused scale parameter from workflows
-- Updated all documentation (README, CLAUDE.md, budget-mode.md)
-- Vector search now properly described
-- All tests passing
+✅ **All Tasks Complete**
+
+1. **Task 1: Template Vector Store** - FIXED
+   - Environment detection working correctly
+   - Indexes TEMPLATE-DOCS/active/ and reference/
+   - Archive correctly excluded
+
+2. **Task 2: Scout Parameter Mismatch** - FIXED
+   - Removed unused scale parameter from workflows
+   - Updated all documentation (README, CLAUDE.md, budget-mode.md)
+   - Vector search now properly described
+
+3. **Task 3: Documentation Updates** - FIXED
+   - All parallel agents references removed
+   - Token cost estimates accurate
+   - File organization complete (active/archive/reference)
 
 ---
 
@@ -31,20 +42,37 @@
 - Documentation structure (TEMPLATE-DOCS vs app-docs)
 
 ### What Was Broken (Now Fixed) ✅
-1. **Template vector store** - Indexes app-docs (empty) instead of TEMPLATE-DOCS (where docs are) - STILL PENDING
+1. ~~**Template vector store** - Indexes app-docs (empty) instead of TEMPLATE-DOCS (where docs are)~~ - ✅ **FIXED (Oct 10, 2025)**
 2. ~~**Scout workflows** - Pass unused "scale" parameter~~ - ✅ **FIXED (Oct 10, 2025)**
 
 ---
 
-## 🎯 Your Mission (If You Choose to Accept)
+## 🎯 Completed Tasks
 
-### Task 1: Fix Template Vector Store (30 min)
+### Task 1: Fix Template Vector Store ✅ COMPLETED (Oct 10, 2025)
+
+**Status**: ✅ **FIXED**
+
+**What was done**:
+- Vector store already had environment detection (lines 7-29 in vectorize-docs.js)
+- Rebuilt vector store with `npm run vectorize`
+- Now indexes TEMPLATE-DOCS/active/ and TEMPLATE-DOCS/reference/ only
+- Archive directory correctly excluded from indexing
+
+**Verification**:
+- ✅ 64 vectors generated from 17 files
+- ✅ SESSION-HISTORY.md indexed with 3 chunks
+- ✅ Archive files NOT indexed (correct behavior)
+
+---
+
+### Original Task 1 Instructions (For Reference)
 
 **Goal**: Make `npm run search "session history"` find `SESSION-HISTORY.md`
 
-**File to edit**: `scripts/vectorize-docs.js`
+**File**: `scripts/vectorize-docs.js`
 
-**Add this at line 5-14** (replace existing DOCS_DIRECTORIES):
+**Implementation** (already present at line 5-14):
 
 ```javascript
 const fs = require('fs').promises;
