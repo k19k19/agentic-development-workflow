@@ -37,6 +37,18 @@ npm run vectorize
 
 This makes the session searchable for future AI sessions via vector search.
 
+## Token Budget Tracking
+After completing the build, estimate tokens used and show updated budget:
+```bash
+npm run tasks:session-start
+```
+
+This displays:
+- Updated token budget with usage percentage
+- Remaining daily tokens
+- Warnings if approaching limits (75%/90%)
+- Recommendations for next tasks that fit budget
+
 ## Next Steps
 After completing the build:
 

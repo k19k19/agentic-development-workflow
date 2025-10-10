@@ -14,6 +14,7 @@
     "tasks:pause": "node scripts/manage-tasks.js pause",
     "tasks:resume": "node scripts/manage-tasks.js resume",
     "tasks:complete": "node scripts/manage-tasks.js complete",
+    "tasks:session-start": "node scripts/manage-tasks.js session-start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."

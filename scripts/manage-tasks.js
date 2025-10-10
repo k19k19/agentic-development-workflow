@@ -12,6 +12,11 @@ const path = require('path');
 
 const TASKS_FILE = path.join(__dirname, '..', 'ai-docs', 'tasks', 'tasks.json');
 const SESSION_DIR = path.join(__dirname, '..', 'ai-docs', 'sessions');
+const START_HERE_FILE = path.join(__dirname, '..', 'TEMPLATE-DOCS', 'START-HERE.md');
+
+// Import parsers and calculators
+const startHereParser = require('./parsers/start-here-parser');
+const tokenBudgetCalculator = require('./utils/token-budget-calculator');
 
 // Task states
 const STATES = {
@@ -385,6 +390,153 @@ async function updateContextWindow(tokensUsed) {
   await saveTasks(data);
 }
 
+async function sessionStart() {
+  const data = await loadTasks();
+
+  // Check if token budget needs reset (new day)
+  const today = new Date().toISOString().split('T')[0];
+  const lastReset = data.tokenBudget.lastReset.split('T')[0];
+
+  if (today !== lastReset) {
+    data.tokenBudget.used = 0;
+    data.tokenBudget.remaining = data.tokenBudget.dailyLimit;
+    data.tokenBudget.lastReset = today + 'T00:00:00Z';
+    data.contextWindow.currentUsage = 0; // Reset context window for new session
+    await saveTasks(data);
+  }
+
+  // Parse START-HERE.md for pending tasks
+  let startHereTasks = [];
+  try {
+    startHereTasks = await startHereParser.parseStartHereFile(START_HERE_FILE);
+  } catch (error) {
+    // START-HERE.md might not exist, continue without it
+  }
+
+  // Calculate budget summary
+  const budgetSummary = tokenBudgetCalculator.calculateBudgetSummary(data);
+
+  // Combine all tasks
+  const allTasks = [
+    ...data.tasks,
+    ...startHereTasks
+  ];
+
+  // Get recommended tasks that fit budget
+  const recommendedTasks = tokenBudgetCalculator.getRecommendedTasks(
+    allTasks,
+    budgetSummary.remaining
+  );
+
+  // Display session start summary
+  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('🎯 SESSION START SUMMARY');
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+
+  // Token Budget
+  console.log('💰 TOKEN BUDGET (Daily)');
+  console.log(`   Used: ${budgetSummary.formatted.used} / ${budgetSummary.formatted.limit} (${budgetSummary.usagePercent}%)`);
+  console.log(`   ${budgetSummary.progressBar}`);
+  console.log(`   Remaining: ${budgetSummary.formatted.remaining} tokens\n`);
+
+  // Budget warnings
+  if (budgetSummary.warningLevel === 'critical') {
+    console.log('🚨 CRITICAL: Token budget at ' + budgetSummary.usagePercent + '%');
+    console.log('   Daily limit nearly exhausted!');
+    console.log('   💡 Consider only small tasks or resume tomorrow\n');
+  } else if (budgetSummary.warningLevel === 'warning') {
+    console.log('⚠️  WARNING: Token budget at ' + budgetSummary.usagePercent + '%');
+    console.log('   Remaining: ' + budgetSummary.formatted.remaining + ' tokens');
+    console.log('   💡 Reserve budget for critical tasks\n');
+  }
+
+  // Pending tasks from START-HERE.md
+  console.log('📋 PENDING TASKS FROM START-HERE.md');
+  if (startHereTasks.length === 0) {
+    console.log('   ⚪ No pending tasks found (all completed ✅)\n');
+  } else {
+    startHereTasks.forEach(task => {
+      const statusEmoji = {
+        pending: '⚪',
+        paused: '⏸️ ',
+        inProgress: '🚧',
+        blocked: '🔴'
+      };
+      console.log(`   ${statusEmoji[task.status] || '⚪'} ${task.title}`);
+      if (task.estimatedTokens) {
+        console.log(`     Tokens: ~${task.estimatedTokens.toLocaleString()}`);
+      }
+      if (task.timeEstimate) {
+        console.log(`     Time: ${task.timeEstimate}`);
+      }
+    });
+    console.log('');
+  }
+
+  // Tasks from task ledger
+  const activeTasks = data.tasks.filter(t =>
+    t.state !== STATES.COMPLETED && t.state !== STATES.CANCELLED
+  );
+  const paused = activeTasks.filter(t => t.state === STATES.PAUSED);
+  const inProgress = activeTasks.filter(t => t.state === STATES.IN_PROGRESS);
+  const pending = activeTasks.filter(t => t.state === STATES.PENDING);
+
+  console.log('📋 TASKS FROM TASK LEDGER');
+  console.log(`   ⏸️  PAUSED: ${paused.length}`);
+  console.log(`   🚧 IN PROGRESS: ${inProgress.length}`);
+  console.log(`   ⚪ PENDING: ${pending.length}\n`);
+
+  // Paused tasks reminder
+  if (paused.length > 0) {
+    console.log('⏸️  PAUSED TASKS (Resume these first):');
+    paused.forEach(task => {
+      console.log(`   • ${task.id}: ${task.title}`);
+      if (task.checkpoint) {
+        console.log(`     📍 ${task.checkpoint.note}`);
+      }
+    });
+    console.log('');
+  }
+
+  // Recommendations
+  console.log('💡 RECOMMENDATIONS\n');
+
+  if (budgetSummary.remaining === 0) {
+    console.log('⚠️  Daily token budget exhausted');
+    console.log('   Resume tomorrow or upgrade plan\n');
+  } else if (recommendedTasks.length > 0) {
+    console.log(`✨ Tasks that fit in remaining budget (${budgetSummary.formatted.remaining} tokens):\n`);
+
+    recommendedTasks.slice(0, 5).forEach(task => {
+      const source = task.source ? ` (from ${task.source.split(':')[0]})` : '';
+      console.log(`   • ${task.title}${source}`);
+
+      if (task.estimatedTokens) {
+        const timeInfo = task.timeEstimate ? `, ${task.timeEstimate}` : '';
+        console.log(`     Size: ~${task.estimatedTokens.toLocaleString()} tokens${timeInfo}`);
+      }
+
+      if (task.id && task.id.startsWith('TASK-')) {
+        console.log(`     Command: npm run tasks:resume ${task.id}`);
+      }
+    });
+    console.log('');
+  }
+
+  // Suggested workflows
+  if (budgetSummary.suggestedWorkflows.length > 0) {
+    console.log('🚀 SUGGESTED WORKFLOWS:\n');
+
+    budgetSummary.suggestedWorkflows.forEach(workflow => {
+      console.log(`   • ${workflow.name}: ${workflow.command}`);
+      console.log(`     Tokens: ~${workflow.tokens.toLocaleString()}, Time: ${workflow.time}`);
+    });
+    console.log('');
+  }
+
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+}
+
 // CLI Interface
 const command = process.argv[2];
 const args = process.argv.slice(3);
@@ -421,6 +573,10 @@ const args = process.argv.slice(3);
         console.log(`✅ Context window updated: ${args[0]} tokens`);
         break;
 
+      case 'session-start':
+        await sessionStart();
+        break;
+
       default:
         console.log(`
 Task Management System
@@ -452,12 +608,16 @@ Commands:
   context <tokens-used>
     Update current context window usage
 
+  session-start
+    Show session start summary with task recommendations
+
 Examples:
   node scripts/manage-tasks.js add "Implement OAuth" "Add OAuth2 authentication" large high
   node scripts/manage-tasks.js pause TASK-123 "Completed plan phase, ready to build"
   node scripts/manage-tasks.js resume TASK-123
   node scripts/manage-tasks.js complete TASK-123 85000
   node scripts/manage-tasks.js status
+  node scripts/manage-tasks.js session-start
 `);
     }
   } catch (error) {

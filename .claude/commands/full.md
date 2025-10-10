@@ -63,4 +63,9 @@ git diff --stat                     # See all changes
 /release  # Deploy to production
 ```
 
+**Check token budget:**
+```bash
+npm run tasks:session-start  # See remaining budget and next recommendations
+```
+
 📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

@@ -353,6 +353,10 @@ npm run search "authentication patterns"
 
 **Task management**: Track pending work and optimize productivity
 ```bash
+# Session start summary (auto-runs via prompt hook!)
+npm run tasks:session-start
+# Shows: pending tasks from START-HERE.md, paused tasks, token budget warnings, recommendations
+
 # View productivity dashboard
 npm run tasks
 

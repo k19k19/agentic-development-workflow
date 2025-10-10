@@ -19,7 +19,21 @@ Alerts when approaching the 200K context limit so you can start a new session.
 
 ## 🚀 Quick Start
 
-### View Dashboard
+### Session Start Summary (NEW!)
+```bash
+npm run tasks:session-start
+```
+
+**Automatically runs at session start via prompt hook!**
+
+Shows:
+- 💰 Token budget (daily usage, warnings at 75%/90%)
+- 📋 Pending tasks from START-HERE.md
+- 📋 Paused tasks from task ledger with checkpoints
+- 💡 Task recommendations that fit remaining budget
+- 🚀 Suggested workflows (/quick, /scout_build, /full)
+
+### View Full Dashboard
 ```bash
 npm run tasks
 ```
@@ -324,11 +338,18 @@ node scripts/manage-tasks.js context $(echo "Current tokens from /tasks command"
 
 ## 💡 Best Practices
 
-### 1. Start Every Session with Dashboard
+### 1. Session Start Reminder (Automatic!)
+The session-start summary runs automatically via prompt hook when you start a new Claude Code session. It shows:
+- Pending tasks from START-HERE.md
+- Paused tasks with checkpoints
+- Token budget status with warnings
+- Recommended next tasks
+
+**Manual check:**
 ```bash
-npm run tasks
+npm run tasks:session-start  # Session start summary
+npm run tasks                # Full dashboard
 ```
-See what's pending, what's paused, and what fits your budget.
 
 ### 2. Checkpoint Frequently
 When pausing tasks, write detailed checkpoints:
