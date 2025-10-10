@@ -1,5 +1,23 @@
 # CRITICAL ISSUE: Vector Search Not Integrated Into Workflows
 
+## ✅ RESOLUTION (October 10, 2025)
+
+**Status**: ✅ **FIXED** - Scout parameter mismatch resolved
+**Fixed**: October 10, 2025
+**Commits**:
+- `22dfb98` - Fix scout parameter mismatch and update documentation
+- `4bfb4d2` - Reorganize template documentation and update knowledge management
+
+**Solution Implemented**: Option 1 (Remove Scale Parameter)
+- Removed scale parameter from all workflow calls
+- Updated README.md, CLAUDE.md, budget-mode.md
+- Fixed token cost estimates (scout now 5K, not 10K)
+- All documentation now accurately reflects vector search implementation
+
+---
+
+## ORIGINAL ISSUE REPORT
+
 **Status**: 🔴 **BROKEN** - Template claims to use vector search but workflows don't actually call it
 **Discovered**: October 10, 2025
 **Impact**: HIGH - Core feature (memory management) is non-functional
