@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-10-10T10:22:34.812Z",
+  "tasks": [
+    {
+      "id": "TASK-1760091664098",
+      "title": "Implement OAuth2 authentication",
+      "description": "Add OAuth2 login flow with JWT tokens",
+      "size": "large",
+      "priority": "high",
+      "state": "paused",
+      "estimatedTokens": 80000,
+      "estimatedTime": "1-2 hours",
+      "createdAt": "2025-10-10T10:21:04.098Z",
+      "updatedAt": "2025-10-10T10:21:50.158Z",
+      "checkpoint": {
+        "timestamp": "2025-10-10T10:21:50.156Z",
+        "note": "Completed scout phase, found 15 files. Ready to plan next.",
+        "resumeInstructions": "Completed scout phase, found 15 files. Ready to plan next."
+      },
+      "dependencies": [],
+      "tags": []
+    },
+    {
+      "id": "TASK-1760091684816",
+      "title": "Add rate limiting",
+      "description": "Implement rate limiting middleware",
+      "size": "medium",
+      "priority": "high",
+      "state": "pending",
+      "estimatedTokens": 30000,
+      "estimatedTime": "30-60 min",
+      "createdAt": "2025-10-10T10:21:24.816Z",
+      "updatedAt": "2025-10-10T10:21:24.818Z",
+      "checkpoint": null,
+      "dependencies": [],
+      "tags": []
+    }
+  ],
+  "completedTasks": [
+    {
+      "id": "TASK-1760091683636",
+      "title": "Fix login button styling",
+      "description": "Update button CSS to match design system",
+      "size": "small",
+      "priority": "medium",
+      "state": "completed",
+      "estimatedTokens": 5000,
+      "estimatedTime": "5-15 min",
+      "createdAt": "2025-10-10T10:21:23.636Z",
+      "updatedAt": "2025-10-10T10:22:15.192Z",
+      "checkpoint": null,
+      "dependencies": [],
+      "tags": [],
+      "completedAt": "2025-10-10T10:22:15.190Z",
+      "actualTokens": 5000
+    }
+  ],
+  "tokenBudget": {
+    "dailyLimit": 500000,
+    "used": 5000,
+    "remaining": 495000,
+    "lastReset": "2025-10-10T00:00:00Z"
+  },
+  "contextWindow": {
+    "limit": 200000,
+    "currentUsage": 185000,
+    "warningThreshold": 150000,
+    "criticalThreshold": 180000
+  }
+}

@@ -8,6 +8,12 @@
     "vectorize": "node scripts/vectorize-docs.js",
     "search": "node scripts/search-docs.js",
     "manage-knowledge": "node scripts/manage-knowledge.js",
+    "tasks": "node scripts/manage-tasks.js status",
+    "tasks:list": "node scripts/manage-tasks.js list",
+    "tasks:add": "node scripts/manage-tasks.js add",
+    "tasks:pause": "node scripts/manage-tasks.js pause",
+    "tasks:resume": "node scripts/manage-tasks.js resume",
+    "tasks:complete": "node scripts/manage-tasks.js complete",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."
