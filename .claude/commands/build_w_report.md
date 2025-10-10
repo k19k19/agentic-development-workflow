@@ -22,16 +22,42 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 4. Capture validation output (command snippets, screenshots, or logs) for inclusion in the final report.
 
 ## Report
-- **Update Knowledge Base:** After the build is complete, update the structured knowledge base:
-  - Update `app-docs/mappings/feature-to-source.md` with the new file paths and features implemented.
-  - If the implementation introduced a new, reusable utility or pattern, add a brief entry to `app-docs/guides/common-patterns.md`.
-- Provide a bullet list of completed work items tied to plan sections.
-- Include validation evidence (command names and outcomes).
-- Append `git diff --stat` to summarize the change surface.
-- Note any follow-up tasks or open questions for the next agent.
 
-## Session Memory (Auto-generate)
-After completing the build, automatically generate a detailed session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` using this template:
+### 1. Update Knowledge Base (Automated)
+
+Run these automation scripts to update documentation:
+
+```bash
+# Update feature-to-source mapping
+node scripts/update-mappings.js update "[feature-name]" [modified-files]
+
+# Example:
+# node scripts/update-mappings.js update "Authentication" src/auth/login.js src/auth/middleware.js
+
+# Generate session summary
+node scripts/generate-session-summary.js generate "[PATH_TO_PLAN]" "[feature-name]" "[workflow]" "[token-usage]"
+
+# Example:
+# node scripts/generate-session-summary.js generate "ai-docs/plans/plan.md" "Authentication" "/full" "85K"
+
+# Re-vectorize documentation for future searches
+npm run vectorize
+```
+
+**Manual additions** (if needed):
+- If the implementation introduced a new, reusable utility or pattern, add a brief entry to `app-docs/guides/common-patterns.md`.
+
+### 2. Report Deliverables
+
+Provide the following in your report:
+- Bullet list of completed work items tied to plan sections
+- Validation evidence (command names and outcomes)
+- `git diff --stat` output to summarize change surface
+- Any follow-up tasks or open questions for the next agent
+
+## Session Memory (Auto-generated)
+
+The `generate-session-summary.js` script automatically creates a detailed session summary at `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with this structure:
 
 ```markdown
 # Session: [Feature Name]

@@ -100,3 +100,14 @@ Answer: [Based on existing entries in this file]
 
 **Last Updated**: [Auto-updated by report phase]
 **Total Features**: [Count]
+## Core Template Fixes
+
+**Added**: 2025-10-10
+**Files**:
+  - `scripts/detect-project-scale.js`
+  - `scripts/run-tests.js`
+  - `scripts/update-mappings.js`
+  - `scripts/generate-session-summary.js`
+
+---
+

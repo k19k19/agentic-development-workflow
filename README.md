@@ -161,6 +161,36 @@ Choose based on your project scale (detected in Step 1):
 
 ---
 
+## 🎓 Understanding Slash Commands
+
+**Slash commands are NOT executable scripts** - they are **markdown instruction files** that Claude Code interprets.
+
+### How They Work
+
+```
+1. You type: /scout "find auth code"
+   ↓
+2. Claude reads: .claude/commands/scout.md
+   ↓
+3. Claude expands variables ($1 → "find auth code")
+   ↓
+4. Claude executes instructions using tools (Bash, Read, Grep, Task)
+   ↓
+5. Claude reports results
+```
+
+This "instruction-based runtime" enables powerful AI orchestration:
+- Commands leverage Claude's reasoning
+- Adaptive to project structure
+- Context-aware execution
+- Tool delegation built-in
+
+**Requirements**: Slash commands only work in the Claude Code environment. They cannot be run as standalone scripts.
+
+**Learn more**: See [app-docs/guides/slash-command-architecture.md](app-docs/guides/slash-command-architecture.md) for complete architecture details, examples, and how to write custom commands.
+
+---
+
 ## 📋 Command Reference
 
 ### USER COMMANDS (What You Run)

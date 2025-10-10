@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const fg = require('fast-glob');
 
 class ProjectScaleDetector {
   constructor(projectRoot = process.cwd()) {
@@ -63,7 +64,7 @@ class ProjectScaleDetector {
   }
 
   /**
-   * Count lines of code
+   * Count lines of code using Node.js glob library
    */
   countLinesOfCode() {
     if (!fs.existsSync(this.appDir)) {
@@ -72,15 +73,26 @@ class ProjectScaleDetector {
     }
 
     try {
-      // Count lines in common source files
-      const extensions = '{js,jsx,ts,tsx,py,go,java,rb,php}';
-      const output = execSync(
-        `find "${this.appDir}" -type f -name "*.${extensions}" -exec wc -l {} + | tail -1`,
-        { encoding: 'utf8' }
-      );
+      // Use fast-glob for reliable file matching across platforms
+      const extensions = ['js', 'jsx', 'ts', 'tsx', 'py', 'go', 'java', 'rb', 'php'];
+      const pattern = `${this.appDir}/**/*.{${extensions.join(',')}}`;
+      const files = fg.sync(pattern, {
+        onlyFiles: true,
+        absolute: true,
+        ignore: ['**/node_modules/**', '**/dist/**', '**/build/**']
+      });
 
-      const match = output.match(/^\s*(\d+)/);
-      this.results.metrics.loc = match ? parseInt(match[1], 10) : 0;
+      let totalLines = 0;
+      files.forEach(file => {
+        try {
+          const content = fs.readFileSync(file, 'utf8');
+          totalLines += content.split('\n').length;
+        } catch (readError) {
+          // Skip files that can't be read
+        }
+      });
+
+      this.results.metrics.loc = totalLines;
     } catch (error) {
       this.results.metrics.loc = 0;
     }

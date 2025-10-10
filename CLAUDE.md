@@ -94,6 +94,52 @@ Per [README.md](README.md), the intended organization is:
 
 The repository uses custom slash commands stored in `.claude/` that chain together to create complex workflows. These commands compose and orchestrate multiple AI agents working in parallel.
 
+### Slash Command Architecture
+
+**IMPORTANT**: Slash commands are **NOT executable scripts**. They are **markdown instruction files** interpreted by Claude Code's `SlashCommand` tool.
+
+**Execution Model**:
+```
+User types: /scout "find auth code"
+    ↓
+Claude reads: .claude/commands/scout.md
+    ↓
+Claude expands variables: $1 → "find auth code"
+    ↓
+Claude executes instructions using tools (Bash, Read, Grep, Task)
+    ↓
+Claude reports results
+```
+
+**Key Characteristics**:
+- **Instruction-based runtime**: Commands are prompts, not code
+- **Variable substitution**: Arguments passed via `$1`, `$2`, `${VAR_NAME}`
+- **Tool orchestration**: Commands invoke Claude's tools (Bash, Read, Edit, Task)
+- **Sequential execution**: Each step completes before the next begins
+- **Context-aware**: Full access to project files and git state
+
+**Variable Syntax**:
+- Positional: `$1`, `$2`, `$3`
+- Named: `${TASK}`, `${DOC_URLS}`, `${MODE}`
+- Quoting: Arguments must be quoted: `/scout "my task"`
+
+**Workflow Chaining**:
+Commands can invoke other commands sequentially:
+```markdown
+## /full command workflow
+1. Execute: /scout "[USER_PROMPT]" → capture RELEVANT_FILES
+2. Execute: /plan "[USER_PROMPT]" "[DOC_URLS]" "[RELEVANT_FILES]" → capture PLAN_PATH
+3. WAIT for user approval (CRITICAL)
+4. Execute: /build "[PLAN_PATH]" → capture BUILD_REPORT
+```
+
+**Complete documentation**: See [app-docs/guides/slash-command-architecture.md](app-docs/guides/slash-command-architecture.md) for:
+- Detailed execution flow
+- Writing custom commands
+- Tool usage patterns
+- Debugging commands
+- Common patterns and best practices
+
 ## Development Status
 
 **Status**: ✅ Template Complete and Production Ready

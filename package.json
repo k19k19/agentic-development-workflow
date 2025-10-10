@@ -4,7 +4,7 @@
   "description": "Lean agentic development workflow focused on budget-first execution.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node scripts/run-tests.js",
     "vectorize": "node scripts/vectorize-docs.js",
     "search": "node scripts/search-docs.js",
     "manage-knowledge": "node scripts/manage-knowledge.js",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "eslint": "^9.37.0",
+    "fast-glob": "^3.3.3",
     "prettier": "^3.6.2"
   }
 }
