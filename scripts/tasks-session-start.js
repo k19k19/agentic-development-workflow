@@ -142,7 +142,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
   });
 
   if (recommended.length > 3) {
-    console.log(`  …and ${recommended.length - 3} more tasks fit within today\'s remaining budget.`);
+    console.log(`  …and ${recommended.length - 3} more tasks fit within today's remaining budget.`);
   }
 
   console.log('Route simple doc summaries to Gemini MCP and UI/code tweaks to Codex MCP to keep Claude tokens available for complex debugging.');

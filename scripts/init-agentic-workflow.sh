@@ -87,6 +87,7 @@ fi
 
 # Configuration files (copy if not exists)
 CONFIG_FILES=(
+    "eslint.config.mjs:optional"
     ".eslintrc.js:optional"
     ".prettierrc.js:optional"
 )
@@ -160,22 +161,28 @@ node -e "
 
   pkg.scripts = pkg.scripts || {};
   pkg.scripts['manage-knowledge'] = pkg.scripts['manage-knowledge'] || 'node scripts/manage-knowledge.js';
+  pkg.scripts['tasks:session-start'] = pkg.scripts['tasks:session-start'] || 'node scripts/tasks-session-start.js';
   pkg.scripts.work = pkg.scripts.work || 'node scripts/unified-dashboard.js';
   pkg.scripts['workflow:sync'] = pkg.scripts['workflow:sync'] || 'node scripts/update-workflow-status.js';
+  pkg.scripts.test = pkg.scripts.test || 'jest --passWithNoTests';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
   pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
 
   pkg.devDependencies = pkg.devDependencies || {};
   if (!pkg.devDependencies.eslint) pkg.devDependencies.eslint = '^9.37.0';
+  if (!pkg.devDependencies['@eslint/js']) pkg.devDependencies['@eslint/js'] = '^9.37.0';
+  if (!pkg.devDependencies.globals) pkg.devDependencies.globals = '^16.4.0';
+  if (!pkg.devDependencies.jest) pkg.devDependencies.jest = '^29.7.0';
   if (!pkg.devDependencies.prettier) pkg.devDependencies.prettier = '^3.6.2';
 
   pkg.dependencies = pkg.dependencies || {};
+  if (!pkg.dependencies.glob) pkg.dependencies.glob = '^10.3.10';
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: manage-knowledge, work, workflow:sync, lint, format');
-  console.log('✓ Dependencies added: @xenova/transformers, eslint, prettier');
+  console.log('✓ Scripts added: manage-knowledge, tasks:session-start, work, workflow:sync, test, lint, format');
+  console.log('✓ Dependencies added: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
 " || log_error "Failed to merge package.json"
 
 log_success "package.json merged."

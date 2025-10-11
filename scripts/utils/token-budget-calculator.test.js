@@ -1,325 +1,112 @@
-/**
- * Unit tests for Token Budget Calculator
- */
-
 const calculator = require('./token-budget-calculator');
 
-// Test getRemainingBudget
-function testGetRemainingBudget() {
-  const tests = [
-    { limit: 167000, used: 0, expected: 167000 },
-    { limit: 167000, used: 50000, expected: 117000 },
-    { limit: 167000, used: 167000, expected: 0 },
-    { limit: 167000, used: 200000, expected: 0 } // Over limit
-  ];
-
-  console.log('Testing getRemainingBudget...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.getRemainingBudget(test.limit, test.used);
-    if (result === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL`);
-      console.log(`     Limit: ${test.limit}, Used: ${test.used}`);
-      console.log(`     Expected: ${test.expected}, Got: ${result}`);
-      failed++;
-    }
+describe('token-budget-calculator', () => {
+  describe('getRemainingBudget', () => {
+    test.each([
+      [167000, 0, 167000],
+      [167000, 50000, 117000],
+      [167000, 167000, 0],
+      [167000, 200000, 0],
+    ])('limit %d, used %d → %d', (limit, used, expected) => {
+      expect(calculator.getRemainingBudget(limit, used)).toBe(expected);
+    });
   });
 
-  return { passed, failed };
-}
-
-// Test getUsagePercent
-function testGetUsagePercent() {
-  const tests = [
-    { used: 0, limit: 167000, expected: 0 },
-    { used: 83500, limit: 167000, expected: 50 },
-    { used: 125250, limit: 167000, expected: 75 },
-    { used: 150300, limit: 167000, expected: 90 },
-    { used: 167000, limit: 167000, expected: 100 }
-  ];
-
-  console.log('\nTesting getUsagePercent...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.getUsagePercent(test.used, test.limit);
-    const rounded = Math.round(result);
-    if (rounded === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL`);
-      console.log(`     Used: ${test.used}, Limit: ${test.limit}`);
-      console.log(`     Expected: ${test.expected}%, Got: ${rounded}%`);
-      failed++;
-    }
+  describe('getUsagePercent', () => {
+    test.each([
+      [0, 167000, 0],
+      [83500, 167000, 50],
+      [125250, 167000, 75],
+      [150300, 167000, 90],
+      [167000, 167000, 100],
+    ])('used %d of %d → %d%', (used, limit, expected) => {
+      expect(Math.round(calculator.getUsagePercent(used, limit))).toBe(expected);
+    });
   });
 
-  return { passed, failed };
-}
-
-// Test getUsageWarningLevel
-function testGetUsageWarningLevel() {
-  const tests = [
-    { percent: 0, expected: 'normal' },
-    { percent: 50, expected: 'normal' },
-    { percent: 74, expected: 'normal' },
-    { percent: 75, expected: 'warning' },
-    { percent: 85, expected: 'warning' },
-    { percent: 89, expected: 'warning' },
-    { percent: 90, expected: 'critical' },
-    { percent: 95, expected: 'critical' },
-    { percent: 100, expected: 'critical' }
-  ];
-
-  console.log('\nTesting getUsageWarningLevel...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.getUsageWarningLevel(test.percent);
-    if (result === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL`);
-      console.log(`     Percent: ${test.percent}%`);
-      console.log(`     Expected: ${test.expected}, Got: ${result}`);
-      failed++;
-    }
+  describe('getUsageWarningLevel', () => {
+    test.each([
+      [0, 'normal'],
+      [50, 'normal'],
+      [74, 'normal'],
+      [75, 'warning'],
+      [85, 'warning'],
+      [89, 'warning'],
+      [90, 'critical'],
+      [95, 'critical'],
+      [100, 'critical'],
+    ])('usage %d%% → %s', (percent, expected) => {
+      expect(calculator.getUsageWarningLevel(percent)).toBe(expected);
+    });
   });
 
-  return { passed, failed };
-}
+  describe('getWeeklyTokenLimit', () => {
+    test('falls back to daily limit * 7', () => {
+      expect(calculator.getWeeklyTokenLimit({})).toBe(calculator.DEFAULT_CONFIG.dailyTokenLimit * 7);
+    });
 
-// Test getWeeklyTokenLimit
-function testGetWeeklyTokenLimit() {
-  console.log('\nTesting getWeeklyTokenLimit...');
-  let passed = 0;
-  let failed = 0;
+    test('uses explicit weekly override', () => {
+      expect(calculator.getWeeklyTokenLimit({ weeklyTokenLimit: 900000 })).toBe(900000);
+    });
 
-  const tests = [
-    { config: {}, expected: 1169000, description: 'Default weekly limit' },
-    { config: { dailyTokenLimit: 200000 }, expected: 1400000, description: 'Derived from daily limit' },
-    { config: { weeklyTokenLimit: 900000 }, expected: 900000, description: 'Explicit weekly override' }
-  ];
-
-  tests.forEach((test, index) => {
-    const result = calculator.getWeeklyTokenLimit(test.config);
-    if (result === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
-      console.log(`     Expected: ${test.expected}, Got: ${result}`);
-      failed++;
-    }
+    test('derives from custom daily limit when weekly unset', () => {
+      expect(calculator.getWeeklyTokenLimit({ dailyTokenLimit: 200000 })).toBe(1400000);
+    });
   });
 
-  return { passed, failed };
-}
+  describe('getContextWindowLimit', () => {
+    test('returns default when unset', () => {
+      expect(calculator.getContextWindowLimit({})).toBe(calculator.DEFAULT_CONFIG.contextWindowLimit);
+    });
 
-// Test getContextWindowLimit
-function testGetContextWindowLimit() {
-  console.log('\nTesting getContextWindowLimit...');
-  let passed = 0;
-  let failed = 0;
-
-  const tests = [
-    { config: {}, expected: 200000, description: 'Default context window' },
-    { config: { contextWindowLimit: 160000 }, expected: 160000, description: 'Override value' }
-  ];
-
-  tests.forEach((test, index) => {
-    const result = calculator.getContextWindowLimit(test.config);
-    if (result === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
-      console.log(`     Expected: ${test.expected}, Got: ${result}`);
-      failed++;
-    }
+    test('uses override when provided', () => {
+      expect(calculator.getContextWindowLimit({ contextWindowLimit: 160000 })).toBe(160000);
+    });
   });
 
-  return { passed, failed };
-}
+  describe('getRecommendedTasks', () => {
+    const tasks = [
+      { id: 'TASK-1', title: 'Small task', estimatedTokens: 5000, priority: 'medium', status: 'pending' },
+      { id: 'TASK-2', title: 'Medium task', estimatedTokens: 30000, priority: 'high', status: 'pending' },
+      { id: 'TASK-3', title: 'Large task', estimatedTokens: 90000, priority: 'low', status: 'pending' },
+      { id: 'TASK-4', title: 'Completed', estimatedTokens: 5000, priority: 'high', status: 'completed' },
+    ];
 
-// Test getRecommendedTasks
-function testGetRecommendedTasks() {
-  const tasks = [
-    { id: 'TASK-1', title: 'Small task', estimatedTokens: 5000, priority: 'medium', status: 'pending' },
-    { id: 'TASK-2', title: 'Medium task', estimatedTokens: 30000, priority: 'high', status: 'pending' },
-    { id: 'TASK-3', title: 'Large task', estimatedTokens: 90000, priority: 'low', status: 'pending' },
-    { id: 'TASK-4', title: 'Completed', estimatedTokens: 5000, priority: 'high', status: 'completed' }
-  ];
+    test('sorts by priority and size when all fit', () => {
+      const result = calculator.getRecommendedTasks(tasks, 100000);
+      expect(result.map(task => task.id)).toEqual(['TASK-2', 'TASK-1', 'TASK-3']);
+    });
 
-  const tests = [
-    {
-      remaining: 100000,
-      expectedIds: ['TASK-2', 'TASK-1', 'TASK-3'], // High priority first, then by size
-      description: 'All non-completed tasks fit'
-    },
-    {
-      remaining: 50000,
-      expectedIds: ['TASK-2', 'TASK-1'], // Only small and medium fit
-      description: 'Only small/medium tasks fit'
-    },
-    {
-      remaining: 10000,
-      expectedIds: ['TASK-1'], // Only small fits
-      description: 'Only small task fits'
-    },
-    {
-      remaining: 1000,
-      expectedIds: [], // None fit
-      description: 'No tasks fit'
-    }
-  ];
+    test('filters out oversized tasks', () => {
+      const result = calculator.getRecommendedTasks(tasks, 50000);
+      expect(result.map(task => task.id)).toEqual(['TASK-2', 'TASK-1']);
+    });
 
-  console.log('\nTesting getRecommendedTasks...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.getRecommendedTasks(tasks, test.remaining);
-    const resultIds = result.map(t => t.id);
-    const match = JSON.stringify(resultIds) === JSON.stringify(test.expectedIds);
-
-    if (match) {
-      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
-      console.log(`     Remaining: ${test.remaining}`);
-      console.log(`     Expected: [${test.expectedIds.join(', ')}]`);
-      console.log(`     Got: [${resultIds.join(', ')}]`);
-      failed++;
-    }
+    test('returns empty list when none fit', () => {
+      expect(calculator.getRecommendedTasks(tasks, 1000)).toEqual([]);
+    });
   });
 
-  return { passed, failed };
-}
-
-// Test getSuggestedWorkflows
-function testGetSuggestedWorkflows() {
-  const tests = [
-    {
-      remaining: 200000,
-      expectedCount: 4,
-      description: 'All workflows available'
-    },
-    {
-      remaining: 100000,
-      expectedCount: 3,
-      description: 'Large, medium, small available'
-    },
-    {
-      remaining: 50000,
-      expectedCount: 2,
-      description: 'Medium, small available'
-    },
-    {
-      remaining: 10000,
-      expectedCount: 1,
-      description: 'Only small available'
-    },
-    {
-      remaining: 1000,
-      expectedCount: 0,
-      description: 'No workflows available'
-    }
-  ];
-
-  console.log('\nTesting getSuggestedWorkflows...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.getSuggestedWorkflows(test.remaining);
-    if (result.length === test.expectedCount) {
-      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
-      console.log(`     Remaining: ${test.remaining}`);
-      console.log(`     Expected: ${test.expectedCount} workflows`);
-      console.log(`     Got: ${result.length} workflows`);
-      failed++;
-    }
+  describe('getSuggestedWorkflows', () => {
+    test.each([
+      [200000, 4],
+      [100000, 3],
+      [50000, 2],
+      [10000, 1],
+      [1000, 0],
+    ])('remaining %d tokens yields %d suggestions', (remaining, expectedCount) => {
+      expect(calculator.getSuggestedWorkflows(remaining)).toHaveLength(expectedCount);
+    });
   });
 
-  return { passed, failed };
-}
-
-// Test formatTokens
-function testFormatTokens() {
-  const tests = [
-    { input: 1000, expected: '1,000' },
-    { input: 50000, expected: '50,000' },
-    { input: 167000, expected: '167,000' },
-    { input: 1000000, expected: '1,000,000' }
-  ];
-
-  console.log('\nTesting formatTokens...');
-  let passed = 0;
-  let failed = 0;
-
-  tests.forEach((test, index) => {
-    const result = calculator.formatTokens(test.input);
-    if (result === test.expected) {
-      console.log(`  ✅ Test ${index + 1}: PASS`);
-      passed++;
-    } else {
-      console.log(`  ❌ Test ${index + 1}: FAIL`);
-      console.log(`     Input: ${test.input}`);
-      console.log(`     Expected: "${test.expected}", Got: "${result}"`);
-      failed++;
-    }
+  describe('formatTokens', () => {
+    test.each([
+      [1000, '1,000'],
+      [50000, '50,000'],
+      [167000, '167,000'],
+      [1000000, '1,000,000'],
+    ])('formats %d → %s', (input, expected) => {
+      expect(calculator.formatTokens(input)).toBe(expected);
+    });
   });
-
-  return { passed, failed };
-}
-
-// Run all tests
-(async () => {
-  console.log('\n========================================');
-  console.log('Token Budget Calculator Unit Tests');
-  console.log('========================================\n');
-
-  const results = [];
-
-  results.push(testGetRemainingBudget());
-  results.push(testGetUsagePercent());
-  results.push(testGetUsageWarningLevel());
-  results.push(testGetRecommendedTasks());
-  results.push(testGetSuggestedWorkflows());
-  results.push(testFormatTokens());
-  results.push(testGetWeeklyTokenLimit());
-  results.push(testGetContextWindowLimit());
-
-  // Summary
-  const totalPassed = results.reduce((sum, r) => sum + r.passed, 0);
-  const totalFailed = results.reduce((sum, r) => sum + r.failed, 0);
-
-  console.log('\n========================================');
-  console.log('Test Summary');
-  console.log('========================================');
-  console.log(`✅ Passed: ${totalPassed}`);
-  console.log(`❌ Failed: ${totalFailed}`);
-  console.log(`📊 Total:  ${totalPassed + totalFailed}`);
-
-  if (totalFailed === 0) {
-    console.log('\n🎉 All tests passed!\n');
-    process.exit(0);
-  } else {
-    console.log('\n⚠️  Some tests failed.\n');
-    process.exit(1);
-  }
-})();
+});
