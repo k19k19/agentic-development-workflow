@@ -85,6 +85,37 @@ else
     log_info "Preserved existing ai-docs/"
 fi
 
+# Ensure knowledge ledger scaffold exists
+KNOWLEDGE_LEDGER_DIR="$PROJECT_ROOT/ai-docs/knowledge-ledger"
+if [ ! -d "$KNOWLEDGE_LEDGER_DIR" ]; then
+    mkdir -p "$KNOWLEDGE_LEDGER_DIR"
+    log_success "Created ai-docs/knowledge-ledger/"
+else
+    log_info "Preserved ai-docs/knowledge-ledger/"
+fi
+
+LEDGER_FILE="$KNOWLEDGE_LEDGER_DIR/ledger.md"
+if [ ! -f "$LEDGER_FILE" ]; then
+    cat > "$LEDGER_FILE" <<'EOF'
+# Knowledge Ledger (Stub)
+
+This ledger lists adopted implementation decisions. Add a new entry to the
+"Adopted Decisions" section whenever you promote a `KL-` RFC into the core
+system. Move entries to "Superseded Decisions" when you replace them.
+
+## Adopted Decisions
+
+_None yet._
+
+## Superseded Decisions
+
+_None yet._
+EOF
+    log_success "Created ai-docs/knowledge-ledger/ledger.md"
+else
+    log_info "Preserved existing knowledge ledger"
+fi
+
 # Configuration files (copy if not exists)
 CONFIG_FILES=(
     "eslint.config.mjs:optional"
