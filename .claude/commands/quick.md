@@ -32,6 +32,7 @@ TASK: $1
 - Show test results.
 - Display token usage (~5K target).
 - Provide quick validation command (e.g., `curl` for API endpoints).
+- Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Next Steps
 

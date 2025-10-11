@@ -28,7 +28,7 @@ npm run tasks:session-start
 
 Shows:
 - 💰 Token budget (daily usage, warnings at 75%/90%)
-- 📋 Pending tasks from START-HERE.md
+- 📋 Pending tasks from TEMPLATE-STATUS.md
 - 📋 Paused tasks from task ledger with checkpoints
 - 💡 Task recommendations that fit remaining budget
 - 🚀 Suggested workflows (/quick, /scout_build, /full)
@@ -340,7 +340,7 @@ node scripts/manage-tasks.js context $(echo "Current tokens from /tasks command"
 
 ### 1. Session Start Reminder (Automatic!)
 The session-start summary runs automatically via prompt hook when you start a new Claude Code session. It shows:
-- Pending tasks from START-HERE.md
+- Pending tasks from TEMPLATE-STATUS.md
 - Paused tasks with checkpoints
 - Token budget status with warnings
 - Recommended next tasks

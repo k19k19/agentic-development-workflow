@@ -30,6 +30,7 @@ USER_PROMPT: $1
 - Summarize the top search results found.
 - List the source files identified as most relevant.
 - This context will be used to inform the next step of the workflow.
+- Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Next Steps
 After completing scout, you typically want to:

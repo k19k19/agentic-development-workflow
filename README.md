@@ -2,9 +2,9 @@
 
 **For Solo Developers on $20/Month Plans**
 
-> Ship enterprise-scale projects using Claude ($20/month) + free Gemini/Codex with intelligent multi-agent orchestration
+> Ship enterprise-scale projects using Claude ($20/month) + free Gemini/Codex with intelligent tool delegation
 
-**Version**: 2.0 | **Status**: Production Ready | **Token Efficiency**: 90%+
+**Version**: 2.0 | **Status**: Production Ready | **Estimated Token Efficiency**: 40-60% savings vs all-Claude
 
 ---
 
@@ -18,7 +18,7 @@ You're a solo developer with:
 
 **Traditional approach**: Burn through tokens in 2 weeks, hit limits, can't ship.
 
-**This template**: 90%+ token efficiency, handle 80+ tasks/month, build continuously.
+**This template**: 40-60% token savings through tool delegation, handle 50-80+ tasks/month (based on complexity), build continuously.
 
 ---
 
@@ -31,11 +31,11 @@ You're a solo developer with:
 - Codex MCP (cheap) → Code generation, syntax fixes, UI components
 - Claude ($20) → Complex logic, architecture, orchestration only
 
-**Delegate**: Multi-agent workflows spread work across specialized tools
+**Delegate**: Sequential tool-delegated workflows with specialized AI tools
 - Scout phase: Vector search finds relevant files instantly
 - Plan phase: Claude creates architecture (with mandatory approval gate)
-- Build phase: Codex writes code, Gemini writes docs, Claude handles logic
-- Report phase: Auto-updates documentation and tracks metrics
+- Build phase: Advisory tool delegation (you manually invoke Codex for boilerplate, Gemini for docs, Claude for logic)
+- Report phase: Auto-updates documentation and tracks metrics (manual token entry)
 
 **Result**: 40-60% token savings vs. all-Claude approach
 
@@ -266,7 +266,7 @@ See [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode
 | Security/performance review | **Claude** | High | Critical, requires deep analysis |
 | E2E testing | **Chrome DevTools MCP** | Medium | Testing specialty |
 
-**Decision flowchart**:
+**Decision flowchart** (advisory guidance for manual tool selection):
 
 ```
 ┌─ Single file bug? ────────────→ Codex MCP
@@ -278,6 +278,8 @@ See [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode
 └─ Testing? ───────────────────→ Chrome DevTools MCP
 ```
 
+**Note**: This flowchart is advisory documentation to help you choose the right tool. The system does not automatically route tasks - you select the appropriate slash command based on your task complexity.
+
 ---
 
 ## 🎯 Key Features
@@ -285,8 +287,8 @@ See [TEMPLATE-DOCS/reference/budget-mode.md](TEMPLATE-DOCS/reference/budget-mode
 ### 💰 Budget-First Design
 
 - **Default workflows optimized for $20/month Claude plan**
-- Monthly budget: 5M tokens = ~80 tasks at 60K avg
-- Token tracking: Every workflow logs to `ai-docs/logs/workflow-metrics.jsonl`
+- Monthly budget: 5M tokens = ~50-80 tasks (varies by complexity and tool delegation)
+- Token tracking: Manual entry via task management system (automated tracking in roadmap)
 - Budget mode: Add `"budget"` flag to any slash command
 
 **Example monthly breakdown**:
@@ -521,20 +523,22 @@ app-docs/mappings/feature-to-source.md
 
 ## 📈 Metrics & Continuous Improvement
 
-**Token tracking** (automatic):
+**Token tracking** (currently manual, automation in roadmap):
 ```bash
-# View recent workflows
-tail -10 ai-docs/logs/workflow-metrics.jsonl | jq ".efficiency"
+# Manual tracking via task management
+npm run tasks:complete TASK-123 85000  # Manually enter tokens used
 
-# Calculate average efficiency
-cat ai-docs/logs/workflow-metrics.jsonl | jq -s 'map(.efficiency) | add/length'
+# View task budget status
+npm run tasks  # Shows token budget usage and remaining
 ```
 
 **Target metrics**:
-- Token efficiency: >90%
+- Token savings: 40-60% vs all-Claude (estimated)
 - Approval rejection rate: <10%
 - Test pass rate: >95%
 - Budget utilization: 60-80% (leave buffer)
+
+**Roadmap**: Automated token tracking via API collectors (Phase 2) - see TEMPLATE-STATUS.md
 
 **Quarterly review**:
 - Update token budgets based on actual usage
@@ -578,10 +582,10 @@ MIT License - See [LICENSE](LICENSE) file
 
 **You're using this template correctly when**:
 
-✅ Token efficiency >90% across all workflows
-✅ You can handle 80+ tasks per month on $20 plan
+✅ You achieve 40-60% token savings vs all-Claude approach
+✅ You can handle 50-80+ tasks per month on $20 plan (varies by complexity)
 ✅ Pre-approval catches issues before coding
-✅ Documentation stays in sync automatically
+✅ You manually delegate to Codex/Gemini for appropriate tasks
 ✅ You work across multiple sessions effortlessly
 ✅ Clear audit trail for all changes
 
@@ -618,5 +622,6 @@ bash /path/to/template/scripts/init-agentic-workflow.sh
 
 **Template Version**: 2.0
 **Last Updated**: October 2025
-**Token Efficiency**: 90%+
+**Token Savings**: 40-60% vs all-Claude (estimated)
+**Architecture**: See [ARCHITECTURE-REALITY.md](TEMPLATE-DOCS/reference/ARCHITECTURE-REALITY.md) for implementation details
 **Compatible with**: Claude Code Agent SDK (2025)

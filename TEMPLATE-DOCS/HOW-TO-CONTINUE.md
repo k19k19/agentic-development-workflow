@@ -21,12 +21,12 @@ npm run search "next steps"
 
 **Why**: Finds `SESSION-HISTORY.md`, `CRITICAL-ISSUE-*.md`, and understands context from past sessions.
 
-### Step 3: Read START-HERE.md
+### Step 3: Read TEMPLATE-STATUS.md
 ```bash
-cat TEMPLATE-DOCS/START-HERE.md
+cat TEMPLATE-DOCS/TEMPLATE-STATUS.md
 ```
 
-**Or tell the AI**: "Read TEMPLATE-DOCS/START-HERE.md and active/SESSION-HISTORY.md"
+**Or tell the AI**: "Read TEMPLATE-DOCS/TEMPLATE-STATUS.md and active/SESSION-HISTORY.md"
 
 ---
 
@@ -41,7 +41,7 @@ cat TEMPLATE-DOCS/START-HERE.md
    ```
 
 2. **Read key files**:
-   - `TEMPLATE-DOCS/START-HERE.md` - Next steps
+   - `TEMPLATE-DOCS/TEMPLATE-STATUS.md` - Current status and completion
    - `TEMPLATE-DOCS/active/SESSION-HISTORY.md` - Past work
    - `TEMPLATE-DOCS/active/CRITICAL-ISSUE-*.md` - Known problems
 
@@ -72,7 +72,7 @@ cat TEMPLATE-DOCS/START-HERE.md
 ## 📚 Key Files to Know
 
 ### Entry Point
-- `TEMPLATE-DOCS/START-HERE.md` - Read this first
+- `TEMPLATE-DOCS/TEMPLATE-STATUS.md` - Read this first (template completion status)
 
 ### Current Work (active/)
 - `SESSION-HISTORY.md` - Everything that's happened
@@ -201,7 +201,7 @@ npm run search "next steps"
 npm run search "critical issues"
 
 # 2. Read key files
-# Reads: SESSION-HISTORY.md, START-HERE.md, CRITICAL-ISSUE-*.md
+# Reads: SESSION-HISTORY.md, TEMPLATE-STATUS.md, CRITICAL-ISSUE-*.md
 
 # 3. Tell user what was found
 "I found that the last session completed the directory structure migration.
@@ -228,7 +228,7 @@ Shall I proceed with that?"
 
 - [ ] Run vector search to find context
 - [ ] Read `SESSION-HISTORY.md`
-- [ ] Read `START-HERE.md`
+- [ ] Read `TEMPLATE-STATUS.md`
 - [ ] Check `active/` for current issues
 - [ ] Ask user to confirm priority
 
@@ -296,7 +296,7 @@ npm run manage-knowledge -- archive filename.md
 npm run vectorize
 
 # Read entry point
-cat TEMPLATE-DOCS/START-HERE.md
+cat TEMPLATE-DOCS/TEMPLATE-STATUS.md
 
 # Read session history
 cat TEMPLATE-DOCS/active/SESSION-HISTORY.md

@@ -21,6 +21,7 @@ PATH_TO_PLAN: $1
 ## Report
 - Summarize the work you completed in concise bullet points.
 - Run `git diff --stat` and include the resulting file and line change summary.
+- Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Session Memory (Auto-generate)
 After completing the build, automatically generate a session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:

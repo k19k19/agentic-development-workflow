@@ -1,7 +1,7 @@
 /**
- * START-HERE.md Parser
+ * TEMPLATE-STATUS.md Parser
  *
- * Extracts pending, paused, and in-progress tasks from START-HERE.md
+ * Extracts pending, paused, and in-progress tasks from TEMPLATE-STATUS.md
  * and other similar documentation files.
  */
 
@@ -111,7 +111,7 @@ function parseTaskSection(section, startLine, sourceFile) {
   }
 
   // Generate task ID from title
-  const taskId = `START-HERE-${title
+  const taskId = `TEMPLATE-STATUS-${title
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .substring(0, 30)}`;
@@ -132,7 +132,7 @@ function parseTaskSection(section, startLine, sourceFile) {
 }
 
 /**
- * Parse START-HERE.md or similar documentation files
+ * Parse TEMPLATE-STATUS.md or similar documentation files
  *
  * @param {string} filePath - Path to the file
  * @returns {Promise<Array>} Array of task objects

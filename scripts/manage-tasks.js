@@ -12,11 +12,13 @@ const path = require('path');
 
 const TASKS_FILE = path.join(__dirname, '..', 'ai-docs', 'tasks', 'tasks.json');
 const SESSION_DIR = path.join(__dirname, '..', 'ai-docs', 'sessions');
-const START_HERE_FILE = path.join(__dirname, '..', 'TEMPLATE-DOCS', 'START-HERE.md');
+const TEMPLATE_STATUS_FILE = path.join(__dirname, '..', 'TEMPLATE-DOCS', 'TEMPLATE-STATUS.md');
 
 // Import parsers and calculators
 const startHereParser = require('./parsers/start-here-parser');
 const tokenBudgetCalculator = require('./utils/token-budget-calculator');
+const TokenCollectorFactory = require('./token-collectors');
+const metricsLogger = require('./utils/workflow-metrics-logger');
 
 // Task states
 const STATES = {
@@ -180,6 +182,68 @@ async function completeTask(taskId, tokensUsed) {
   console.log(`   Remaining budget: ${data.tokenBudget.remaining.toLocaleString()}`);
 
   return task;
+}
+
+/**
+ * Complete task with automated token collection
+ * @param {string} taskId - Task ID
+ * @param {string} workflowType - Type of workflow (scout, plan, build, etc.)
+ * @param {string} workflowId - Workflow identifier (conversation ID, etc.)
+ */
+async function completeTaskAuto(taskId, workflowType, workflowId) {
+  const data = await loadTasks();
+  const taskIndex = data.tasks.findIndex(t => t.id === taskId);
+
+  if (taskIndex === -1) {
+    console.error(`❌ Task not found: ${taskId}`);
+    return;
+  }
+
+  // Capture tokens from all models
+  console.log('📊 Capturing token usage from APIs...');
+  const tokenUsage = await TokenCollectorFactory.captureAll(workflowId);
+
+  // Calculate total
+  const totalTokens = tokenUsage.reduce((sum, u) => sum + u.totalTokens, 0);
+
+  // Log to metrics file
+  await metricsLogger.logWorkflow(workflowType, taskId, tokenUsage, {
+    estimatedTokens: data.tasks[taskIndex].estimatedTokens
+  });
+
+  // Update task
+  const task = data.tasks[taskIndex];
+  task.state = STATES.COMPLETED;
+  task.completedAt = new Date().toISOString();
+  task.actualTokens = totalTokens;
+  task.tokenBreakdown = tokenUsage.reduce((acc, u) => {
+    acc[u.model] = u.totalTokens;
+    return acc;
+  }, {});
+  task.updatedAt = new Date().toISOString();
+
+  // Move to completed
+  data.completedTasks.push(task);
+  data.tasks.splice(taskIndex, 1);
+
+  // Update budget
+  data.tokenBudget.used += totalTokens;
+  data.tokenBudget.remaining = data.tokenBudget.dailyLimit - data.tokenBudget.used;
+
+  await saveTasks(data);
+
+  console.log(`✅ Task completed: ${task.id}`);
+  console.log(`   ${task.title}`);
+  console.log(`   Tokens used: ${totalTokens.toLocaleString()}`);
+  console.log(`   Breakdown:`);
+  tokenUsage.forEach(u => {
+    if (u.totalTokens > 0) {
+      console.log(`     - ${u.model}: ${u.totalTokens.toLocaleString()}`);
+    }
+  });
+  console.log(`   Remaining budget: ${data.tokenBudget.remaining.toLocaleString()}`);
+
+  return { task, tokenUsage };
 }
 
 async function listTasks(filter = 'active') {
@@ -405,12 +469,12 @@ async function sessionStart() {
     await saveTasks(data);
   }
 
-  // Parse START-HERE.md for pending tasks
+  // Parse TEMPLATE-STATUS.md for pending tasks
   let startHereTasks = [];
   try {
-    startHereTasks = await startHereParser.parseStartHereFile(START_HERE_FILE);
+    startHereTasks = await startHereParser.parseStartHereFile(TEMPLATE_STATUS_FILE);
   } catch (error) {
-    // START-HERE.md might not exist, continue without it
+    // TEMPLATE-STATUS.md might not exist, continue without it
   }
 
   // Calculate budget summary
@@ -450,8 +514,8 @@ async function sessionStart() {
     console.log('   💡 Reserve budget for critical tasks\n');
   }
 
-  // Pending tasks from START-HERE.md
-  console.log('📋 PENDING TASKS FROM START-HERE.md');
+  // Pending tasks from TEMPLATE-STATUS.md
+  console.log('📋 PENDING TASKS FROM TEMPLATE-STATUS.md');
   if (startHereTasks.length === 0) {
     console.log('   ⚪ No pending tasks found (all completed ✅)\n');
   } else {
@@ -577,6 +641,32 @@ const args = process.argv.slice(3);
         await sessionStart();
         break;
 
+      case 'complete-auto':
+        await completeTaskAuto(args[0], args[1] || 'manual', args[2] || 'unknown');
+        break;
+
+      case 'efficiency':
+        const days = parseInt(args[0]) || 7;
+        const stats = await metricsLogger.getEfficiency(days);
+
+        if (!stats) {
+          console.log('No workflow data available');
+          break;
+        }
+
+        console.log(`\n📊 EFFICIENCY REPORT (${stats.period})\n`);
+        console.log(`Workflows completed: ${stats.workflows}`);
+        console.log(`Total tokens: ${stats.totalTokens.toLocaleString()}`);
+        console.log(`Average per workflow: ${stats.avgPerWorkflow.toLocaleString()}`);
+        console.log(`Efficiency score: ${stats.efficiency}% (target: >90%)\n`);
+
+        console.log('Model breakdown:');
+        Object.entries(stats.modelUsage).forEach(([model, usage]) => {
+          console.log(`  ${model}: ${usage.total.toLocaleString()} tokens`);
+        });
+        console.log('');
+        break;
+
       default:
         console.log(`
 Task Management System
@@ -597,7 +687,14 @@ Commands:
     Resume a paused task
 
   complete <task-id> <tokens-used>
-    Mark task as complete and update token budget
+    Mark task as complete and update token budget (manual)
+
+  complete-auto <task-id> [workflow-type] [workflow-id]
+    Mark task as complete with automated token collection
+    (workflow-type: scout, plan, build, quick, full)
+
+  efficiency [days]
+    Show efficiency report (default: 7 days)
 
   list [filter]
     List tasks (filter: active, completed, all)
@@ -616,6 +713,8 @@ Examples:
   node scripts/manage-tasks.js pause TASK-123 "Completed plan phase, ready to build"
   node scripts/manage-tasks.js resume TASK-123
   node scripts/manage-tasks.js complete TASK-123 85000
+  node scripts/manage-tasks.js complete-auto TASK-123 build workflow-abc123
+  node scripts/manage-tasks.js efficiency 7
   node scripts/manage-tasks.js status
   node scripts/manage-tasks.js session-start
 `);

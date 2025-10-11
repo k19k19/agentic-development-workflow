@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-10-10T10:22:34.812Z",
+  "lastUpdated": "2025-10-11T02:39:11.652Z",
   "tasks": [
     {
       "id": "TASK-1760091664098",
@@ -58,13 +58,13 @@
   ],
   "tokenBudget": {
     "dailyLimit": 500000,
-    "used": 5000,
-    "remaining": 495000,
-    "lastReset": "2025-10-10T00:00:00Z"
+    "used": 0,
+    "remaining": 500000,
+    "lastReset": "2025-10-11T00:00:00Z"
   },
   "contextWindow": {
     "limit": 200000,
-    "currentUsage": 185000,
+    "currentUsage": 0,
     "warningThreshold": 150000,
     "criticalThreshold": 180000
   }

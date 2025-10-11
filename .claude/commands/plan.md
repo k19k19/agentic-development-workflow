@@ -41,6 +41,7 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 ## Report
 - Provide the saved plan path and list any documentation files retrieved.
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
+- Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Next Steps
 After reviewing the plan, proceed with implementation:

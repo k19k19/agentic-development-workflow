@@ -14,6 +14,8 @@
     "tasks:pause": "node scripts/manage-tasks.js pause",
     "tasks:resume": "node scripts/manage-tasks.js resume",
     "tasks:complete": "node scripts/manage-tasks.js complete",
+    "tasks:complete-auto": "node scripts/manage-tasks.js complete-auto",
+    "tasks:efficiency": "node scripts/manage-tasks.js efficiency",
     "tasks:session-start": "node scripts/manage-tasks.js session-start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -36,6 +38,7 @@
   "devDependencies": {
     "eslint": "^9.37.0",
     "fast-glob": "^3.3.3",
+    "glob": "^10.3.10",
     "prettier": "^3.6.2"
   }
 }

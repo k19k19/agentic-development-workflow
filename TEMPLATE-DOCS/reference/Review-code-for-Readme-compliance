@@ -1,0 +1,24 @@
+# Review: budget-agentic-workflow
+
+## Summary
+
+- The repository provides onboarding scripts, documentation, and manual runbooks for an agentic workflow template, but it does not include a runtime that can execute the slash commands advertised in the README.
+- Core automation is limited to utility scripts (initialization, documentation vectorization, knowledge/task tracking); critical workflow steps such as `/quick`, `/scout_build`, `/full`, `/test`, and deployment remain manual procedures described in Markdown instructions.
+- Several implementation gaps prevent the template from delivering the "one-command" multi-agent experience that the README promises, including a broken project scale detector and the absence of automated documentation/report updates.
+
+## Confirmed Capabilities
+
+- `scripts/init-agentic-workflow.sh` provisions template assets (docs, `.claude` command guides, scripts), seeds `ai-docs/`, merges configuration, installs dependencies, and attempts vectorization/scale detection when run from a target project.【F:budget-agentic-workflow/scripts/init-agentic-workflow.sh†L1-L210】
+- The repository includes working Node.js utilities for vectorizing documentation (`scripts/vectorize-docs.js`), performing semantic search (`scripts/search-docs.js`), and maintaining knowledge/task inventories (`scripts/manage-knowledge.js`, `scripts/manage-tasks.js`).【F:budget-agentic-workflow/scripts/vectorize-docs.js†L1-L211】【F:budget-agentic-workflow/scripts/search-docs.js†L1-L119】【F:budget-agentic-workflow/scripts/manage-knowledge.js†L1-L149】【F:budget-agentic-workflow/scripts/manage-tasks.js†L1-L210】
+
+## Gaps vs. README Claims
+
+1. **Slash commands lack implementations.** The README asserts that users can run `/quick`, `/scout_build`, `/full`, `/test`, `/deploy_staging`, etc., to trigger multi-agent workflows that delegate work across Claude, Codex, and Gemini.【F:budget-agentic-workflow/README.md†L83-L207】 In the repository, these commands are only described as Markdown playbooks under `.claude/commands/*.md`; there is no CLI, server, or automation to execute them. The "Quick" command, for example, simply instructs an operator to use the Codex MCP tool and run tests manually.【F:budget-agentic-workflow/.claude/commands/quick.md†L1-L60】
+2. **Documentation/report automation is aspirational.** The README promises that workflows "auto-update documentation and track metrics" after build/report phases.【F:budget-agentic-workflow/README.md†L152-L156】 However, `.claude/commands/build_w_report.md` relies on the human/agent to manually edit `app-docs/mappings/feature-to-source.md`, craft a session summary, and re-run vectorization; no scripts update these artifacts automatically.【F:budget-agentic-workflow/.claude/commands/build_w_report.md†L1-L104】
+3. **Project scale detection misreports LOC.** The initialization flow advertises automatic project scale detection,【F:budget-agentic-workflow/README.md†L57-L65】 but `scripts/detect-project-scale.js` searches for files using the glob `-name "*.{js,jsx,...}"` inside quotes, which prevents brace expansion and causes the line-count metric to stay at zero.【F:budget-agentic-workflow/scripts/detect-project-scale.js†L74-L86】 This undermines the scale heuristic that drives workflow recommendations.
+4. **Testing command is non-functional.** `/test` is listed as a runnable workflow step,【F:budget-agentic-workflow/README.md†L170-L183】 yet `package.json` wires `npm test` to exit with an error placeholder rather than executing any harness, so the advertised automated testing stage cannot run out of the box.【F:budget-agentic-workflow/package.json†L6-L19】
+
+## Additional Observations
+
+- The template includes extensive documentation under `TEMPLATE-DOCS/` and `app-docs/`, but these materials assume integration with Anthropic's Claude Code environment; running the workflow without that external tooling is unsupported by the repository alone.
+- If adopted, the vectorization and search scripts require downloading transformer models via `@xenova/transformers`, which can be slow on first run; consider caching guidance in future revisions.
