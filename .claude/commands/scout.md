@@ -32,6 +32,14 @@ USER_PROMPT: $1
 - This context will be used to inform the next step of the workflow.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
+## Automation Trace
+- Emit a workflow status JSON entry following `app-docs/guides/workflow-status-format.md`.
+  - Derive `featureId` from the request title in kebab-case.
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-scout.json`.
+  - Use `phase: "scout"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
+  - Set `nextCommand` to the exact follow-up slash command the user should run.
+  - Include any documentation paths that must be updated before resuming.
+
 ## Next Steps
 After completing scout, you typically want to:
 

@@ -55,6 +55,13 @@ Provide the following in your report:
 - `git diff --stat` output to summarize change surface
 - Any follow-up tasks or open questions for the next agent
 
+## Automation Trace
+- Save a workflow status JSON update (`app-docs/guides/workflow-status-format.md`).
+  - Write to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-build.json`.
+  - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, `completed`) that matches the run.
+  - Reference the generated build report in `outputPath` and list supporting documentation.
+  - Set `nextCommand` to the next actionable slash command for the user.
+
 ## Session Memory (Auto-generated)
 
 The `generate-session-summary.js` script automatically creates a detailed session summary at `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with this structure:

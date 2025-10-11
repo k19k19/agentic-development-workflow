@@ -27,6 +27,13 @@ PATH_TO_PLAN: $1
 - Run `git diff --stat` and include the resulting file and line change summary.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
+## Automation Trace
+- Write a workflow status JSON entry (`app-docs/guides/workflow-status-format.md`).
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-build.json`.
+  - Use `phase: "build"` and set `status` to `in_progress`, `needs_validation`, `failed`, or `completed` based on the outcome.
+  - Populate `outputPath` with the build summary/log and list any documentation needing updates.
+  - Set `nextCommand` to the recommended follow-up (`/test`, `/report_failure`, `/build --resume`, etc.).
+
 ## Session Memory (Auto-generate)
 After completing the build, automatically generate a session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
 - Task summary (1-2 sentences)

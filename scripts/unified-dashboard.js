@@ -8,6 +8,7 @@
 
 const path = require('path');
 const fs = require('fs').promises;
+const {syncWorkflowStatus} = require('./workflow-status');
 
 const TASKS_FILE = path.join(__dirname, '../ai-docs/tasks/tasks.json');
 
@@ -33,8 +34,11 @@ function createProgressBar(current, total, width = 30) {
 async function showUnifiedDashboard() {
   // Lazy load to avoid circular dependency when called from manage-plans.js
   const {loadRegistry} = require('./manage-plans');
-  const plans = await loadRegistry();
-  const tasks = await loadTasks();
+  const [{index: workflowIndex, warnings: workflowWarnings}, plans, tasks] = await Promise.all([
+    syncWorkflowStatus({silent: true}),
+    loadRegistry(),
+    loadTasks()
+  ]);
 
   // Token budget
   const budgetPercent = ((tasks.tokenBudget.used / tasks.tokenBudget.dailyLimit) * 100).toFixed(1);
@@ -56,6 +60,47 @@ async function showUnifiedDashboard() {
     console.log('   ⚠️  WARNING: Budget running low');
   }
   console.log('');
+
+  // Workflow status overview
+  console.log('🧭 FEATURE WORKFLOW STATUS');
+  if (workflowIndex.features.length === 0) {
+    console.log('   No workflow updates captured yet. Run any slash command to generate status JSON.\n');
+  } else {
+    workflowIndex.features.slice(0, 5).forEach((feature, idx) => {
+      console.log(`   ${idx + 1}. ${feature.title} (${feature.featureId})`);
+      console.log(`        Phase: ${feature.currentPhase} • Status: ${feature.status}`);
+      console.log(`        Last: ${feature.lastCommand}`);
+      if (feature.nextCommand) {
+        console.log(`        ▶️  Resume: ${feature.nextCommand}`);
+      }
+      if (feature.summary) {
+        console.log(`        📝 ${feature.summary}`);
+      }
+      if (feature.outputPath) {
+        console.log(`        📂 ${feature.outputPath}`);
+      }
+      if (feature.documentation && feature.documentation.length > 0) {
+        console.log(`        📚 Docs: ${feature.documentation.join(', ')}`);
+      }
+      if (feature.notes) {
+        console.log(`        🧠 ${feature.notes}`);
+      }
+      console.log('');
+    });
+    if (workflowIndex.features.length > 5) {
+      console.log(`   …and ${workflowIndex.features.length - 5} more features. Run \`npm run workflow:sync\` to inspect full history.\n`);
+    }
+  }
+  if (workflowWarnings.length > 0) {
+    console.log('   ⚠️  Some workflow entries were skipped:');
+    workflowWarnings.slice(0, 3).forEach(message => {
+      console.log(`        - ${message}`);
+    });
+    if (workflowWarnings.length > 3) {
+      console.log(`        …plus ${workflowWarnings.length - 3} more warnings`);
+    }
+    console.log('');
+  }
 
   // Combine plans and tasks
   const inProgressPlans = plans.plans.filter(p => p.status === 'in_progress');

@@ -26,6 +26,7 @@
     "plans:update": "node scripts/manage-plans.js update",
     "plans:complete": "node scripts/manage-plans.js complete",
     "plans:next": "node scripts/manage-plans.js next",
+    "workflow:sync": "node scripts/update-workflow-status.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write ."

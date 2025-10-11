@@ -52,6 +52,13 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
+## Automation Trace
+- Write a workflow status JSON file (see `app-docs/guides/workflow-status-format.md`).
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-plan.json`.
+  - Use `phase: "plan"` and set `status` to `needs_validation`, `ready_for_build`, or `blocked`.
+  - Fill `outputPath` with the generated plan path and list any supporting docs.
+  - Set `nextCommand` to the recommended `/build` or `/build_w_report` invocation (or `/plan --resume` if blocked).
+
 ## Next Steps
 After reviewing the plan, proceed with implementation:
 

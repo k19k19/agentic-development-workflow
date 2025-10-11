@@ -38,5 +38,12 @@ FAILURES_DIRECTORY: ai-docs/failures/
 - Present lessons learned.
 - Provide next steps for restart.
 
+## Automation Trace
+- Record a workflow status JSON entry (`app-docs/guides/workflow-status-format.md`).
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-report.json`.
+  - Use `phase: "report"` and set `status` to `failed` or `blocked` based on severity.
+  - Include the generated failure report path and any documentation requiring updates.
+  - Set `nextCommand` to `/restart_feature <feature-id>` or other recovery command the user must run.
+
 ## Budget
 ~5K tokens (Claude root cause analysis)

@@ -36,6 +36,7 @@ Every command outputs:
 - `npm run vectorize` → Rebuild vector store from `app-docs/` + `ai-docs/` outputs.
 - `npm run manage-knowledge -- <cmd>` → Move specs between `active/` and `archive/`.
 - `npm run search -- "query"` → Semantic search across indexed docs.
+- `npm run workflow:sync` → Aggregate latest scout/plan/build/report status files for the dashboard.
 
 Scripts never copy documentation into consumer projects—only runtime assets (`.claude/`, `scripts/`) plus empty scaffolding (`app-docs/`, `ai-docs/`, `vector-store.json`).
 
