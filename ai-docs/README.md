@@ -6,6 +6,8 @@ Automation drops session artifacts here. Treat everything as disposable unless a
 - `builds/` – Build logs and test output.
 - `sessions/` – Session summaries written after each build command.
 - `workflow/` – Per-command status JSON plus the aggregated `status-index.json` used by the dashboard.
+- `workflow/cross-session-prompt.md` – Lightweight prompt carried across sessions; keep it lean to avoid context overflow.
+- `workflow/tasks.json` – Optional backlog metadata used by `npm run tasks:session-start` for budget-aware recommendations.
 - `knowledge-ledger/` – Optional hand-written notes to revisit in future sessions.
 
 After completing a command, run `npm run workflow:sync` to refresh the aggregated index before opening the dashboard.
