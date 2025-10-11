@@ -16,13 +16,8 @@ const { spawn } = require('child_process');
 
 const REPO_ROOT = path.join(__dirname, '..');
 
-// Detect if running in template repo or user project
-const isTemplateRepo = require('fs').existsSync(path.join(REPO_ROOT, 'TEMPLATE-DOCS'));
-
-// Use TEMPLATE-DOCS in template repo, app-docs/specs in user projects
-const SPECS_ROOT = isTemplateRepo
-  ? path.join(REPO_ROOT, 'TEMPLATE-DOCS')
-  : path.join(REPO_ROOT, 'app-docs', 'specs');
+// Knowledge always lives in app-docs for simplicity
+const SPECS_ROOT = path.join(REPO_ROOT, 'app-docs', 'specs');
 
 const ACTIVE_DIR = path.join(SPECS_ROOT, 'active');
 const ARCHIVE_DIR = path.join(SPECS_ROOT, 'archive');

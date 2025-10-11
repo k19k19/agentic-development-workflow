@@ -24,8 +24,11 @@ TASK: $1
 ## Workflow
 1. Validate `TASK` is provided and suitable for quick mode.
 2. Use `mcp__codex__codex` tool to implement the task directly.
-3. Run tests using `npm test` or appropriate test command.
-4. Report results with token usage.
+3. Capture a short session summary in `ai-docs/sessions/SESSION-[date]-quick.md`.
+4. Run `npm run vectorize` to index the new summary and code changes.
+5. Run tests using `npm test` or appropriate test command.
+6. Trigger `npm run tasks:session-start` so the ledger reflects the change.
+7. Report results with token usage.
 
 ## Report
 - List files created/modified.
@@ -54,8 +57,6 @@ TASK: $1
 # or
 /full "[task]" "" "budget"  # For large tasks
 ```
-
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
 
 ## Budget
 ~5K tokens (Codex MCP)

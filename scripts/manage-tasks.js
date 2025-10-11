@@ -12,10 +12,7 @@ const path = require('path');
 
 const TASKS_FILE = path.join(__dirname, '..', 'ai-docs', 'tasks', 'tasks.json');
 const SESSION_DIR = path.join(__dirname, '..', 'ai-docs', 'sessions');
-const TEMPLATE_STATUS_FILE = path.join(__dirname, '..', 'TEMPLATE-DOCS', 'TEMPLATE-STATUS.md');
-
-// Import parsers and calculators
-const startHereParser = require('./parsers/start-here-parser');
+// Import calculators
 const tokenBudgetCalculator = require('./utils/token-budget-calculator');
 const TokenCollectorFactory = require('./token-collectors');
 const metricsLogger = require('./utils/workflow-metrics-logger');
@@ -469,41 +466,34 @@ async function sessionStart() {
     await saveTasks(data);
   }
 
-  // Parse TEMPLATE-STATUS.md for pending tasks
-  let startHereTasks = [];
-  try {
-    startHereTasks = await startHereParser.parseStartHereFile(TEMPLATE_STATUS_FILE);
-  } catch (error) {
-    // TEMPLATE-STATUS.md might not exist, continue without it
-  }
-
-  // Calculate budget summary
   const budgetSummary = tokenBudgetCalculator.calculateBudgetSummary(data);
 
-  // Combine all tasks
-  const allTasks = [
-    ...data.tasks,
-    ...startHereTasks
-  ];
+  const activeTasks = data.tasks.filter(
+    (task) => task.state !== STATES.COMPLETED && task.state !== STATES.CANCELLED
+  );
 
-  // Get recommended tasks that fit budget
+  // Clone tasks with "status" so the recommendation engine can reuse template logic
+  const recommendationPool = activeTasks.map((task) => ({
+    ...task,
+    status: task.state,
+  }));
+
   const recommendedTasks = tokenBudgetCalculator.getRecommendedTasks(
-    allTasks,
+    recommendationPool,
     budgetSummary.remaining
   );
 
-  // Display session start summary
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('🎯 SESSION START SUMMARY');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-  // Token Budget
   console.log('💰 TOKEN BUDGET (Daily)');
-  console.log(`   Used: ${budgetSummary.formatted.used} / ${budgetSummary.formatted.limit} (${budgetSummary.usagePercent}%)`);
+  console.log(
+    `   Used: ${budgetSummary.formatted.used} / ${budgetSummary.formatted.limit} (${budgetSummary.usagePercent}%)`
+  );
   console.log(`   ${budgetSummary.progressBar}`);
   console.log(`   Remaining: ${budgetSummary.formatted.remaining} tokens\n`);
 
-  // Budget warnings
   if (budgetSummary.warningLevel === 'critical') {
     console.log('🚨 CRITICAL: Token budget at ' + budgetSummary.usagePercent + '%');
     console.log('   Daily limit nearly exhausted!');
@@ -514,70 +504,50 @@ async function sessionStart() {
     console.log('   💡 Reserve budget for critical tasks\n');
   }
 
-  // Pending tasks from TEMPLATE-STATUS.md
-  console.log('📋 PENDING TASKS FROM TEMPLATE-STATUS.md');
-  if (startHereTasks.length === 0) {
-    console.log('   ⚪ No pending tasks found (all completed ✅)\n');
+  console.log('📋 ACTIVE TASKS');
+  if (activeTasks.length === 0) {
+    console.log('   ⚪ No tracked tasks yet – add one with "npm run tasks:add"\n');
   } else {
-    startHereTasks.forEach(task => {
-      const statusEmoji = {
-        pending: '⚪',
-        paused: '⏸️ ',
-        inProgress: '🚧',
-        blocked: '🔴'
-      };
-      console.log(`   ${statusEmoji[task.status] || '⚪'} ${task.title}`);
-      if (task.estimatedTokens) {
-        console.log(`     Tokens: ~${task.estimatedTokens.toLocaleString()}`);
-      }
-      if (task.timeEstimate) {
-        console.log(`     Time: ${task.timeEstimate}`);
-      }
-    });
-    console.log('');
-  }
-
-  // Tasks from task ledger
-  const activeTasks = data.tasks.filter(t =>
-    t.state !== STATES.COMPLETED && t.state !== STATES.CANCELLED
-  );
-  const paused = activeTasks.filter(t => t.state === STATES.PAUSED);
-  const inProgress = activeTasks.filter(t => t.state === STATES.IN_PROGRESS);
-  const pending = activeTasks.filter(t => t.state === STATES.PENDING);
-
-  console.log('📋 TASKS FROM TASK LEDGER');
-  console.log(`   ⏸️  PAUSED: ${paused.length}`);
-  console.log(`   🚧 IN PROGRESS: ${inProgress.length}`);
-  console.log(`   ⚪ PENDING: ${pending.length}\n`);
-
-  // Paused tasks reminder
-  if (paused.length > 0) {
-    console.log('⏸️  PAUSED TASKS (Resume these first):');
-    paused.forEach(task => {
+    activeTasks.forEach((task) => {
       console.log(`   • ${task.id}: ${task.title}`);
-      if (task.checkpoint) {
+      console.log(
+        `     Size: ${task.size} | Priority: ${task.priority} | State: ${task.state}`
+      );
+      if (task.checkpoint?.note) {
         console.log(`     📍 ${task.checkpoint.note}`);
       }
     });
     console.log('');
   }
 
-  // Recommendations
+  const paused = activeTasks.filter((t) => t.state === STATES.PAUSED);
+  if (paused.length > 0) {
+    console.log('⏸️  PAUSED TASKS (resume before starting something new):');
+    paused.forEach((task) => {
+      console.log(`   • ${task.id}: ${task.title}`);
+      if (task.checkpoint?.note) {
+        console.log(`     📍 ${task.checkpoint.note}`);
+      }
+    });
+    console.log('');
+  }
+
   console.log('💡 RECOMMENDATIONS\n');
 
   if (budgetSummary.remaining === 0) {
     console.log('⚠️  Daily token budget exhausted');
     console.log('   Resume tomorrow or upgrade plan\n');
   } else if (recommendedTasks.length > 0) {
-    console.log(`✨ Tasks that fit in remaining budget (${budgetSummary.formatted.remaining} tokens):\n`);
+    console.log(
+      `✨ Tasks that fit the remaining budget (${budgetSummary.formatted.remaining} tokens):\n`
+    );
 
-    recommendedTasks.slice(0, 5).forEach(task => {
-      const source = task.source ? ` (from ${task.source.split(':')[0]})` : '';
-      console.log(`   • ${task.title}${source}`);
-
-      if (task.estimatedTokens) {
-        const timeInfo = task.timeEstimate ? `, ${task.timeEstimate}` : '';
-        console.log(`     Size: ~${task.estimatedTokens.toLocaleString()} tokens${timeInfo}`);
+    recommendedTasks.slice(0, 5).forEach((task) => {
+      console.log(`   • ${task.title}`);
+      const estimated = task.estimatedTokens || task.estimated || 0;
+      if (estimated) {
+        const sizeInfo = task.timeEstimate ? `, ${task.timeEstimate}` : '';
+        console.log(`     Size: ~${estimated.toLocaleString()} tokens${sizeInfo}`);
       }
 
       if (task.id && task.id.startsWith('TASK-')) {
@@ -585,13 +555,41 @@ async function sessionStart() {
       }
     });
     console.log('');
+  } else {
+    console.log('   ⚪ No tracked tasks fit the remaining token budget\n');
   }
 
-  // Suggested workflows
-  if (budgetSummary.suggestedWorkflows.length > 0) {
-    console.log('🚀 SUGGESTED WORKFLOWS:\n');
+  const suggestCommandForTask = (task) => {
+    if (!task) {
+      return '/scout "[task description]"';
+    }
 
-    budgetSummary.suggestedWorkflows.forEach(workflow => {
+    const safeTitle = (task.title || '').replace(/"/g, '\\"');
+    const normalizedSize = (task.size || '').toLowerCase();
+
+    if (normalizedSize === 'small') {
+      return `/quick "${safeTitle}"`;
+    }
+
+    if (normalizedSize === 'medium') {
+      return `/scout_build "${safeTitle}"`;
+    }
+
+    if (normalizedSize === 'large' || normalizedSize === 'xlarge') {
+      return `/full "${safeTitle}" "<optional doc link>" budget`;
+    }
+
+    return `/scout "${safeTitle || 'outline the task'}"`;
+  };
+
+  const nextCommandTask = recommendedTasks[0] || activeTasks[0] || null;
+  console.log('🚀 RUN THIS NOW (keeps vector store + ledger in sync)');
+  console.log(`   ${suggestCommandForTask(nextCommandTask)}\n`);
+
+  if (budgetSummary.suggestedWorkflows.length > 0) {
+    console.log('⚡ QUICK REFERENCE WORKFLOWS:\n');
+
+    budgetSummary.suggestedWorkflows.forEach((workflow) => {
       console.log(`   • ${workflow.name}: ${workflow.command}`);
       console.log(`     Tokens: ~${workflow.tokens.toLocaleString()}, Time: ${workflow.time}`);
     });

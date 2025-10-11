@@ -42,9 +42,9 @@ After completing scout, you typically want to:
 
 Where `[scout-results-path]` is the file path shown in the scout output.
 
-**Alternative:** If you're in a hurry and the task is straightforward:
+**Short circuit:**
 ```bash
-/build "[path-to-existing-plan]"
+/scout_build "[your-task]"
 ```
 
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
+When you hand off to the next command, remind the user that the vector store is already primed—no extra docs needed.

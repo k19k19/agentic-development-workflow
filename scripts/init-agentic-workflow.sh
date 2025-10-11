@@ -43,46 +43,47 @@ echo ""
 detect_context
 
 # --- 1. Copy Core Template Files ---
-log_info "📁 Step 1/7: Copying core template files..."
+log_info "📁 Step 1/7: Copying runtime automation..."
 
-# Directories (merge if exists, create if not)
-for dir in "app-docs" ".claude" "scripts"; do
+# Copy only automation assets – docs stay in the template
+for dir in ".claude" "scripts"; do
     if [ ! -d "$PROJECT_ROOT/$dir" ]; then
         cp -r "$TEMPLATE_ROOT/$dir" "$PROJECT_ROOT/$dir"
         log_success "Created $dir/"
     else
-        # Merge directory contents
         cp -rn "$TEMPLATE_ROOT/$dir/"* "$PROJECT_ROOT/$dir/" 2>/dev/null || true
         log_info "Merged $dir/ (existing files preserved)"
     fi
 done
 
-# Create ai-docs structure (empty, populated on first run)
+# Scaffold minimal app-docs structure without copying template content
+APP_DOCS_DIRS=(
+    "specs/active"
+    "specs/archive"
+    "specs/reference"
+    "guides"
+    "architecture"
+    "mappings"
+    "operations"
+)
+
+for relative_dir in "${APP_DOCS_DIRS[@]}"; do
+    target_dir="$PROJECT_ROOT/app-docs/$relative_dir"
+    if [ ! -d "$target_dir" ]; then
+        mkdir -p "$target_dir"
+        touch "$target_dir/.gitkeep"
+    fi
+done
+log_success "Scaffolded app-docs/ directory"
+
+# Create ai-docs structure (empty on install)
 if [ ! -d "$PROJECT_ROOT/ai-docs" ]; then
-    mkdir -p "$PROJECT_ROOT/ai-docs"/{plans,builds,sessions,failures,logs,scout}
-    touch "$PROJECT_ROOT/ai-docs"/{.gitkeep,plans/.gitkeep,builds/.gitkeep,sessions/.gitkeep,failures/.gitkeep,logs/.gitkeep,scout/.gitkeep}
-    cp "$TEMPLATE_ROOT/ai-docs/README.md" "$PROJECT_ROOT/ai-docs/README.md" 2>/dev/null || true
+    mkdir -p "$PROJECT_ROOT/ai-docs"/{plans,builds,sessions,failures,logs,scout,tasks}
+    touch "$PROJECT_ROOT/ai-docs"/{.gitkeep,plans/.gitkeep,builds/.gitkeep,sessions/.gitkeep,failures/.gitkeep,logs/.gitkeep,scout/.gitkeep,tasks/.gitkeep}
     log_success "Created ai-docs/ structure (empty)"
 else
     log_info "Preserved existing ai-docs/"
 fi
-
-# Root-level documentation files (skip if exists to preserve customizations)
-# NOTE: Template-specific docs (GETTING-STARTED, MIGRATION-GUIDE, etc.) are NOT copied
-# They stay in TEMPLATE-DOCS/ and users reference them via GitHub
-DOC_FILES=(
-    "CLAUDE-TEMPLATE.md"
-    "USER-MEMORY-CLAUDE.md"
-)
-
-for file in "${DOC_FILES[@]}"; do
-    if [ ! -f "$PROJECT_ROOT/$file" ]; then
-        cp "$TEMPLATE_ROOT/$file" "$PROJECT_ROOT/$file" 2>/dev/null || log_info "Skipped $file (not in template)"
-        log_success "Created $file"
-    else
-        log_info "Preserved existing $file"
-    fi
-done
 
 # Configuration files (copy if not exists)
 CONFIG_FILES=(
@@ -279,36 +280,23 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 log_success "🎉 Setup Complete! Your project is ready."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-log_info "📋 Next Steps:"
+log_info "📋 Next Steps (no docs required):"
 echo ""
-echo "  1. Review CLAUDE.md and customize for your project"
-echo "     \$ open CLAUDE.md  # or 'code CLAUDE.md'"
+echo "  1. Get the live dashboard with recommended slash command:"
+echo "     \$ npm run tasks:session-start"
 echo ""
-echo "  2. Read the template documentation"
-echo "     → Visit: https://github.com/your-org/budget-agentic-workflow/tree/main/TEMPLATE-DOCS"
-echo "     → Or: open $TEMPLATE_ROOT/TEMPLATE-DOCS/GETTING-STARTED.md"
+echo "  2. Run the suggested command immediately (keeps vector store,"
+echo "     knowledge ledger, and session automation in sync)."
 echo ""
-echo "  3. Start using workflows (choose based on project scale):"
+echo "  3. Need a reminder later? Type plain text and Claude will reply"
+echo "     with the best slash command to run next."
 echo ""
-echo "     Small projects (<10 files):"
-echo "       → Direct implementation or /quick \"[task]\""
+echo "  4. Ready to work? Typical entry points are:"
+echo "     • /quick \"add env var validation\"       # small change"
+echo "     • /scout_build \"add JWT auth\"            # medium change"
+echo "     • /full \"implement billing\" \"docs\" budget  # large change"
 echo ""
-echo "     Medium projects (10-50 files):"
-echo "       → /scout_build \"[task]\""
+echo "  5. After any build command, run /test and follow the prompts."
 echo ""
-echo "     Large projects (>50 files):"
-echo "       → /scout_plan_build \"[task]\" \"[docs]\""
-echo ""
-echo "  4. If using Claude Code CLI, restart your session:"
-echo "     • Exit current session"
-echo "     • cd $PROJECT_ROOT"
-echo "     • claude-code"
-echo ""
-log_info "📚 Documentation:"
-echo "     • app-docs/guides/COMMAND-MAPPING.md - All commands"
-echo "     • app-docs/guides/budget-mode.md - Budget optimization"
-echo "     • app-docs/guides/CROSS-SESSION-GUIDE.md - Multi-session work"
-echo "     • Template docs: $TEMPLATE_ROOT/TEMPLATE-DOCS/"
-echo ""
-log_success "Happy coding! 🚀"
+log_success "Happy shipping! 🚀"
 echo ""

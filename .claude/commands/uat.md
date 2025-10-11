@@ -52,7 +52,5 @@ Then prepare for production:
 /report_failure "[feature-id]"  # Escalate for review
 ```
 
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
-
 ## Budget
 ~5K tokens (Chrome DevTools MCP)

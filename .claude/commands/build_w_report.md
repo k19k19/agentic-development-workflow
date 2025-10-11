@@ -134,5 +134,3 @@ git diff --stat                    # See what changed
 cat ai-docs/sessions/SESSION-*.md  # Read detailed session summary
 cat app-docs/mappings/feature-to-source.md  # Check updated mappings
 ```
-
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

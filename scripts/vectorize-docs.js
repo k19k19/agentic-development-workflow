@@ -4,33 +4,18 @@ const path = require('path');
 const matter = require('gray-matter');
 
 // --- Configuration ---
-// Detect if running in template repo or user project
-const isTemplateRepo = require('fs').existsSync(path.join(__dirname, '..', 'TEMPLATE-DOCS'));
+const DOCS_DIRECTORIES = [
+  'app-docs/specs/active',
+  'app-docs/specs/reference',
+  'app-docs/guides',
+  'app-docs/architecture',
+  'app-docs/mappings',
+  'app-docs/operations',
+  'ai-docs/knowledge-ledger',
+  'ai-docs/sessions'
+];
 
-// Configure directories based on environment
-const DOCS_DIRECTORIES = isTemplateRepo
-  ? [
-      // Template development mode: Index current work + evergreen guides
-      'TEMPLATE-DOCS/active',
-      'TEMPLATE-DOCS/reference',
-      'ai-docs/knowledge-ledger',  // Index knowledge ledger for template development
-    ]
-  : [
-      // User project mode: Index their documentation
-      'app-docs/specs/active',
-      'app-docs/specs/reference',
-      'app-docs/guides',
-      'app-docs/architecture',
-      'app-docs/mappings',
-      'app-docs/operations',
-      'ai-docs/knowledge-ledger',
-      'ai-docs/sessions',  // Production session notes for AI memory persistence
-    ];
-
-// Adjust excluded files based on environment
-const EXCLUDED_FILES = isTemplateRepo
-  ? new Set([])  // Template: index everything in active/reference
-  : new Set(['feature-to-source.md', 'README.md', 'template.md']);  // User: skip auto-generated and ledger templates
+const EXCLUDED_FILES = new Set(['feature-to-source.md', 'README.md', 'template.md', '.gitkeep']);
 const ALLOWED_EXTENSIONS = new Set(['.md', '.mdx', '.markdown', '.txt', '.yaml', '.yml', '.json', '.sql']);
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Skip files larger than 3 MB
 const VECTOR_STORE_PATH = path.join(__dirname, '..', 'vector-store.json');

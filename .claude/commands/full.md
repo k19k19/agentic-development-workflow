@@ -29,7 +29,7 @@ MODE: $3 (default: standard)
 ## Workflow
 1. Run SlashCommand(`/scout "[USER_PROMPT]"`) -> `relevant_files_collection_path`.
 2. If MODE is `budget`, run SlashCommand(`/plan "[USER_PROMPT] [BUDGET MODE]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"`); otherwise run `/plan "[USER_PROMPT]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"` to obtain `path_to_plan`.
-3. Wait for user approval of the plan before proceeding.
+3. When the plan is ready, announce the pause clearly: `🛑 Still inside /full (plan ready). Reply 'resume' to run /build_w_report or 'stop' to exit.` Then wait for user approval.
 4. Run SlashCommand(`/build_w_report "[path_to_plan]"`) -> `build_report`.
 5. Report your work based on the `Report` section defined in the downstream commands.
 
@@ -67,5 +67,3 @@ git diff --stat                     # See all changes
 ```bash
 npm run tasks:session-start  # See remaining budget and next recommendations
 ```
-
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`

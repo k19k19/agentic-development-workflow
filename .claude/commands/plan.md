@@ -34,6 +34,9 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 - Think deeply about the optimal implementation strategy using the gathered context.
 - Read the referenced source files using the provided offsets and limits. Respect token budgets and only pull the necessary ranges.
 - **Budget Mode:** If `USER_PROMPT` contains `[BUDGET MODE]`, skip external scraping unless a URL is explicitly provided, cap the written plan at ~350 words, and limit the section list to: Summary, Key Steps (max 4 bullets), Risks, Tests.
+- After saving the plan, clearly state the verification pause:
+  - Print `🛑 Still inside /plan. Reply 'resume' to hand off to /build or 'stop' to exit.`
+  - Summarize what will happen on `resume` (e.g., call `/build_w_report`).
 
 ## Workflow
 1. Analyze Requirements - extract the problem statement, constraints, and success criteria from `USER_PROMPT`.
@@ -68,4 +71,4 @@ After reviewing the plan, proceed with implementation:
 - Verify the approach makes sense
 - Make manual edits if needed
 
-📖 **Need help?** See: `TEMPLATE-DOCS/reference/WORKFLOW-DECISION-TREE.md`
+When the user approves, confirm which build command they want and offer to run it.
