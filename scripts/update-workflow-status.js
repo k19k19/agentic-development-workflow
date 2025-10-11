@@ -13,6 +13,10 @@ const { syncWorkflowStatus, INDEX_FILE } = require('./workflow-status');
         console.log(`   - ${message}`);
       });
     }
+    const ledger = index.knowledgeLedger || { adopted: [], superseded: [], source: 'ai-docs/knowledge-ledger/ledger.md' };
+    console.log(
+      `📚 Knowledge ledger: ${ledger.adopted.length} adopted / ${ledger.superseded.length} superseded (source: ${ledger.source})`
+    );
     console.log(`📝 Index written to ${path.relative(process.cwd(), INDEX_FILE)}`);
   } catch (error) {
     console.error('❌ Failed to sync workflow status');

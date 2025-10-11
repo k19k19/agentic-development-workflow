@@ -1,6 +1,29 @@
 {
-  "version": "1.0",
-  "generatedAt": "2025-10-11T11:27:28.535Z",
+  "version": "1.1",
+  "generatedAt": null,
   "features": [],
+  "knowledgeLedger": {
+    "version": "1.0",
+    "source": "ai-docs/knowledge-ledger/ledger.md",
+    "adopted": [
+      {
+        "id": "KL-001",
+        "title": "Knowledge Ledger Governance",
+        "adoptedOn": "2024-05-03",
+        "what": "Established a constitution-style knowledge ledger with a canonical index and individual `KL-` decision files.",
+        "why": "Prevent future iterations from discarding hard-earned context by requiring every adopted implementation to document its rationale and approach.",
+        "how": "`ai-docs/knowledge-ledger/README.md` defines the governance loop, `ai-docs/knowledge-ledger/ledger.md` tracks adopted decisions, and `ai-docs/knowledge-ledger/KL-001-knowledge-ledger-governance.md` captures the full decision record."
+      },
+      {
+        "id": "KL-002",
+        "title": "Workflow Status Ledger Integration",
+        "adoptedOn": "2024-05-04",
+        "what": "Linked the knowledge ledger to the workflow status index so the dashboard and status sync commands surface adopted decisions alongside feature progress.",
+        "why": "Ensure project monitoring tools consistently reference the ledger as the single source of truth, preventing later iterations from ignoring established implementations.",
+        "how": "`scripts/utils/knowledge-ledger.js` parses `ledger.md`, `scripts/workflow-status.js` embeds the parsed summary in `status-index.json`, and both `scripts/update-workflow-status.js` and `scripts/unified-dashboard.js` report ledger coverage during status checks."
+      }
+    ],
+    "superseded": []
+  },
   "warnings": []
 }

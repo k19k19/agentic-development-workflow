@@ -3,6 +3,7 @@
 const path = require('path');
 const fs = require('fs').promises;
 const { glob } = require('glob');
+const { loadKnowledgeLedgerIndex } = require('./utils/knowledge-ledger');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const WORKFLOW_DIR = path.join(REPO_ROOT, 'ai-docs/workflow');
@@ -151,11 +152,19 @@ async function syncWorkflowStatus(options = {}) {
 
   await ensureWorkflowDir();
   const features = await collectFeatureLogs(warnings);
+  const ledgerIndex = await loadKnowledgeLedgerIndex();
+  warnings.push(...ledgerIndex.warnings);
 
   const index = {
-    version: '1.0',
+    version: '1.1',
     generatedAt: new Date().toISOString(),
     features,
+    knowledgeLedger: {
+      version: ledgerIndex.version,
+      source: path.relative(REPO_ROOT, ledgerIndex.source),
+      adopted: ledgerIndex.adopted,
+      superseded: ledgerIndex.superseded
+    },
     warnings
   };
 

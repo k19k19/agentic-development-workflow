@@ -46,6 +46,7 @@ async function showDashboard() {
   const {index, warnings} = await syncWorkflowStatus({silent: true});
   const features = index.features || [];
   const phaseSummary = summarizeByPhase(features);
+  const ledger = index.knowledgeLedger || { adopted: [], superseded: [], source: 'ai-docs/knowledge-ledger/ledger.md' };
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('🎯 WORKFLOW DASHBOARD');
@@ -77,6 +78,24 @@ async function showDashboard() {
       console.log('');
     }
   }
+
+  console.log('Knowledge ledger summary:');
+  if (ledger.adopted.length === 0 && ledger.superseded.length === 0) {
+    console.log(`  • No decisions adopted yet (source: ${ledger.source})`);
+  } else {
+    console.log(`  • Adopted decisions: ${ledger.adopted.length}`);
+    const latestDecisions = ledger.adopted.slice(0, 3);
+    latestDecisions.forEach(decision => {
+      console.log(`    - ${decision.id} (${decision.adoptedOn}): ${decision.title} — ${decision.what}`);
+    });
+    if (ledger.adopted.length > latestDecisions.length) {
+      console.log(`    …and ${ledger.adopted.length - latestDecisions.length} more. See ${ledger.source}.`);
+    }
+    if (ledger.superseded.length > 0) {
+      console.log(`  • Superseded decisions: ${ledger.superseded.length}`);
+    }
+  }
+  console.log('');
 
   if (warnings.length > 0) {
     console.log('⚠️  Warnings');
