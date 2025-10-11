@@ -34,6 +34,7 @@ Every command outputs:
 
 ## Automation Scripts (npm)
 - `npm run manage-knowledge -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
+- `npm run tasks:session-start` → Summarize cross-session context, token usage, and right-sized next tasks.
 - `npm run workflow:sync` → Aggregate the latest scout/plan/build/report status files for the dashboard.
 - `npm run work` → Launch the feature workflow dashboard fed by `status-index.json`.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.

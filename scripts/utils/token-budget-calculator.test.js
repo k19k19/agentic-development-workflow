@@ -98,6 +98,59 @@ function testGetUsageWarningLevel() {
   return { passed, failed };
 }
 
+// Test getWeeklyTokenLimit
+function testGetWeeklyTokenLimit() {
+  console.log('\nTesting getWeeklyTokenLimit...');
+  let passed = 0;
+  let failed = 0;
+
+  const tests = [
+    { config: {}, expected: 1169000, description: 'Default weekly limit' },
+    { config: { dailyTokenLimit: 200000 }, expected: 1400000, description: 'Derived from daily limit' },
+    { config: { weeklyTokenLimit: 900000 }, expected: 900000, description: 'Explicit weekly override' }
+  ];
+
+  tests.forEach((test, index) => {
+    const result = calculator.getWeeklyTokenLimit(test.config);
+    if (result === test.expected) {
+      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
+      passed++;
+    } else {
+      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
+      console.log(`     Expected: ${test.expected}, Got: ${result}`);
+      failed++;
+    }
+  });
+
+  return { passed, failed };
+}
+
+// Test getContextWindowLimit
+function testGetContextWindowLimit() {
+  console.log('\nTesting getContextWindowLimit...');
+  let passed = 0;
+  let failed = 0;
+
+  const tests = [
+    { config: {}, expected: 200000, description: 'Default context window' },
+    { config: { contextWindowLimit: 160000 }, expected: 160000, description: 'Override value' }
+  ];
+
+  tests.forEach((test, index) => {
+    const result = calculator.getContextWindowLimit(test.config);
+    if (result === test.expected) {
+      console.log(`  ✅ Test ${index + 1}: PASS (${test.description})`);
+      passed++;
+    } else {
+      console.log(`  ❌ Test ${index + 1}: FAIL (${test.description})`);
+      console.log(`     Expected: ${test.expected}, Got: ${result}`);
+      failed++;
+    }
+  });
+
+  return { passed, failed };
+}
+
 // Test getRecommendedTasks
 function testGetRecommendedTasks() {
   const tasks = [
@@ -248,6 +301,8 @@ function testFormatTokens() {
   results.push(testGetRecommendedTasks());
   results.push(testGetSuggestedWorkflows());
   results.push(testFormatTokens());
+  results.push(testGetWeeklyTokenLimit());
+  results.push(testGetContextWindowLimit());
 
   // Summary
   const totalPassed = results.reduce((sum, r) => sum + r.passed, 0);

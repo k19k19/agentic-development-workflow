@@ -1,0 +1,22 @@
+{
+  "tasks": [
+    {
+      "id": "OPS-001",
+      "title": "Populate workflow metrics log",
+      "size": "small",
+      "estimatedTokens": 5000,
+      "priority": "medium",
+      "status": "pending",
+      "command": "/quick \"Document workflow metrics logging\""
+    },
+    {
+      "id": "DOC-LEDGER",
+      "title": "Summarize knowledge ledger updates",
+      "size": "medium",
+      "estimatedTokens": 30000,
+      "priority": "high",
+      "status": "pending",
+      "command": "/scout_build \"Summarize ledger decisions\""
+    }
+  ]
+}
