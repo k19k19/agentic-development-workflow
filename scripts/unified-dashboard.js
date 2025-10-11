@@ -1,178 +1,100 @@
 #!/usr/bin/env node
 
 /**
- * Unified Dashboard
+ * Unified Dashboard (Workflow Focused)
  *
- * Combines plans and tasks into a single view with actionable commands
+ * Reads aggregated workflow status and prints a concise dashboard of
+ * in-flight features, their current phases, and resume commands.
  */
 
-const path = require('path');
-const fs = require('fs').promises;
+const {syncWorkflowStatus} = require('./workflow-status');
 
-const TASKS_FILE = path.join(__dirname, '../ai-docs/tasks/tasks.json');
-
-async function loadTasks() {
-  try {
-    const data = await fs.readFile(TASKS_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      return {tasks: [], tokenBudget: {used: 0, dailyLimit: 500000, remaining: 500000}};
-    }
-    throw error;
+function formatFeature(feature, index) {
+  const lines = [];
+  lines.push(`   ${index}. ${feature.title} (${feature.featureId})`);
+  lines.push(`      Phase: ${feature.currentPhase} • Status: ${feature.status}`);
+  if (feature.lastCommand) {
+    lines.push(`      Last Command: ${feature.lastCommand}`);
   }
+  if (feature.nextCommand) {
+    lines.push(`      ▶️  Resume: ${feature.nextCommand}`);
+  }
+  if (feature.summary) {
+    lines.push(`      📝 ${feature.summary}`);
+  }
+  if (feature.documentation?.length) {
+    lines.push(`      📚 Docs: ${feature.documentation.join(', ')}`);
+  }
+  if (feature.outputPath) {
+    lines.push(`      📂 Output: ${feature.outputPath}`);
+  }
+  if (feature.notes) {
+    lines.push(`      🧠 ${feature.notes}`);
+  }
+  return lines.join('\n');
 }
 
-function createProgressBar(current, total, width = 30) {
-  const percent = Math.min(current / total, 1);
-  const filled = Math.floor(percent * width);
-  const empty = width - filled;
-  return `[${'\u2588'.repeat(filled)}${'\u2591'.repeat(empty)}]`;
+function summarizeByPhase(features) {
+  return features.reduce((acc, feature) => {
+    const phase = feature.currentPhase || 'unknown';
+    acc[phase] = (acc[phase] || 0) + 1;
+    return acc;
+  }, {});
 }
 
-async function showUnifiedDashboard() {
-  // Lazy load to avoid circular dependency when called from manage-plans.js
-  const {loadRegistry} = require('./manage-plans');
-  const plans = await loadRegistry();
-  const tasks = await loadTasks();
-
-  // Token budget
-  const budgetPercent = ((tasks.tokenBudget.used / tasks.tokenBudget.dailyLimit) * 100).toFixed(1);
-  const budgetBar = createProgressBar(tasks.tokenBudget.used, tasks.tokenBudget.dailyLimit, 30);
+async function showDashboard() {
+  const {index, warnings} = await syncWorkflowStatus({silent: true});
+  const features = index.features || [];
+  const phaseSummary = summarizeByPhase(features);
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('🎯 UNIFIED DASHBOARD');
+  console.log('🎯 WORKFLOW DASHBOARD');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-  // Token Budget
-  console.log('💰 TOKEN BUDGET (Daily)');
-  console.log(`   Used: ${tasks.tokenBudget.used.toLocaleString()} / ${tasks.tokenBudget.dailyLimit.toLocaleString()} (${budgetPercent}%)`);
-  console.log(`   ${budgetBar}`);
-  console.log(`   Remaining: ${tasks.tokenBudget.remaining.toLocaleString()} tokens`);
-
-  if (parseFloat(budgetPercent) >= 90) {
-    console.log('   🚨 CRITICAL: Consider resuming tomorrow');
-  } else if (parseFloat(budgetPercent) >= 75) {
-    console.log('   ⚠️  WARNING: Budget running low');
+  console.log(`Features tracked: ${features.length}`);
+  if (features.length > 0) {
+    console.log('Phase distribution:');
+    Object.entries(phaseSummary)
+      .sort((a, b) => b[1] - a[1])
+      .forEach(([phase, count]) => {
+        console.log(`  • ${phase}: ${count}`);
+      });
   }
   console.log('');
 
-  // Combine plans and tasks
-  const inProgressPlans = plans.plans.filter(p => p.status === 'in_progress');
-  const pendingPlans = plans.plans.filter(p => p.status === 'pending');
-  const activeTasks = tasks.tasks?.filter(t => t.state !== 'completed' && t.state !== 'cancelled') || [];
-  const pausedTasks = activeTasks.filter(t => t.state === 'paused');
-  const inProgressTasks = activeTasks.filter(t => t.state === 'in_progress');
-  const pendingTasks = activeTasks.filter(t => t.state === 'pending');
-
-  // IN PROGRESS
-  if (inProgressPlans.length > 0 || inProgressTasks.length > 0) {
-    console.log('🚧 IN PROGRESS\n');
-
-    inProgressPlans.forEach(plan => {
-      console.log(`   📋 Plan: ${plan.title}`);
-      console.log(`      ID: ${plan.planId}`);
-      if (plan.estimatedTokens) {
-        console.log(`      Tokens: ~${plan.estimatedTokens.toLocaleString()}`);
-      }
-      console.log(`      ▶️  CONTINUE: /build "ai-docs/plans/${plan.planId}/plan.md"`);
-      console.log(`      ✅ COMPLETE: npm run plans:complete ${plan.planId}\n`);
-    });
-
-    inProgressTasks.forEach(task => {
-      console.log(`   📌 Task: ${task.title}`);
-      console.log(`      ID: ${task.id}`);
-      console.log(`      Tokens: ~${task.estimatedTokens.toLocaleString()}`);
-      console.log(`      ✅ COMPLETE: npm run tasks:complete ${task.id} <tokens-used>\n`);
-    });
-  }
-
-  // PAUSED
-  if (pausedTasks.length > 0) {
-    console.log('⏸️  PAUSED TASKS (Resume these first)\n');
-
-    pausedTasks.forEach(task => {
-      console.log(`   📌 ${task.title}`);
-      console.log(`      ID: ${task.id}`);
-      if (task.checkpoint) {
-        console.log(`      📍 Checkpoint: ${task.checkpoint.note}`);
-      }
-      console.log(`      ▶️  RESUME: npm run tasks:resume ${task.id}\n`);
-    });
-  }
-
-  // PENDING WORK (Combined)
-  const remaining = tasks.tokenBudget.remaining;
-  const fittingPlans = pendingPlans.filter(p => !p.estimatedTokens || p.estimatedTokens <= remaining);
-  const fittingTasks = pendingTasks.filter(t => t.estimatedTokens <= remaining);
-
-  if (fittingPlans.length > 0 || fittingTasks.length > 0) {
-    console.log(`⚪ READY TO START (Fits in ${remaining.toLocaleString()} tokens)\n`);
-
-    // Sort by priority and tokens
-    const priorityOrder = {high: 3, medium: 2, low: 1};
-
-    // Show plans
-    fittingPlans
-      .sort((a, b) => {
-        const priorityDiff = (priorityOrder[b.priority] || 2) - (priorityOrder[a.priority] || 2);
-        if (priorityDiff !== 0) return priorityDiff;
-        return (a.estimatedTokens || 0) - (b.estimatedTokens || 0);
-      })
-      .slice(0, 3)
-      .forEach((plan, idx) => {
-        console.log(`   ${idx + 1}. 📋 ${plan.title}`);
-        console.log(`         ID: ${plan.planId}`);
-        console.log(`         Priority: ${plan.priority} | Tokens: ~${plan.estimatedTokens?.toLocaleString() || 'unknown'}`);
-        console.log(`         ▶️  START: /build "ai-docs/plans/${plan.planId}/plan.md"\n`);
-      });
-
-    // Show tasks
-    fittingTasks
-      .sort((a, b) => {
-        const priorityDiff = (priorityOrder[b.priority] || 2) - (priorityOrder[a.priority] || 2);
-        if (priorityDiff !== 0) return priorityDiff;
-        return a.estimatedTokens - b.estimatedTokens;
-      })
-      .slice(0, 3)
-      .forEach((task, idx) => {
-        const offset = fittingPlans.length;
-        console.log(`   ${idx + offset + 1}. 📌 ${task.title}`);
-        console.log(`         ID: ${task.id}`);
-        console.log(`         Priority: ${task.priority} | Tokens: ~${task.estimatedTokens.toLocaleString()}`);
-        console.log(`         ▶️  START: npm run tasks:resume ${task.id}\n`);
-      });
-  } else if (remaining > 0) {
-    console.log('⚪ NO WORK FITS REMAINING BUDGET\n');
-    console.log(`   All pending items exceed ${remaining.toLocaleString()} tokens`);
-    console.log('   Consider breaking down large tasks or resuming tomorrow\n');
+  if (features.length === 0) {
+    console.log('No workflow entries found. Run a slash command (e.g., /scout or /plan) to create status JSON and then rerun this dashboard.\n');
   } else {
-    console.log('⚪ TOKEN BUDGET EXHAUSTED\n');
-    console.log('   Resume tomorrow or upgrade to higher tier\n');
+    console.log('Top features:');
+    features
+      .slice(0, 10)
+      .forEach((feature, idx) => {
+        console.log(formatFeature(feature, idx + 1));
+        console.log('');
+      });
+    if (features.length > 10) {
+      console.log(`…and ${features.length - 10} more. Use 'npm run workflow:sync' to inspect the full index.`);
+      console.log('');
+    }
   }
 
-  // Summary stats
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('📊 SUMMARY\n');
-  console.log(`   Plans: ${inProgressPlans.length} in progress, ${pendingPlans.length} pending`);
-  console.log(`   Tasks: ${inProgressTasks.length} in progress, ${pausedTasks.length} paused, ${pendingTasks.length} pending`);
-  console.log(`   Completed: ${plans.plans.filter(p => p.status === 'completed').length} plans, ${tasks.tasks?.filter(t => t.state === 'completed').length || 0} tasks`);
-  console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+  if (warnings.length > 0) {
+    console.log('⚠️  Warnings');
+    warnings.forEach(message => {
+      console.log(`  - ${message}`);
+    });
+    console.log('');
+  }
 
-  // Quick commands
-  console.log('💡 QUICK COMMANDS\n');
-  console.log('   npm run tasks:add           Add a new tracked task');
-  console.log('   npm run tasks:resume <id>   Resume paused work');
-  console.log('   npm run plans:update ...    Adjust plan status/notes');
-  console.log('   npm run plans:next          Surface recommended plans');
-  console.log('   npm run manage-knowledge -- list   Review active specs\n');
+  console.log('Next actions:');
+  console.log("  1. Update docs in app-docs/ if anything changed.");
+  console.log("  2. Run 'npm run workflow:sync' whenever new command output is available.");
+  console.log("  3. Re-run 'npm run work' to refresh this dashboard.");
+  console.log('');
 }
 
-if (require.main === module) {
-  showUnifiedDashboard().catch(error => {
-    console.error('Error:', error.message);
-    process.exit(1);
-  });
-}
-
-module.exports = {showUnifiedDashboard};
+showDashboard().catch(error => {
+  console.error('❌ Failed to render dashboard');
+  console.error(error);
+  process.exit(1);
+});

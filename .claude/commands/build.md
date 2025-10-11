@@ -16,16 +16,19 @@ PATH_TO_PLAN: $1
 ## Workflow
 - **Build on Existing Code:** Before writing any new code, check `app-docs/mappings/feature-to-source.md` to see if a similar function or component already exists. If it does, build upon it rather than creating a new one.
 - If no `PATH_TO_PLAN` is provided, stop immediately and request it from the user.
-- **Track plan status:** Extract plan ID from `PATH_TO_PLAN` (e.g., `ai-docs/plans/20251011-token-accounting/plan.md` → `20251011-token-accounting`), then mark as in-progress:
-  ```bash
-  npm run plans:update <plan-id> in_progress "Build started"
-  ```
 - Read the plan at `PATH_TO_PLAN`, reason through the steps, and implement them in the codebase using the delegated tools.
 
 ## Report
 - Summarize the work you completed in concise bullet points.
 - Run `git diff --stat` and include the resulting file and line change summary.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
+
+## Automation Trace
+- Write a workflow status JSON entry (`app-docs/guides/workflow-status-format.md`).
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-build.json`.
+  - Use `phase: "build"` and set `status` to `in_progress`, `needs_validation`, `failed`, or `completed` based on the outcome.
+  - Populate `outputPath` with the build summary/log and list any documentation needing updates.
+  - Set `nextCommand` to the recommended follow-up (`/test`, `/report_failure`, `/build --resume`, etc.).
 
 ## Session Memory (Auto-generate)
 After completing the build, automatically generate a session summary in `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
@@ -35,25 +38,12 @@ After completing the build, automatically generate a session summary in `ai-docs
 - Token usage estimate
 - Follow-up tasks
 
-After writing the session file, automatically run:
+After writing the session file, remind the user to run:
 ```bash
-npm run vectorize
+npm run workflow:sync
 ```
 
-This makes the session searchable for future AI sessions via vector search.
-
-## Token Budget Tracking
-After completing the build, mark the plan as completed and show updated budget:
-```bash
-npm run plans:complete <plan-id>
-npm run tasks:session-start
-```
-
-This displays:
-- Updated token budget with usage percentage
-- Remaining daily tokens
-- Warnings if approaching limits (75%/90%)
-- Recommendations for next tasks that fit budget
+This refreshes the dashboard so the new workflow entry appears immediately.
 
 ## Next Steps
 After completing the build:

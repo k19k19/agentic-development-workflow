@@ -6,7 +6,6 @@ export default [
     ignores: [
       'node_modules/',
       'ai-docs/**',
-      'vector-store.json',
       'eslint.config.mjs',
     ],
   },

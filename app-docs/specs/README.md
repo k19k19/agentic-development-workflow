@@ -25,7 +25,7 @@ Specs in `active/` feed `/scout_plan_build`, `/quick-plan`, and related commands
 ```bash
 npm run manage-knowledge -- archive round5-caching.md
 ```
-The helper moves the spec to `archive/` and re-runs `npm run vectorize` so search results stay focused on current work.
+The helper moves the spec to `archive/` so active work stays focused on current priorities.
 
 ## Naming Convention
 ```

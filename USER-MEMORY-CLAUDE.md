@@ -117,7 +117,7 @@ Claude: [uses Codex MCP directly]
 ### Budget Mode Defaults
 - Start every multi-agent run with `/scout_plan_build "<task>" "<docs>" "budget"` unless the user explicitly asks for a full plan.
 - Expect scout scale 2 and a ~350-word plan; escalate to `standard` only when the lean summary is insufficient.
-- Cap vector search output at 3 results and avoid secondary `rg` passes unless the primary search fails.
+- Keep manual repository searches focused—surface at most three strong candidates before escalating to deeper investigation.
 - Reference `app-docs/guides/budget-mode.md` inside each repo for the detailed checklist.
 
 ### Pre-Flight Checks (Before ANY deployment)

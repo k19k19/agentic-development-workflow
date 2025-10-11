@@ -19,12 +19,7 @@ PLAN_OUTPUT_DIRECTORY: ai-docs/plans/
 DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 
 ## Instructions
-- **Check Knowledge Ledger:** Before planning, search the knowledge ledger for relevant architectural decisions:
-  ```bash
-  npm run search "[relevant topic from USER_PROMPT]"
-  ```
-  - Review any adopted or superseded articles that inform this decision
-  - Consider established patterns and avoid previously rejected approaches
+- **Check Knowledge Ledger:** Before planning, review `ai-docs/knowledge-ledger/` for relevant architectural decisions and patterns to reuse.
 - **Read the Spec:** Before planning, read the feature specification from `SPECS_INPUT_DIRECTORY/[round-type]-[feature].md`.
 - If any of `USER_PROMPT`, `DOCUMENT_URLS`, or `RELEVANT_FILES_COLLECTION` is missing, stop and ask the user to provide it.
 - Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the scout phase.
@@ -52,6 +47,14 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
+## Automation Trace
+- Write a workflow status JSON file (see `app-docs/guides/workflow-status-format.md`).
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-plan.json`.
+  - Use `phase: "plan"` and set `status` to `needs_validation`, `ready_for_build`, or `blocked`.
+  - Fill `outputPath` with the generated plan path and list any supporting docs.
+  - Set `nextCommand` to the recommended `/build` or `/build_w_report` invocation (or `/plan --resume` if blocked).
+- Remind the user to run `npm run workflow:sync` once the plan is finalized so the dashboard reflects the updated phase.
+
 ## Next Steps
 After reviewing the plan, proceed with implementation:
 
@@ -64,8 +67,6 @@ After reviewing the plan, proceed with implementation:
 ```bash
 /build_w_report "[path-to-plan]"
 ```
-*(Recommended: generates session summary + updates knowledge base)*
-
 **Before building:**
 - Review the plan file at the path shown above
 - Verify the approach makes sense

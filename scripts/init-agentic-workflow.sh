@@ -159,9 +159,9 @@ node -e "
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
   pkg.scripts = pkg.scripts || {};
-  pkg.scripts.vectorize = pkg.scripts.vectorize || 'node scripts/vectorize-docs.js';
-  pkg.scripts.search = pkg.scripts.search || 'node scripts/search-docs.js';
-  pkg.scripts['scale-detect'] = pkg.scripts['scale-detect'] || 'node scripts/detect-project-scale.js';
+  pkg.scripts['manage-knowledge'] = pkg.scripts['manage-knowledge'] || 'node scripts/manage-knowledge.js';
+  pkg.scripts.work = pkg.scripts.work || 'node scripts/unified-dashboard.js';
+  pkg.scripts['workflow:sync'] = pkg.scripts['workflow:sync'] || 'node scripts/update-workflow-status.js';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
   pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
@@ -174,7 +174,7 @@ node -e "
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: vectorize, search, scale-detect, lint, format');
+  console.log('✓ Scripts added: manage-knowledge, work, workflow:sync, lint, format');
   console.log('✓ Dependencies added: @xenova/transformers, eslint, prettier');
 " || log_error "Failed to merge package.json"
 
@@ -193,7 +193,6 @@ fi
 # Patterns to add if not already present
 GIT_IGNORE_PATTERNS=(
     "node_modules/"
-    "vector-store/"
     ".env"
     ".env.local"
     "*.log"
@@ -231,37 +230,23 @@ fi
 
 echo ""
 
-# --- 6. Initialize Vector Store ---
-log_info "🔍 Step 6/7: Initializing vector store..."
+# --- 6. Prepare Workflow Automation ---
+log_info "🧭 Step 6/7: Preparing workflow automation..."
 
-if [ ! -f "$PROJECT_ROOT/vector-store.json" ]; then
-    echo '{"documents":[],"embeddings":[],"metadata":[]}' > "$PROJECT_ROOT/vector-store.json"
-    log_success "Created empty vector-store.json"
+mkdir -p "$PROJECT_ROOT/ai-docs/workflow"
+if [ ! -f "$PROJECT_ROOT/ai-docs/workflow/status-index.json" ]; then
+    echo '{"features":[],"generatedAt":null}' > "$PROJECT_ROOT/ai-docs/workflow/status-index.json"
+    log_success "Initialized ai-docs/workflow/status-index.json"
 else
-    log_info "Preserved existing vector-store.json"
-fi
-
-# Run initial vectorization if docs exist
-if command -v npm &> /dev/null && [ -d "$PROJECT_ROOT/app-docs" ]; then
-    log_info "Vectorizing documentation..."
-    npm run vectorize --silent 2>&1 | tail -1 || log_warn "Vectorization skipped (run 'npm run vectorize' later)"
-    log_success "Documentation vectorized."
-else
-    log_info "Vectorization skipped (run 'npm run vectorize' when ready)"
+    log_info "Preserved existing workflow status index"
 fi
 
 echo ""
 
-# --- 7. Detect Project Scale ---
-log_info "📊 Step 7/7: Detecting project scale..."
-
-if command -v npm &> /dev/null && [ -f "$PROJECT_ROOT/scripts/detect-project-scale.js" ]; then
-    echo ""
-    npm run scale-detect --silent 2>&1 || log_warn "Scale detection failed"
-    echo ""
-else
-    log_warn "Scale detection skipped (run 'npm run scale-detect' later)"
-fi
+# --- 7. Final Reminders ---
+log_info "✅ Step 7/7: Final reminders..."
+log_info "Run 'npm install' if dependencies were not installed automatically."
+log_info "After your first slash command, run 'npm run workflow:sync' before opening the dashboard with 'npm run work'."
 
 # --- Clean Up Template Artifacts ---
 log_info "🧹 Cleaning up template artifacts..."
@@ -282,11 +267,11 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 log_info "📋 Next Steps (no docs required):"
 echo ""
-echo "  1. Get the live dashboard with recommended slash command:"
-echo "     \$ npm run tasks:session-start"
+echo "  1. Run your first slash command (e.g., /scout or /plan) to capture context."
 echo ""
-echo "  2. Run the suggested command immediately (keeps vector store,"
-echo "     knowledge ledger, and session automation in sync)."
+echo "  2. Refresh automation data:"
+echo "     \$ npm run workflow:sync"
+echo "     \$ npm run work"
 echo ""
 echo "  3. Need a reminder later? Type plain text and Claude will reply"
 echo "     with the best slash command to run next."

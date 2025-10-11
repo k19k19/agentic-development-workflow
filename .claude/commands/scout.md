@@ -1,50 +1,59 @@
 ---
-description: Use vector search to find files and context relevant to the task
+description: Gather repository context relevant to the requested feature
 argument-hint: [user_prompt]
-allowed-tools: ["run_shell_command"]
+allowed-tools: ["Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
 model: claude-sonnet-4-5
 ---
 
-# Scout (Vector Search)
+# Scout
 
 ## Purpose
-Use the project's vectorized knowledge base to instantly find the most relevant files and code snippets needed to complete the `USER_PROMPT`.
+Collect the most relevant code, documentation, and prior automation outputs needed to understand the feature described in `USER_PROMPT`.
 
 ## Variables
 USER_PROMPT: $1
 
 ## Instructions
-- Your primary goal is to use the `npm run search` command to find context for the user's task.
-- Take the `USER_PROMPT` as the search query.
-- Execute the search using the `run_shell_command` tool.
-- The output of the search command is the definitive context. It contains the most relevant file paths and text snippets.
-- You do not need to read any other files or perform any other searches.
+- Break down the request into keywords and likely components.
+- Use `rg`, `ls`, and targeted file reads to inspect matching areas of the codebase and docs.
+- Review `ai-docs/workflow/` for prior status entries related to the same feature.
+- Capture enough context for the planning phase: existing implementations, shared utilities, constraints, and open questions.
 
 ## Workflow
-1.  Take the `USER_PROMPT` provided by the user.
-2.  Construct the shell command: `npm run search -- "[USER_PROMPT]"`.
-3.  Execute the command using `run_shell_command`.
-4.  The standard output of this command is your result. Pass this context directly to the next phase (e.g., the Plan phase).
+1. Parse `USER_PROMPT` to identify primary feature areas and constraints.
+2. Inspect documentation (`app-docs/`, `ai-docs/knowledge-ledger/`, relevant specs) for background details.
+3. Search the codebase with `rg`/`find` to surface candidate files and read the important sections.
+4. Summarize discoveries, highlighting reusable code, gaps, and risks that the plan must address.
+5. Record any documentation that should be updated before continuing.
 
 ## Report
-- Summarize the top search results found.
-- List the source files identified as most relevant.
-- This context will be used to inform the next step of the workflow.
+- Provide bullet summaries of the most relevant files and excerpts discovered.
+- List any documentation or specs the user should review or update.
+- Call out risks, unknowns, or follow-up questions uncovered during scouting.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
+
+## Automation Trace
+- Emit a workflow status JSON entry following `app-docs/guides/workflow-status-format.md`.
+  - Derive `featureId` from the request title in kebab-case.
+  - Save to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-scout.json`.
+  - Use `phase: "scout"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
+  - Set `nextCommand` to the exact follow-up slash command the user should run.
+  - Include any documentation paths that must be updated before resuming.
+- Remind the user to run `npm run workflow:sync` so the dashboard reflects the new scout results.
 
 ## Next Steps
 After completing scout, you typically want to:
 
 **→ Create an implementation plan:**
 ```bash
-/plan "[your-task]" "[doc-urls]" "[scout-results-path]"
+/plan "[your-task]" "[doc-urls]" "[scout-notes-path]"
 ```
 
-Where `[scout-results-path]` is the file path shown in the scout output.
+Where `[scout-notes-path]` is the file path shown in the scout output.
 
 **Short circuit:**
 ```bash
 /scout_build "[your-task]"
 ```
 
-When you hand off to the next command, remind the user that the vector store is already primed—no extra docs needed.
+When you hand off to the next command, summarize the available context and highlight any missing documentation the user should supply.

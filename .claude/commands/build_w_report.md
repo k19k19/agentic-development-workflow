@@ -8,7 +8,7 @@ model: claude-sonnet-4-5
 # Build with Report
 
 ## Purpose
-Execute the implementation plan and compile a structured report covering changes, validation, and follow-ups.
+Execute the approved implementation plan and provide a thorough report covering code changes, validation evidence, and follow-up work.
 
 ## Variables
 PATH_TO_PLAN: $1
@@ -17,98 +17,34 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.
-2. Read and internalize the plan, noting tasks, acceptance criteria, and assigned tools.
-3. Implement the plan step by step, checking in with lint, tests, and other project safeguards as required.
-4. Capture validation output (command snippets, screenshots, or logs) for inclusion in the final report.
+2. Read and internalize the plan, noting acceptance criteria and tooling requirements.
+3. Implement the plan step by step, running lint/tests or other safeguards when needed.
+4. Capture validation output (commands, logs, screenshots) for inclusion in the final report.
+5. Summarize decisions, risks, and documentation updates so the report is self-contained.
 
 ## Report
+Organize your final message into:
+- **Summary:** High-level overview of what changed.
+- **Implementation Details:** Bullet list that maps plan sections to code updates.
+- **Validation:** Commands run, their outcomes, and links to logs or artifacts.
+- **Follow-ups:** Outstanding tasks, manual QA, or documentation to revisit.
+- **Diff Stats:** Include the `git diff --stat` output so reviewers can gauge change size.
 
-### 1. Update Knowledge Base (Automated)
+## Automation Trace
+- Save a workflow status JSON update (`app-docs/guides/workflow-status-format.md`).
+  - Write to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-build.json`.
+  - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, or `completed`).
+  - Reference the generated build report in `outputPath` and list supporting documentation.
+  - Set `nextCommand` to the next actionable slash command for the user.
+- After writing artifacts, remind the user to run `npm run workflow:sync` so the dashboard reflects the latest state.
 
-Run these automation scripts to update documentation:
-
-```bash
-# Update feature-to-source mapping
-node scripts/update-mappings.js update "[feature-name]" [modified-files]
-
-# Example:
-# node scripts/update-mappings.js update "Authentication" src/auth/login.js src/auth/middleware.js
-
-# Generate session summary
-node scripts/generate-session-summary.js generate "[PATH_TO_PLAN]" "[feature-name]" "[workflow]" "[token-usage]"
-
-# Example:
-# node scripts/generate-session-summary.js generate "ai-docs/plans/plan.md" "Authentication" "/full" "85K"
-
-# Re-vectorize documentation for future searches
-npm run vectorize
-```
-
-**Manual additions** (if needed):
-- If the implementation introduced a new, reusable utility or pattern, add a brief entry to `app-docs/guides/common-patterns.md`.
-
-### 2. Report Deliverables
-
-Provide the following in your report:
-- Bullet list of completed work items tied to plan sections
-- Validation evidence (command names and outcomes)
-- `git diff --stat` output to summarize change surface
-- Any follow-up tasks or open questions for the next agent
-
-## Session Memory (Auto-generated)
-
-The `generate-session-summary.js` script automatically creates a detailed session summary at `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with this structure:
-
-```markdown
-# Session: [Feature Name]
-
-**Date**: [YYYY-MM-DD]
-**Workflow**: [/scout → /plan → /build_w_report OR other commands used]
-**Status**: ✅ Complete | ⏸️ In Progress | ❌ Blocked
-
----
-
-## Task Summary
-[1-2 sentences describing what was built]
-
-## Workflow Execution
-- **Scout**: [findings summary or N/A]
-- **Plan**: [approach summary or N/A]
-- **Build**: [implementation summary]
-
-## Files Modified
-[git diff --stat output]
-
-## Key Decisions
-1. **[Decision]**: [Why and what alternatives were considered]
-2. **[Decision]**: [Why and what alternatives were considered]
-
-## Issues & Resolutions
-- **Issue**: [Problem description]
-  - **Resolution**: [How it was solved]
-
-## Token Metrics
-- Scout: ~XK tokens (or N/A)
-- Plan: ~XK tokens (or N/A)
-- Build: ~XK tokens
-- Total: ~XK tokens
-- Efficiency: X%
-
-## Follow-up Tasks
-- [ ] [Task 1]
-- [ ] [Task 2]
-
----
-
-**Next Session Notes**: [Any context needed for next session]
-```
-
-After writing the session file, automatically run:
-```bash
-npm run vectorize
-```
-
-This makes the session searchable for future AI sessions via vector search.
+## Session Memory
+Create or update `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
+- Task summary (1–2 sentences)
+- Files modified (from `git diff --stat`)
+- Key decisions and rationale
+- Validation highlights
+- Follow-up tasks or questions for the next agent
 
 ## Next Steps
 After completing the build with report:
