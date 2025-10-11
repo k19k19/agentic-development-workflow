@@ -11,6 +11,7 @@
 This review validates the concerns raised in TEMPLATE-STATUS.md regarding token efficiency and multi-agent orchestration. The analysis confirms significant gaps between README claims and actual implementation.
 
 **Key Findings**:
+
 1. ❌ **No automated token accounting** - Manual entry only
 2. ❌ **No true multi-agent orchestration** - Sequential execution only
 3. ❌ **No intelligent routing** - Manual tool selection
@@ -37,6 +38,7 @@ async function completeTask(taskId, tokensUsed) {
 ```
 
 **What's Missing**:
+
 - ❌ No API integration with Claude's token API
 - ❌ No API integration with Gemini's token API
 - ❌ No automatic capture from workflow commands
@@ -70,6 +72,7 @@ async function captureClaudeTokens(conversationId) {
 ```
 
 **Implementation Path**:
+
 1. Create `scripts/token-collectors/` directory
 2. Implement collectors for Claude, Gemini, Codex APIs
 3. Add post-workflow hooks in slash commands to capture tokens
@@ -91,6 +94,7 @@ async function captureClaudeTokens(conversationId) {
 ### Reality Check
 
 #### Evidence 1: quick.md (Lines 20-28)
+
 ```markdown
 ## Workflow
 1. Validate `TASK` is provided and suitable for quick mode.
@@ -102,6 +106,7 @@ async function captureClaudeTokens(conversationId) {
 **Analysis**: Sequential steps, single agent (Claude) invoking Codex MCP. No parallelism.
 
 #### Evidence 2: plan.md (Lines 22-28)
+
 ```markdown
 - Use the Task tool in parallel to scrape each URL in `DOCUMENT_URLS` with Firecrawl
   - Instruct subagents to save each document to `DOCUMENTATION_OUTPUT_DIRECTORY/<name-of-document>`.
@@ -121,6 +126,7 @@ $ grep -r "parallel" scripts/
 ```
 
 **Conclusion**: Claims of "multi-agent orchestration" refer to:
+
 1. Claude invoking MCP tools (Codex, Gemini) sequentially
 2. Task tool for parallel URL scraping only
 3. No true multi-agent system with task queues, DAGs, or state management
@@ -141,6 +147,7 @@ $ grep -r "parallel" scripts/
 ### README Claims
 
 > "Decision flowchart:
+>
 > ```
 > ┌─ Single file bug? ────────────→ Codex MCP
 > ├─ Multi-file bug? ────────────→ Claude
@@ -152,6 +159,7 @@ $ grep -r "parallel" scripts/
 **No automated routing exists**. The "flowchart" is advisory documentation for human decision-making.
 
 #### Evidence: quick.md (Lines 16-22)
+
 ```markdown
 ## Instructions
 - **When to use**: Small projects (<10 files), simple single-file changes
@@ -173,6 +181,7 @@ TEMPLATE-STATUS.md:88:- Develop `TokenBudgetPlanner` service
 ```
 
 **Conclusion**: No intelligent routing service exists. Template relies on:
+
 1. User reading documentation
 2. User choosing correct workflow command
 3. Claude following instructions in chosen slash command
@@ -215,6 +224,7 @@ TEMPLATE-STATUS.md:88:- Develop `TokenBudgetPlanner` service
 ```
 
 **Validation**: The task ledger system (`ai-docs/tasks/tasks.json`) correctly:
+
 - Tracks pending/paused/completed tasks
 - Shows budget warnings at 75%/90%
 - Provides recommendations
@@ -244,6 +254,7 @@ TEMPLATE-STATUS.md:88:- Develop `TokenBudgetPlanner` service
 **README**: "90%+ token efficiency"
 
 **Reality**:
+
 - Cannot measure without automated token tracking
 - Estimates are plausible but unverified
 - Delegation to Codex/Gemini does save tokens (validated by MCP invocation working)
@@ -256,6 +267,7 @@ TEMPLATE-STATUS.md:88:- Develop `TokenBudgetPlanner` service
 **README**: "Multi-agent workflows", "Parallel agents"
 
 **Reality**:
+
 - Single Claude agent invoking tools sequentially
 - Task tool enables parallel URL scraping only
 - No true multi-agent orchestration (no task queues, DAGs, state management)
@@ -267,6 +279,7 @@ TEMPLATE-STATUS.md:88:- Develop `TokenBudgetPlanner` service
 **README**: "Decision flowchart", "TokenBudgetPlanner"
 
 **Reality**:
+
 - Advisory documentation for humans
 - No automated routing logic
 - No TokenBudgetPlanner service
@@ -373,6 +386,7 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 **YES**, with caveats:
 
 **What works well**:
+
 - ✅ Sequential tool delegation (Claude → Codex/Gemini)
 - ✅ Slash command framework
 - ✅ Task management (manual tracking)
@@ -380,11 +394,13 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 - ✅ Git safety checks
 
 **What's misleading**:
+
 - ⚠️ "90% token efficiency" (unmeasured)
 - ⚠️ "Multi-agent orchestration" (sequential invocation)
 - ⚠️ "Intelligent routing" (manual selection)
 
 **Recommendation**:
+
 1. **Short-term**: Update documentation to match reality (Phase 1)
 2. **Medium-term**: Implement automated token tracking (Phase 2)
 3. **Long-term**: Consider true multi-agent system if demand exists (Phase 3-4)
@@ -392,16 +408,19 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 ### Priority Actions
 
 **This Week**:
+
 1. Fix README.md documentation claims
 2. Create ARCHITECTURE-REALITY.md explainer
 3. Update TEMPLATE-STATUS.md with validated findings
 
 **This Month**:
+
 1. Implement Phase 1 (Automated Token Accounting)
 2. Create workflow-metrics.jsonl logging
 3. Add API token collectors
 
 **This Quarter**:
+
 1. Evaluate need for Phase 3 (True Multi-Agent) based on user feedback
 2. Consider Phase 4 (Intelligent Routing) if Phase 3 proves valuable
 
@@ -412,6 +431,7 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 ### A. Token Tracking
 
 **File**: `scripts/manage-tasks.js`
+
 - **Lines 152-183**: `completeTask()` - Manual token entry
 - **Lines 387-391**: `updateContextWindow()` - Manual entry
 - **Lines 417-418**: Budget calculation - Simple math, no API calls
@@ -420,9 +440,11 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 ### B. Multi-Agent Claims
 
 **File**: `.claude/commands/quick.md`
+
 - **Lines 20-28**: Sequential workflow, no parallelism
 
 **File**: `.claude/commands/plan.md`
+
 - **Lines 25-27**: Parallel URL scraping only (via Task tool)
 - **Lines 32-39**: Sequential workflow otherwise
 
@@ -431,6 +453,7 @@ The concerns raised in TEMPLATE-STATUS.md Section 2 are **fully validated**:
 ### C. Intelligent Routing
 
 **Directory**: `scripts/`
+
 - **Missing**: `token-budget-planner.js`
 - **Missing**: `orchestrator.js`
 - **Missing**: `router.js` or similar
