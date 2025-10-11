@@ -22,10 +22,6 @@ ai-docs/logs/
 !ai-docs/**/.gitkeep
 !ai-docs/README.md
 
-# Vector store (regenerable)
-vector-store/
-vector-store.json
-
 # OS files
 .DS_Store
 Thumbs.db

@@ -15,14 +15,14 @@ USER_PROMPT: $1
 
 ## Instructions
 - Break down the request into keywords and likely components.
-- Use `rg`, `ls`, and targeted file reads to inspect matching areas of the codebase and docs.
+- Default to `rg` for all textual searches (fallback to `find` only if `rg` is unavailable). Combine with `ls` and targeted file reads to inspect matching areas of the codebase and docs.
 - Review `ai-docs/workflow/` for prior status entries related to the same feature.
 - Capture enough context for the planning phase: existing implementations, shared utilities, constraints, and open questions.
 
 ## Workflow
 1. Parse `USER_PROMPT` to identify primary feature areas and constraints.
 2. Inspect documentation (`app-docs/`, `ai-docs/knowledge-ledger/`, relevant specs) for background details.
-3. Search the codebase with `rg`/`find` to surface candidate files and read the important sections.
+3. Search the codebase with `rg` to surface candidate files and read the important sections (only fall back to other tools if `rg` is not installed).
 4. Summarize discoveries, highlighting reusable code, gaps, and risks that the plan must address.
 5. Record any documentation that should be updated before continuing.
 
