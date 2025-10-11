@@ -16,6 +16,7 @@ const SESSION_DIR = path.join(__dirname, '..', 'ai-docs', 'sessions');
 const tokenBudgetCalculator = require('./utils/token-budget-calculator');
 const TokenCollectorFactory = require('./token-collectors');
 const metricsLogger = require('./utils/workflow-metrics-logger');
+const {showUnifiedDashboard} = require('./unified-dashboard');
 
 // Task states
 const STATES = {
@@ -604,43 +605,53 @@ const command = process.argv[2];
 const args = process.argv.slice(3);
 
 (async () => {
+  let shouldShowDashboard = false;
   try {
     switch (command) {
       case 'add':
         await addTask(args[0], args[1] || '', args[2] || 'medium', args[3] || 'medium');
+        shouldShowDashboard = true;
         break;
 
       case 'pause':
         await pauseTask(args[0], args[1] || 'Paused for later');
+        shouldShowDashboard = true;
         break;
 
       case 'resume':
         await resumeTask(args[0]);
+        shouldShowDashboard = true;
         break;
 
       case 'complete':
         await completeTask(args[0], parseInt(args[1]) || 0);
+        shouldShowDashboard = true;
         break;
 
       case 'list':
         await listTasks(args[0] || 'active');
+        shouldShowDashboard = true;
         break;
 
       case 'status':
         await showStatus();
+        shouldShowDashboard = true;
         break;
 
       case 'context':
         await updateContextWindow(parseInt(args[0]) || 0);
         console.log(`✅ Context window updated: ${args[0]} tokens`);
+        shouldShowDashboard = true;
         break;
 
       case 'session-start':
         await sessionStart();
+        shouldShowDashboard = true;
         break;
 
       case 'complete-auto':
         await completeTaskAuto(args[0], args[1] || 'manual', args[2] || 'unknown');
+        shouldShowDashboard = true;
         break;
 
       case 'efficiency':
@@ -663,6 +674,7 @@ const args = process.argv.slice(3);
           console.log(`  ${model}: ${usage.total.toLocaleString()} tokens`);
         });
         console.log('');
+        shouldShowDashboard = true;
         break;
 
       default:
@@ -716,6 +728,11 @@ Examples:
   node scripts/manage-tasks.js status
   node scripts/manage-tasks.js session-start
 `);
+    }
+
+    if (shouldShowDashboard) {
+      console.log('\nAuto-refreshing unified dashboard...');
+      await showUnifiedDashboard();
     }
   } catch (error) {
     console.error('Error:', error.message);

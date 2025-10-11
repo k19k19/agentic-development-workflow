@@ -13,7 +13,7 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 - **Verification clarity.** When a command pauses (plan approval, manual checks, etc.), always print:
   - `🛑 Still inside /<command>. Reply 'resume' to continue or 'stop' to exit.`
   - Mention what will happen on resume (e.g., `resume` ➞ `/build`).
-- **No template references.** Never mention removed folders (`TEMPLATE-DOCS`, `GETTING-STARTED`, etc.). Point users to commands or scripts instead.
+- **No legacy doc references.** Always steer users toward the live command set and current `app-docs` structure instead of historical templates.
 
 ---
 

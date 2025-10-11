@@ -7,7 +7,6 @@
  */
 
 const path = require('path');
-const {loadRegistry} = require('./manage-plans');
 const fs = require('fs').promises;
 
 const TASKS_FILE = path.join(__dirname, '../ai-docs/tasks/tasks.json');
@@ -32,6 +31,8 @@ function createProgressBar(current, total, width = 30) {
 }
 
 async function showUnifiedDashboard() {
+  // Lazy load to avoid circular dependency when called from manage-plans.js
+  const {loadRegistry} = require('./manage-plans');
   const plans = await loadRegistry();
   const tasks = await loadTasks();
 
@@ -160,10 +161,11 @@ async function showUnifiedDashboard() {
 
   // Quick commands
   console.log('💡 QUICK COMMANDS\n');
-  console.log('   npm run work        Show this unified dashboard');
-  console.log('   npm run plans:list  List all plans with status');
-  console.log('   npm run tasks:list  List all tasks with details');
-  console.log('   npm run tasks       Show detailed task dashboard\n');
+  console.log('   npm run tasks:add           Add a new tracked task');
+  console.log('   npm run tasks:resume <id>   Resume paused work');
+  console.log('   npm run plans:update ...    Adjust plan status/notes');
+  console.log('   npm run plans:next          Surface recommended plans');
+  console.log('   npm run manage-knowledge -- list   Review active specs\n');
 }
 
 if (require.main === module) {

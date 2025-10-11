@@ -10,6 +10,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const { glob } = require('glob');
+const { showUnifiedDashboard } = require('./unified-dashboard');
 
 const PLANS_DIR = path.join(__dirname, '../ai-docs/plans');
 const REGISTRY_FILE = path.join(PLANS_DIR, 'plan-registry.json');
@@ -378,38 +379,46 @@ async function showNext() {
  */
 async function main() {
   const [,, command, ...args] = process.argv;
+  let shouldShowDashboard = false;
 
   try {
     switch (command) {
       case 'init':
         await initRegistry();
+        shouldShowDashboard = true;
         break;
 
       case 'sync':
         await syncRegistry();
+        shouldShowDashboard = true;
         break;
 
       case 'list':
         const filterStatus = args[0];
         await listPlans(filterStatus);
+        shouldShowDashboard = true;
         break;
 
       case 'update':
         const [planId, status, ...notesParts] = args;
         const notes = notesParts.join(' ') || null;
         await updateStatus(planId, status, notes);
+        shouldShowDashboard = true;
         break;
 
       case 'link':
         await linkTask(args[0], args[1]);
+        shouldShowDashboard = true;
         break;
 
       case 'complete':
         await completePlan(args[0]);
+        shouldShowDashboard = true;
         break;
 
       case 'next':
         await showNext();
+        shouldShowDashboard = true;
         break;
 
       default:
@@ -439,6 +448,11 @@ Plan Management Commands:
 
 Status values: pending, in_progress, completed, abandoned, superseded
         `);
+    }
+
+    if (shouldShowDashboard) {
+      console.log('\nAuto-refreshing unified dashboard...');
+      await showUnifiedDashboard();
     }
   } catch (error) {
     console.error('Error:', error.message);
