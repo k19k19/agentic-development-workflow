@@ -52,15 +52,23 @@ Scripts never copy documentation into consumer projects—only runtime assets (`
 ---
 
 ## Adopting the Template
-```bash
-# From your project directory
-bash /path/to/template/scripts/init-agentic-workflow.sh
-```
-What happens:
-- Copies `.claude/` + `scripts/` (merges if already present).
-- Creates empty `app-docs/` and `ai-docs/` scaffolding.
-- Merges `package.json`, `.gitignore`, installs dependencies.
-- Seeds the workflow status index used by the dashboard.
-- Prints the **exact next command** to keep automation aligned.
+1. Clone or download this template alongside your existing project (keep your project’s root README in place).
+   ```bash
+   git clone https://github.com/k19k19/budget-agentic-workflow.git /tmp/budget-agentic-workflow
+   ```
+2. From within your existing project directory, run the installer script shipped with the template:
+   ```bash
+   cd /path/to/your/project
+   bash /tmp/budget-agentic-workflow/scripts/init-agentic-workflow.sh
+   ```
+   - The script merges automation assets and configuration without touching your project’s README or other non-template docs.
+   - If you have custom `.gitignore`, `package.json`, or config files, the script merges in the required entries instead of overwriting them.
+
+After the script runs:
+- `.claude/` and `scripts/` are copied in (existing files are respected).
+- `app-docs/` and `ai-docs/` directories are scaffolded if missing.
+- Required scripts and dependencies are added to `package.json` and `.gitignore`.
+- The workflow status index is seeded so dashboard commands work immediately.
+- The installer prints the next command to keep the automation loop aligned.
 
 Stay inside the slash-command loop, and the system keeps itself up to date.
