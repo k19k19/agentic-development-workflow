@@ -19,6 +19,12 @@ PLAN_OUTPUT_DIRECTORY: ai-docs/plans/
 DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 
 ## Instructions
+- **Check Knowledge Ledger:** Before planning, search the knowledge ledger for relevant architectural decisions:
+  ```bash
+  npm run search "[relevant topic from USER_PROMPT]"
+  ```
+  - Review any adopted or superseded articles that inform this decision
+  - Consider established patterns and avoid previously rejected approaches
 - **Read the Spec:** Before planning, read the feature specification from `SPECS_INPUT_DIRECTORY/[round-type]-[feature].md`.
 - If any of `USER_PROMPT`, `DOCUMENT_URLS`, or `RELEVANT_FILES_COLLECTION` is missing, stop and ask the user to provide it.
 - Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the scout phase.

@@ -1,6 +1,7 @@
 const { pipeline } = require('@xenova/transformers');
 const fs = require('fs').promises;
 const path = require('path');
+const matter = require('gray-matter');
 
 // --- Configuration ---
 // Detect if running in template repo or user project
@@ -12,6 +13,7 @@ const DOCS_DIRECTORIES = isTemplateRepo
       // Template development mode: Index current work + evergreen guides
       'TEMPLATE-DOCS/active',
       'TEMPLATE-DOCS/reference',
+      'ai-docs/knowledge-ledger',  // Index knowledge ledger for template development
     ]
   : [
       // User project mode: Index their documentation
@@ -21,13 +23,14 @@ const DOCS_DIRECTORIES = isTemplateRepo
       'app-docs/architecture',
       'app-docs/mappings',
       'app-docs/operations',
+      'ai-docs/knowledge-ledger',
       'ai-docs/sessions',  // Production session notes for AI memory persistence
     ];
 
 // Adjust excluded files based on environment
 const EXCLUDED_FILES = isTemplateRepo
   ? new Set([])  // Template: index everything in active/reference
-  : new Set(['feature-to-source.md']);  // User: skip auto-generated
+  : new Set(['feature-to-source.md', 'README.md', 'template.md']);  // User: skip auto-generated and ledger templates
 const ALLOWED_EXTENSIONS = new Set(['.md', '.mdx', '.markdown', '.txt', '.yaml', '.yml', '.json', '.sql']);
 const MAX_FILE_BYTES = 3 * 1024 * 1024; // Skip files larger than 3 MB
 const VECTOR_STORE_PATH = path.join(__dirname, '..', 'vector-store.json');
@@ -225,19 +228,59 @@ async function vectorize() {
     for (const file of batchFiles) {
       try {
         const stats = await fs.stat(file);
+        const filename = path.basename(file);
         if (stats.size > MAX_FILE_BYTES) {
-          console.warn(`  - Skipping ${path.basename(file)} (size ${stats.size} exceeds limit).`);
+          console.warn(`  - Skipping ${filename} (size ${stats.size} exceeds limit).`);
           continue;
         }
 
-        const content = await fs.readFile(file, 'utf8');
-        const chunks = chunkDocument(content);
+        const relativePath = path.relative(rootDir, file);
+        const segments = relativePath.split(path.sep);
+        const root = segments[0] || '';
+        const isLedgerDoc = root === 'ai-docs' && segments[1] === 'knowledge-ledger';
+        let docType = segments.length > 1 ? segments[1] : '';
+        const rawContent = await fs.readFile(file, 'utf8');
+        let contentToChunk = rawContent;
+        let ledgerMetadata;
+
+        if (isLedgerDoc) {
+          docType = 'ledger';
+          let parsed;
+          try {
+            parsed = matter(rawContent);
+          } catch (parseError) {
+            console.warn(`  - Skipping ${filename} (invalid ledger frontmatter).`);
+            continue;
+          }
+
+          const statusValue = typeof parsed.data?.status === 'string' ? parsed.data.status.trim().toLowerCase() : null;
+          if (!statusValue) {
+            console.warn(`  - Skipping ${filename} (missing ledger status).`);
+            continue;
+          }
+          if (statusValue === 'proposed') {
+            console.log(`  - Skipping ${filename} (status: proposed)`);
+            continue;
+          }
+          if (!['adopted', 'superseded'].includes(statusValue)) {
+            console.warn(`  - Skipping ${filename} (unsupported ledger status: ${statusValue}).`);
+            continue;
+          }
+
+          contentToChunk = parsed.content;
+          ledgerMetadata = {
+            boost: 1.5,
+            ledgerStatus: statusValue,
+          };
+        }
+
+        const chunks = chunkDocument(contentToChunk);
         if (chunks.length === 0) {
-          console.warn(`  - Skipping ${path.basename(file)} (no meaningful chunks).`);
+          console.warn(`  - Skipping ${filename} (no meaningful chunks).`);
           continue;
         }
 
-        console.log(`  - Generating ${chunks.length} embeddings for ${path.basename(file)}...`);
+        console.log(`  - Generating ${chunks.length} embeddings for ${filename}...`);
         const embeddings = await extractor(
           chunks.map((chunk) => chunk.text),
           {
@@ -247,16 +290,12 @@ async function vectorize() {
         );
 
         const vectorLength = embeddings.data.length / chunks.length;
-        const relativePath = path.relative(rootDir, file);
-        const segments = relativePath.split(path.sep);
-        const root = segments[0] || '';
-        const docType = segments.length > 1 ? segments[1] : '';
 
         chunks.forEach((chunk, index) => {
           const vectorStart = index * vectorLength;
           const vectorEnd = vectorStart + vectorLength;
           const vector = Array.from(embeddings.data.slice(vectorStart, vectorEnd));
-          vectorStore.push({
+          const record = {
             id: `${relativePath}::${index.toString().padStart(4, '0')}`,
             source: relativePath,
             root,
@@ -271,7 +310,13 @@ async function vectorize() {
             embeddingModel: EMBEDDING_MODEL,
             createdAt,
             fileSizeBytes: stats.size,
-          });
+          };
+
+          if (ledgerMetadata) {
+            record.metadata = { ...ledgerMetadata };
+          }
+
+          vectorStore.push(record);
         });
       } catch (error) {
         console.error(`Error processing file ${file}:`, error);
