@@ -16,6 +16,10 @@ PATH_TO_PLAN: $1
 ## Workflow
 - **Build on Existing Code:** Before writing any new code, check `app-docs/mappings/feature-to-source.md` to see if a similar function or component already exists. If it does, build upon it rather than creating a new one.
 - If no `PATH_TO_PLAN` is provided, stop immediately and request it from the user.
+- **Track plan status:** Extract plan ID from `PATH_TO_PLAN` (e.g., `ai-docs/plans/20251011-token-accounting/plan.md` → `20251011-token-accounting`), then mark as in-progress:
+  ```bash
+  npm run plans:update <plan-id> in_progress "Build started"
+  ```
 - Read the plan at `PATH_TO_PLAN`, reason through the steps, and implement them in the codebase using the delegated tools.
 
 ## Report
@@ -39,8 +43,9 @@ npm run vectorize
 This makes the session searchable for future AI sessions via vector search.
 
 ## Token Budget Tracking
-After completing the build, estimate tokens used and show updated budget:
+After completing the build, mark the plan as completed and show updated budget:
 ```bash
+npm run plans:complete <plan-id>
 npm run tasks:session-start
 ```
 

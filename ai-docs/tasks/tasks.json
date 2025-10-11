@@ -1,7 +1,8 @@
 {
   "version": "1.0",
   "lastUpdated": "2025-10-11T03:49:33.078Z",
-  "tasks": [
+  "tasks": [],
+  "completedTasks": [
     {
       "id": "TASK-1760154539194",
       "title": "Test automated token accounting",
@@ -27,8 +28,8 @@
   ],
   "tokenBudget": {
     "dailyLimit": 500000,
-    "used": 0,
-    "remaining": 500000,
+    "used": 440000,
+    "remaining": 60000,
     "lastReset": "2025-10-11T00:00:00Z"
   },
   "contextWindow": {

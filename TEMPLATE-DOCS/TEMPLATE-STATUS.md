@@ -22,6 +22,8 @@ This template provides a **functional foundational architecture** for agentic de
 - ✅ **Vector Search Integration**: Semantic search of documentation using `@xenova/transformers`
 - ✅ **Documentation Structure**: Clear separation (ai-docs, app-docs, TEMPLATE-DOCS)
 - ✅ **Task Management**: JSON-based task ledger with budget tracking (`ai-docs/tasks/tasks.json`)
+- ✅ **Plan Tracking System**: Centralized plan registry with status tracking (`scripts/manage-plans.js`) - NEW (2025-10-11)
+- ✅ **Unified Dashboard**: Combined plans/tasks view with actionable commands (`npm run work`) - NEW (2025-10-11)
 - ✅ **Session Memory**: Auto-generated session summaries in `ai-docs/sessions/`
 - ✅ **MCP Configuration Templates**: Gemini, Codex, Firecrawl, Shadcn, Chrome DevTools
 
@@ -38,35 +40,44 @@ This template provides a **functional foundational architecture** for agentic de
 
 Based on comprehensive code reviews, the following enhancement opportunities have been identified:
 
-### 1. README Compliance Gaps (Priority: HIGH)
+### Plan Cross-Reference Table
 
-**Issue**: Several advertised features are aspirational rather than implemented.
+| Gap Section | Priority | Status | Plan ID | Command |
+|-------------|----------|--------|---------|---------|
+| 1. README Compliance | HIGH | ✅ Complete | `20251010-212657-fix-implementation-gaps` | Completed |
+| 2. Token Accounting | HIGH | ⏳ Planned | `20251011-token-accounting` | `/build "ai-docs/plans/20251011-token-accounting/plan.md"` |
+| 3. MCP Integration | MEDIUM | ⏳ Ready | `20251011-$(date +%H%M%S)-mcp-integration` | `/build "ai-docs/plans/20251011-*-mcp-integration/plan.md"` |
+| 4. Knowledge Ledger | MEDIUM | ⏳ Ready | `20251011-131913-knowledge-ledger` | `/build "ai-docs/plans/20251011-131913-knowledge-ledger/plan.md"` |
 
-**Specific Gaps**:
-- **Broken Project Scale Detection**: `scripts/detect-project-scale.js` has incorrect glob pattern (`app/**/*.js` should be `app/**/*`)
-- **Non-Functional Test Command**: `npm test` is a placeholder with no actual test runner
-- **Manual Documentation Updates**: Auto-updating `feature-to-source.md` is not automated; requires manual edits
-- **Slash Command Misunderstanding**: Commands are instruction-based (not executable scripts), which is correct but under-documented
-
-**Recommendations**:
-1. Fix glob pattern in scale detection script
-2. Implement basic test runner (Jest/Mocha) or clearly mark as "template only"
-3. Clarify in README that slash commands are instruction-based (Claude interprets them)
-4. Add automation scripts for documentation updates OR clearly state manual workflow
-
-**Files to Update**:
-- `scripts/detect-project-scale.js` (bug fix)
-- `package.json` (test script)
-- `README.md` (clarify slash command architecture)
-- `.claude/commands/build_w_report.md` (document manual steps OR automate)
+**Additional Plans** (not in original gaps):
+- `20251010-225157-task-reminder-system` - Automated task reminders with token warnings
+- `20251011-review-docs-token-strategy` - Multi-session review strategy
 
 ---
 
-### 2. Token Efficiency & Multi-Agent Orchestration (Priority: HIGH) ✅ VALIDATED
+### 1. README Compliance Gaps (Priority: HIGH) ✅ COMPLETED
+
+**Status**: ✅ Completed (2025-10-11)
+**Plan**: `20251010-212657-fix-implementation-gaps`
+
+**What Was Fixed**:
+- ✅ Project scale detection glob pattern corrected
+- ✅ Test runner implemented
+- ✅ Slash command architecture documented
+- ✅ Documentation workflow clarified
+
+**Outcome**: All core template gaps resolved. See `ai-docs/plans/20251010-212657-fix-implementation-gaps/` for details.
+
+---
+
+### 2. Token Efficiency & Multi-Agent Orchestration (Priority: HIGH) ⏳ IN PROGRESS
+
+**Status**: ⏳ Plan created, implementation pending
+**Plan**: `20251011-token-accounting`
 
 **Issue**: The "90% token efficiency" claim relies on manual usage entry rather than automated tracking and intelligent routing.
 
-**Status**: Code review completed (2025-10-11). Findings documented in `Review-code-for-token-efficiency-gaps.md`.
+**Code Review**: Completed (2025-10-11). Findings documented in `Review-code-for-token-efficiency-gaps.md`.
 
 **Specific Gaps** (VALIDATED):
 - **No Automated Token Accounting**: Current system uses manual token entry in `manage-tasks.js:152-183`
@@ -105,7 +116,10 @@ Based on comprehensive code reviews, the following enhancement opportunities hav
 
 ---
 
-### 3. MCP Integration Clarity (Priority: MEDIUM)
+### 3. MCP Integration Clarity (Priority: MEDIUM) ⏳ PLANNED
+
+**Status**: ⏳ Plan to be created
+**Plan**: To be created as `20251011-HHMMSS-mcp-integration`
 
 **Issue**: Documentation implies optional MCPs (Firecrawl, Shadcn, Chrome DevTools) are pre-integrated and automated, when they require manual setup and invocation.
 
@@ -129,7 +143,10 @@ Based on comprehensive code reviews, the following enhancement opportunities hav
 
 ---
 
-### 4. Knowledge Ledger Implementation (Priority: MEDIUM)
+### 4. Knowledge Ledger Implementation (Priority: MEDIUM) ⏳ PLANNED
+
+**Status**: ⏳ Plan to be created
+**Plan**: To be created as `20251011-HHMMSS-knowledge-ledger`
 
 **Issue**: Current workflow overwrites documentation with each iteration, losing historical context and causing knowledge gaps.
 
