@@ -2,7 +2,7 @@
 description: Generate documentation and update trackers
 argument-hint: [feature-id]
 allowed-tools: ["Read", "Write", "Edit", "run_shell_command"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Finalize Feature
@@ -60,4 +60,4 @@ cat ai-docs/sessions/SESSION-*.md           # Read session history
 ```
 
 ## Budget
-~10K tokens (Claude for doc generation)
+~10K tokens (Codex orchestration + Claude MCP doc generation)

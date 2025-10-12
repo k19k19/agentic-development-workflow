@@ -1,8 +1,8 @@
 ---
 description: Build the codebase based on the plan and produce a detailed report
 argument-hint: [path-to-plan]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command", "Bash"]
-model: claude-sonnet-4-5
+allowed-tools: ["mcp__claude__complete", "mcp__gemini-cli-mcp__ask-gemini", "Read", "Write", "Edit", "run_shell_command", "Bash"]
+model: o4-mini
 ---
 
 # Build with Report
@@ -18,7 +18,7 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.
 2. Read and internalize the plan, noting acceptance criteria and tooling requirements.
-3. Delegate code implementation to Codex MCP using `mcp__codex__codex`; keep Claude focused on orchestration, validation, and reporting.
+3. Delegate code implementation to Claude MCP using `mcp__claude__complete`; keep Codex focused on orchestration, validation, and reporting, and tap Gemini MCP when summarizing large references.
 4. Implement the plan step by step, running lint/tests or other safeguards when needed.
 5. Capture validation output (commands, logs, screenshots) for inclusion in the final report.
 6. Summarize decisions, risks, and documentation updates so the report is self-contained.

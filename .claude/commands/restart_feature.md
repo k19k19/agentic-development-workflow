@@ -2,7 +2,7 @@
 description: Restart feature after failure with lessons learned (AI-internal command)
 argument-hint: [feature-id]
 allowed-tools: ["Read", "run_shell_command"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Restart Feature (AI-Internal)
@@ -15,7 +15,7 @@ FEATURE_ID: $1
 FAILURES_DIRECTORY: ai-docs/failures/
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically after failure report.
+- **You don't run this manually** - Codex runs it automatically after failure report.
 - Jump back to Step 1 (/scout).
 - **Prioritize** reading FAILURE_REPORT.md for context.
 - Incorporate lessons learned into next planning cycle.

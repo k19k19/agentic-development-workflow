@@ -2,7 +2,7 @@
 description: Generate code critique and wait for approval (AI-internal command)
 argument-hint: []
 allowed-tools: ["Read", "Write", "Grep", "run_shell_command"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Wait For Review (AI-Internal)
@@ -11,7 +11,7 @@ model: claude-sonnet-4-5
 **AI-INTERNAL COMMAND** - Automatically triggered after `/build` completes. Generates code critique and pauses for human review.
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically after build.
+- **You don't run this manually** - Codex runs it automatically after build.
 - Analyze code for complexity, standards adherence, risks.
 - Generate Code Critique Summary.
 - **PAUSE** and wait for user approval.
@@ -33,4 +33,4 @@ model: claude-sonnet-4-5
 - **WAIT** for user approval before proceeding.
 
 ## Budget
-~5K tokens (Claude analysis)
+~5K tokens (Codex orchestration + Claude MCP analysis)

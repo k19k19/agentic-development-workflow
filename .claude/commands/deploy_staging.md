@@ -2,7 +2,7 @@
 description: Deploy to staging environment
 argument-hint: []
 allowed-tools: ["run_shell_command", "Read"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Deploy Staging

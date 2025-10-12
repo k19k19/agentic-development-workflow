@@ -1,14 +1,14 @@
 ---
-description: Scout and build workflow for medium tasks (skips plan approval)
+description: Scout and build workflow orchestrated by Codex (skips plan approval)
 argument-hint: [task]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
-model: claude-sonnet-4-5
+allowed-tools: ["mcp__claude__complete", "mcp__gemini-cli-mcp__ask-gemini", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
+model: o4-mini
 ---
 
 # Scout Build (Budget Shortcut)
 
 ## Purpose
-Medium-sized workflow that scouts for relevant files, then builds directly without plan approval. Suitable for known patterns and medium-complexity tasks (~30K tokens).
+Medium-sized workflow that scouts for relevant files, then builds directly without plan approval. Codex orchestrates the flow while Claude MCP executes code changes (~30K tokens).
 
 ## Variables
 TASK: $1
@@ -18,7 +18,7 @@ TASK: $1
 - **When NOT to use**: Unfamiliar features, architectural changes, high-risk tasks.
 - If `TASK` is missing, stop and ask the user to provide it.
 - Execute scout phase using vector search.
-- Hand off implementation steps to Codex MCP through `mcp__codex__codex`; Claude stays focused on summarizing findings and coordinating follow-ups.
+- Route research requests through Gemini MCP when large summaries are needed and delegate implementation steps to Claude MCP via `mcp__claude__complete` while Codex focuses on coordination and follow-ups.
 - Skip plan approval gate for speed.
 - Build using existing patterns found during scout.
 - Run tests automatically after build.
@@ -27,7 +27,7 @@ TASK: $1
 1. Validate `TASK` is provided.
 2. Run SlashCommand(`/scout "[TASK]"`) -> `relevant_files_collection_path`.
 3. Identify existing patterns from scouted files.
-4. Build directly using identified patterns (no plan approval) and execute code edits through Codex MCP.
+4. Build directly using identified patterns (no plan approval) and execute code edits through Claude MCP.
 5. Run tests using `npm test` or appropriate test command.
 6. Report results with token usage.
 

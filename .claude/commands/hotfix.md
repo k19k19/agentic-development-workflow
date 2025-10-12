@@ -1,8 +1,8 @@
 ---
 description: Triage and fix production bug
 argument-hint: [bug-id]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Grep", "Glob", "run_shell_command"]
-model: claude-sonnet-4-5
+allowed-tools: ["mcp__claude__complete", "mcp__gemini-cli-mcp__ask-gemini", "Read", "Write", "Grep", "Glob", "run_shell_command"]
+model: o4-mini
 ---
 
 # Hotfix (Production Bug)
@@ -20,7 +20,7 @@ BUG_REPORTS_DIRECTORY: app-docs/debugging/
 - Trigger `/triage_bug` for focused root cause analysis.
 - Skip broad scout phase - use targeted search only.
 - Jump directly to `/plan` or `/build` based on complexity.
-- When it's time to patch code, delegate execution to Codex MCP via `mcp__codex__codex` and keep Claude focused on coordination and reviews.
+- When it's time to patch code, delegate execution to Claude MCP via `mcp__claude__complete`, let Codex orchestrate communication, and call Gemini MCP for any doc lookups needed to validate the fix.
 - Update bug tracking system when complete.
 
 ## Workflow

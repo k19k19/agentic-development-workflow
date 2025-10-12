@@ -1,4 +1,4 @@
-# Claude Code - User Memory (Global Settings)
+# Codex Orchestrator - User Memory (Global Settings)
 
 **Version**: 3.0 | **Last Updated**: October 2025 | **Scope**: All Projects
 
@@ -10,8 +10,8 @@
 
 **R&D Framework** (Reduce and Delegate):
 - Use token-efficient models for discovery and boilerplate
-- Delegate to specialized tools (Gemini, Codex, Chrome DevTools)
-- Reserve Claude for complex logic and architecture
+- Delegate to specialized tools (Gemini MCP, Claude MCP, Chrome DevTools)
+- Reserve Codex for complex logic and architecture
 - Achieve 90%+ token efficiency
 - Default multi-agent workflows to budget mode; escalate to standard only when lean output is insufficient
 
@@ -24,22 +24,22 @@
 | Task Type | Tool | Rationale |
 |-----------|------|-----------|
 | Read docs, summarize | Gemini MCP | Fast, cheap tokens |
-| Boilerplate, configs | Codex MCP | Quick syntax, no context needed |
-| Fix syntax bugs | Codex MCP | Immediate, no architectural context |
-| UI/UX work | Codex MCP | Specializes in component code |
-| Complex debugging (multi-file) | Claude | Requires architectural understanding |
-| Architectural decisions | Claude | Strategic, long-term impact |
-| Security/performance review | Claude | Critical, requires deep analysis |
+| Boilerplate, configs | Claude MCP | Quick syntax, no context needed |
+| Fix syntax bugs | Claude MCP | Immediate, no architectural context |
+| UI/UX work | Claude MCP | Specializes in component code |
+| Complex debugging (multi-file) | Codex orchestrator | Requires architectural understanding |
+| Architectural decisions | Codex orchestrator | Strategic, long-term impact |
+| Security/performance review | Codex orchestrator | Critical, requires deep analysis |
 | E2E testing | Chrome DevTools MCP | Testing specialty |
 
 ### Decision Tree
 
 ```
 Step 1: Identify scope
-  - Single file bug? → Codex MCP
-  - Multi-file bug? → Claude
-  - Config/env issue? → Codex MCP
-  - Logic/architecture? → Claude
+  - Single file bug? → Claude MCP
+  - Multi-file bug? → Codex orchestrator
+  - Config/env issue? → Claude MCP
+  - Logic/architecture? → Codex orchestrator
 
 Step 2: Choose workflow by project scale
   - Small (<10 files): Direct implementation or `/scout_plan_build "<task>" "" "budget"` when you need extra context
@@ -56,7 +56,7 @@ Step 3: Execute with minimal context
 
 ## 🚨 CRITICAL: Pre-Implementation Protocol
 
-**BEFORE ANY CODE CHANGES, Claude must:**
+**BEFORE ANY CODE CHANGES, Codex must:**
 
 1. ✅ **Read project documentation** (via Gemini MCP)
    - `app-docs/specs/[round-type]-[feature].md` if exists
@@ -96,7 +96,7 @@ Step 3: Execute with minimal context
 **Small Projects** (<10 files, <5K LOC):
 ```
 User: "Add health check endpoint"
-Claude: [uses Codex MCP directly]
+Codex: [delegates to Claude MCP]
 ✅ Done in ~10K tokens
 ```
 
@@ -213,10 +213,10 @@ Claude: [uses Codex MCP directly]
 ### Step 1: Identify Scope (30 seconds, no AI)
 
 ```
-Single file? → Codex MCP
-Multi-file? → Claude
-Config issue? → Codex MCP
-Logic error? → Claude
+Single file? → Claude MCP
+Multi-file? → Codex orchestrator
+Config issue? → Claude MCP
+Logic error? → Codex orchestrator
 ```
 
 ### Step 2: Gather Minimal Context
@@ -231,13 +231,13 @@ Logic error? → Claude
 ### Step 3: Execute Fix
 
 ```
-Codex MCP:
+Claude MCP:
   - Syntax errors
   - Type mismatches
   - Config file edits
   - Simple logic fixes
 
-Claude:
+Codex orchestrator:
   - Complex integration bugs
   - Architectural issues
   - Multi-file refactoring
@@ -266,7 +266,7 @@ git diff --stat
 
 1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /scout_build, Large  /scout_plan_build_report).
 2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
-3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
+3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Codex's tokens on reading large documentation files.**
 4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **scouting phase** and the **feature-to-source.md mapping file** to find the minimal required context.
 
 ---
@@ -336,8 +336,8 @@ Build report: ai-docs/builds/2025-10-07-auth/build-report.md
 - Implemented login/logout endpoints
 - 15/15 tests passing
 
-🤖 Generated with Claude Code
-Co-Authored-By: Claude <noreply@anthropic.com>
+🤖 Generated with Codex Orchestrator
+Co-Authored-By: Codex <noreply@openai.com>
 ```
 
 **Format:**
@@ -345,7 +345,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - **Description**: What changed (not how)
 - **Reference**: Link to plan/spec
 - **Details**: Bullet points of key changes
-- **Credit**: Claude Code attribution
+- **Credit**: Codex orchestrator attribution
 
 
 
@@ -410,8 +410,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 1. Use Firecrawl MCP to fetch official docs
 2. Use Gemini MCP to summarize key concepts
-3. Use Codex MCP for boilerplate examples
-4. Use Claude for architectural guidance
+3. Use Claude MCP for boilerplate examples
+4. Use Codex for architectural guidance
 5. Document learnings in app-docs/guides/
 ```
 
@@ -461,10 +461,10 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Initial drafts of specs
 
 **Not for:**
-- Complex logic (use Claude)
-- Production code (use Codex or Claude)
+- Complex logic (use Codex orchestrator)
+- Production code (delegate to Claude MCP via Codex)
 
-### Codex MCP
+### Claude MCP
 **Best for:**
 - CRUD endpoints
 - Database models
@@ -473,8 +473,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Test boilerplate
 
 **Not for:**
-- Architectural decisions (use Claude)
-- Complex algorithms (use Claude)
+- Architectural decisions (use Codex orchestrator)
+- Complex algorithms (use Codex orchestrator)
 
 ### Chrome DevTools MCP
 **Best for:**
@@ -483,20 +483,20 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Visual regression tests
 
 **Not for:**
-- Unit tests (use Codex)
-- Backend API tests (use Codex)
+- Unit tests (delegate to Claude MCP)
+- Backend API tests (delegate to Claude MCP)
 
-### Claude
+### Codex Orchestrator
 **Best for:**
 - Multi-agent orchestration
 - Architectural planning
-- Complex multi-file refactoring
+- Complex multi-file refactoring oversight
 - Strategic decisions
 - Security reviews
 
 **Not for:**
-- Simple boilerplate (use Codex)
-- Documentation reading (use Gemini)
+- Simple boilerplate (delegate to Claude MCP)
+- Documentation reading (use Gemini MCP)
 
 ---
 
@@ -510,7 +510,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 3. Optimize:
    - Scout: Reduce scale (4 → 2 agents)
    - Plan: Simplify scope
-   - Build: More Codex/Gemini, less Claude
+   - Build: More Claude/Gemini, less Codex
 4. Retry with adjusted approach
 ```
 
@@ -564,7 +564,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ⚠️ Documentation out of sync
 ⚠️ Repeating same work across projects
 ⚠️ Pre-approval usually gets rejected
-⚠️ Not using MCP tools (all Claude)
+⚠️ Not using MCP tools (only Codex orchestrator)
 
 ---
 
@@ -624,9 +624,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 > "The best code is no code. The second best is code written by the right tool for the job."
 
-- Use Gemini for reading
-- Use Codex for writing
-- Use Claude for thinking
+- Use Gemini MCP for reading
+- Use Claude MCP for writing
+- Use Codex for thinking
 - Achieve 90%+ efficiency
 - Ship faster, spend less
 

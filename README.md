@@ -14,7 +14,7 @@ Zero-doc onboarding: every command explains itself, prints required follow-ups, 
    - `🛑 Waiting inside /<command>. Reply 'resume' to continue or 'stop' to exit.`
 6. After a build completes, run `/test`, then follow any prompts (deploy, retry, etc.).
 
-You can always type plain language; Claude will answer with the recommended command and offer to run it for you.
+You can always type plain language; Codex will answer with the recommended command and offer to run it for you, delegating implementation to Claude and research to Gemini MCPs when needed.
 
 ---
 

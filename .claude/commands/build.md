@@ -1,8 +1,8 @@
 ---
 description: Build the codebase based on the plan
 argument-hint: [path-to-plan]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command", "Bash"]
-model: claude-sonnet-4-5
+allowed-tools: ["mcp__claude__complete", "mcp__gemini-cli-mcp__ask-gemini", "Read", "Write", "Edit", "run_shell_command", "Bash"]
+model: o4-mini
 ---
 
 # Build
@@ -17,7 +17,7 @@ PATH_TO_PLAN: $1
 - **Build on Existing Code:** Before writing any new code, check `app-docs/mappings/feature-to-source.md` to see if a similar function or component already exists. If it does, build upon it rather than creating a new one.
 - If no `PATH_TO_PLAN` is provided, stop immediately and request it from the user.
 - Read the plan at `PATH_TO_PLAN`, reason through the steps, and implement them in the codebase using the delegated tools.
-- Delegate all code editing to Codex MCP via `mcp__codex__codex`; reserve Claude for orchestration, reviews, and approvals.
+- Delegate code editing to Claude MCP via `mcp__claude__complete`; rely on Codex for orchestration, reviews, and approvals, and pull in Gemini MCP for large reference summaries as needed.
 
 ## Report
 - Summarize the work you completed in concise bullet points.
