@@ -1,8 +1,8 @@
 ---
 description: Focused bug root cause analysis (AI-internal command)
 argument-hint: [bug-id]
-allowed-tools: ["Read", "Grep", "Glob", "Write", "mcp__gemini-cli__ask-gemini"]
-model: claude-sonnet-4-5
+allowed-tools: ["Read", "Grep", "Glob", "Write", "mcp__gemini-cli-mcp__ask-gemini"]
+model: o4-mini
 ---
 
 # Triage Bug (AI-Internal)
@@ -15,7 +15,7 @@ BUG_ID: $1
 BUG_REPORTS_DIRECTORY: app-docs/debugging/
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically after hotfix.
+- **You don't run this manually** - Codex runs it automatically after hotfix.
 - Highly focused analysis to pinpoint bug location.
 - Propose fix strategy.
 - Skip broad scout, jump directly to `/plan` or `/build`.
@@ -36,4 +36,4 @@ BUG_REPORTS_DIRECTORY: app-docs/debugging/
 - Suggest jumping to `/build` (simple) or `/plan` (complex).
 
 ## Budget
-~8K tokens (Gemini + Claude targeted search)
+~8K tokens (Gemini MCP discovery + Codex analysis orchestrated by Codex)

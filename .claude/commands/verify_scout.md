@@ -2,7 +2,7 @@
 description: Verify scout results quality (AI-internal command)
 argument-hint: [scout-results-path]
 allowed-tools: ["Read", "Write", "mcp__gemini-cli__ask-gemini"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Verify Scout (AI-Internal)
@@ -14,7 +14,7 @@ model: claude-sonnet-4-5
 SCOUT_RESULTS_PATH: $1
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically after `/scout`.
+- **You don't run this manually** - Codex runs it automatically after `/scout`.
 - Analyze scout results for completeness.
 - Calculate confidence score (0-100%).
 - Identify unanswered questions.

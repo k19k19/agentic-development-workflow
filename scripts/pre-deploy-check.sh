@@ -252,7 +252,7 @@ fi
 if [ -f CLAUDE.md ]; then
     success "CLAUDE.md exists (project memory configured)"
 else
-    warning "CLAUDE.md not found (no project memory for Claude Code)"
+    warning "CLAUDE.md not found (no project memory guidance for Codex)"
 fi
 
 echo ""

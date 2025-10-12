@@ -13,7 +13,7 @@ const CROSS_SESSION_PROMPT_FILE = path.join(WORKFLOW_DIR, 'cross-session-prompt.
 
 const { TASK_SIZES, DEFAULT_CONFIG, generateProgressBar, formatTokens, getRemainingBudget, getUsagePercent, getUsageWarningLevel, getDailyTokenLimit, getWeeklyTokenLimit, getContextWindowLimit, getSuggestedWorkflows, getRecommendedTasks } = tokenCalculator;
 
-const CHEAP_MODELS = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'codex', 'gpt-4o-mini'];
+const CHEAP_MODELS = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gpt-4o-mini'];
 
 function readJson(filePath) {
   return fs.readFile(filePath, 'utf8').then(JSON.parse);
@@ -129,7 +129,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     suggestions.forEach(item => {
       console.log(`  • ${item.name} — ${item.command} (${formatTokens(item.tokens)} tokens)`);
     });
-    console.log('Use Gemini MCP for research/doc reviews and Codex MCP for implementation to conserve Claude usage.');
+    console.log('Let Codex orchestrate and implement directly; tap Gemini MCP for research-heavy steps to conserve tokens.');
     return;
   }
 
@@ -145,7 +145,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log(`  …and ${recommended.length - 3} more tasks fit within today's remaining budget.`);
   }
 
-  console.log('Route simple doc summaries to Gemini MCP and UI/code tweaks to Codex MCP to keep Claude tokens available for complex debugging.');
+  console.log('Route documentation lookups to Gemini MCP so Codex can stay focused on implementation and coordination.');
 }
 
 (async () => {
@@ -171,7 +171,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log('🚀 Session Kickoff Dashboard');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
-    printSection('Daily Token Budget (Claude $20 plan)');
+    printSection('Daily Token Budget (Codex $20 plan)');
     console.log(`Limit:      ${formatTokens(dailyLimit)} tokens`);
     console.log(`Used today: ${formatTokens(dailyUsed)} tokens`);
     console.log(`Remaining:  ${formatTokens(dailyRemaining)} tokens`);
@@ -193,14 +193,14 @@ function printRecommendedTasks(recommended, remainingTokens) {
 
     const cheapShare = getCheapModelShare(usageSummary.weekly.byModel, weeklyUsed);
     if (weeklyUsed > 0) {
-      console.log(`Model mix (last 7 days): ${cheapShare.toFixed(1)}% from Gemini/Codex tiers.`);
+      console.log(`Model mix (last 7 days): ${cheapShare.toFixed(1)}% from Gemini tiers.`);
       if (cheapShare < 60) {
-        console.log('Tip: Shift simple discovery and boilerplate to Gemini MCP and Codex MCP to keep Claude within the $20 plan.');
+        console.log('Tip: Shift simple discovery to Gemini MCP so Codex can stay within the $20 plan.');
       } else {
-        console.log('Great balance! Continue leaning on Gemini/Codex for straightforward tasks to maximize Claude availability.');
+        console.log('Great balance! Continue leaning on Gemini MCP for straightforward research to maximize Codex availability.');
       }
     } else {
-      console.log('No token usage recorded yet. Default to Gemini MCP for document reads and Codex MCP for quick fixes.');
+      console.log('No token usage recorded yet. Default to Gemini MCP for document reads while Codex handles implementation directly.');
     }
 
     const crossSessionPrompt = await loadCrossSessionPrompt();
@@ -269,8 +269,8 @@ function printRecommendedTasks(recommended, remainingTokens) {
 
     printSection('Next Steps');
     console.log('1. Run `npm run workflow:sync` after each command to keep the dashboard current.');
-    console.log('2. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
-    console.log('3. Reserve Claude for architecture, multi-file reasoning, and verification.');
+    console.log('2. Default to Gemini MCP for doc summarization/research while Codex implements changes directly.');
+    console.log('3. Keep Codex focused on architecture, multi-file reasoning, and verification while also executing edits with Write/Edit tools.');
     console.log('4. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
 
     console.log('\nStay focused and budget-friendly!');

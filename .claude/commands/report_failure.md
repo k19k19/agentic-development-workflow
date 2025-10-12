@@ -2,7 +2,7 @@
 description: Document test failure and enter learning loop (AI-internal command)
 argument-hint: [feature-id]
 allowed-tools: ["Read", "Write", "run_shell_command"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Report Failure (AI-Internal)
@@ -15,7 +15,7 @@ FEATURE_ID: $1
 FAILURES_DIRECTORY: ai-docs/failures/
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically on test failure.
+- **You don't run this manually** - Codex runs it automatically on test failure.
 - Analyze test failure root cause.
 - Generate structured `FAILURE_REPORT.md`.
 - Document lessons learned.
@@ -47,4 +47,4 @@ FAILURES_DIRECTORY: ai-docs/failures/
 - Prompt the user to run `npm run workflow:sync` so the dashboard shows the failure context.
 
 ## Budget
-~5K tokens (Claude root cause analysis)
+~5K tokens (Codex orchestration + Codex root cause analysis)

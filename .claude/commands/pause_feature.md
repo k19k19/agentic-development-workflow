@@ -2,7 +2,7 @@
 description: Pause feature due to complexity threshold (AI-internal command)
 argument-hint: [feature-id]
 allowed-tools: ["Write", "run_shell_command"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Pause Feature (AI-Internal)
@@ -15,7 +15,7 @@ FEATURE_ID: $1
 SESSIONS_DIRECTORY: ai-docs/sessions/
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically when complexity is too high.
+- **You don't run this manually** - Codex runs it automatically when complexity is too high.
 - Commit current work.
 - Mark feature as "Paused" in session log.
 - Suggest breaking down into smaller subtasks.

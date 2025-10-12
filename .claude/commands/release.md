@@ -2,7 +2,7 @@
 description: Deploy to production
 argument-hint: []
 allowed-tools: ["run_shell_command", "Read", "Write"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Release (Production Deployment)

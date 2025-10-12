@@ -2,7 +2,7 @@
 description: Gather repository context relevant to the requested feature
 argument-hint: [user_prompt]
 allowed-tools: ["Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # Scout

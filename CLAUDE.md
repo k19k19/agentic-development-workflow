@@ -1,6 +1,6 @@
-# CLAUDE.md
+# CODEX.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (gpt-5-codex) when orchestrating work in this repository. The filename remains `CLAUDE.md` for compatibility with tooling that expects this path.
 
 ---
 
@@ -10,7 +10,7 @@ This is a **budget-first agentic development workflow template** designed to max
 - Token-aware command orchestration via slash commands
 - Automated workflow status tracking and session management
 - Knowledge persistence through structured documentation
-- Tool delegation strategy (Gemini MCP for docs, Codex MCP for implementation, Claude for architecture)
+- Tool delegation strategy (Codex orchestrator handling implementation directly and using Gemini MCP for research)
 
 The workflow is built around self-documenting slash commands that enforce automation hooks, emit machine-readable status JSON, and maintain cross-session continuity without relying on external documentation.
 
@@ -21,12 +21,11 @@ The workflow is built around self-documenting slash commands that enforce automa
 ### Slash Command System
 All engineering work flows through commands in `.claude/commands/*.md`:
 
-**Entry Points:**
-- `/quick [task]` – Direct implementation via Codex MCP (~5K tokens, <10 files)
+- `/quick [task]` – Direct implementation via Codex (~5K tokens, <10 files) with Codex orchestrating
 - `/scout_build [task]` – Medium tasks: scout + build without plan approval
 - `/full [task] [docs] [mode]` – Large features with scout → plan → approval → build cycle
 
-All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits. Claude orchestrates the workflow, reviews Codex output, and handles approvals/communication.
+All implementation phases rely on Codex using built-in Write/Edit tools for code changes. Codex orchestrates the workflow, carries out edits, and handles approvals/communication, while Gemini MCP supports large documentation or research pulls.
 
 **Workflow Phases:**
 - `/start [feature-id]` – Initialize feature folder + session log
@@ -122,7 +121,7 @@ npm run work                   # Display unified dashboard
    - Large feature (>50 files) → `/full "[task]" "" "budget"`
 2. Ask if you should execute the command
 3. Only proceed after user confirmation
-4. When a command enters an implementation phase, immediately delegate edits to Codex MCP and keep Claude focused on oversight and reporting.
+4. When a command enters an implementation phase, immediately execute edits with Codex and keep Gemini lookups focused on supplemental research and reporting.
 
 ### Command Execution Flow
 1. **Before command:** Read existing feature spec from `app-docs/specs/active/` if it exists
@@ -174,31 +173,29 @@ title.toLowerCase()
 
 ### Token Budget Tracking
 `scripts/utils/token-usage-analyzer.js` tracks usage by:
-- Daily limit: 200K tokens (Claude $20 plan)
+- Daily limit: 200K tokens (Codex budget plan)
 - Weekly rolling window
-- Per-model breakdown (Gemini/Codex vs Claude)
+- Per-model breakdown (Gemini MCP usage vs Codex orchestration time)
 - Efficiency warnings at 70% (🟠) and 90% (🔴)
 
 ---
 
 ## Tool Delegation Strategy
 
+**Codex Handles:**
+- Multi-agent coordination across scout/plan/build workflows
+- Direct implementation using Write/Edit tools
+- Approval gates, reporting, and communication
+
+**Use Codex for:**
+- Small single-file implementations (`/quick`)
+- CRUD boilerplate, UI component tweaks, and syntax fixes
+- Multi-file refactors that benefit from Codex's global reasoning
+
 **Use Gemini MCP for:**
 - Reading/summarizing documentation URLs
-- Quick documentation searches
-- Format conversions
-
-**Use Codex MCP for:**
-- Small single-file implementations (`/quick`)
-- CRUD boilerplate
-- UI component tweaks
-- Syntax fixes
-
-**Use Claude (Sonnet 4.5) for:**
-- Multi-agent orchestration (scout/plan/build workflows)
-- Architectural decisions
-- Complex multi-file refactoring
-- Plan verification and approval gates
+- Quick documentation searches and large-reference digestion
+- Format conversions and data extraction prior to implementation
 
 ---
 
@@ -259,8 +256,8 @@ After implementation:
    - Key change 1
    - Key change 2
 
-   🤖 Generated with Claude Code
-   Co-Authored-By: Claude <noreply@anthropic.com>
+   🤖 Generated with Codex Orchestrator
+   Co-Authored-By: Codex <noreply@openai.com>
    ```
 
 ---
@@ -281,7 +278,7 @@ After implementation:
 - Read `app-docs/specs/active/` for existing feature context
 - Update `app-docs/mappings/feature-to-source.md` when files change
 - Use `npm run tasks:session-start` at session start for budget awareness
-- Delegate appropriately (Gemini for docs, Codex for boilerplate, Claude for complexity)
+- Delegate appropriately (Codex orchestrates, Codex implements, Gemini MCP researches)
 
 ---
 

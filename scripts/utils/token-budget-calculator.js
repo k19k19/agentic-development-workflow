@@ -8,11 +8,11 @@
  * Default configuration
  */
 const DEFAULT_CONFIG = {
-  dailyTokenLimit: 167000, // $20 Claude plan / 30 days * 5M tokens
+  dailyTokenLimit: 167000, // $20 Codex plan / 30 days * 5M tokens
   weeklyTokenLimit: 1169000, // Daily limit * 7 (rounded)
   warningThreshold: 0.75,   // 75% usage warning
   criticalThreshold: 0.90,   // 90% usage critical alert
-  contextWindowLimit: 200000, // Claude Sonnet max window
+  contextWindowLimit: 200000, // Codex max window assumption
   contextWarningThreshold: 0.8, // 80% of context window
   contextCriticalThreshold: 0.95 // 95% of context window
 };

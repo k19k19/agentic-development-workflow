@@ -2,7 +2,7 @@
 description: Run user acceptance tests
 argument-hint: []
 allowed-tools: ["mcp__chrome-devtools__*", "run_shell_command", "Read"]
-model: claude-sonnet-4-5
+model: o4-mini
 ---
 
 # UAT (User Acceptance Testing)

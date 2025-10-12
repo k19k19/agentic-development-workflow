@@ -1,6 +1,6 @@
 # Session Kickoff Hook
 
-Triggered on the first user message of a Claude Code session.
+Triggered on the first user message of a Codex session.
 
 **Do this automatically:**
 ```bash
