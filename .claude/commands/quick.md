@@ -17,18 +17,19 @@ TASK: $1
 - **When to use**: Small projects (<10 files), simple single-file changes, well-understood patterns.
 - **When NOT to use**: Complex features, multi-file changes, architectural decisions.
 - If `TASK` is missing, stop and ask the user to provide it.
-- Use Codex MCP directly to implement the task.
+- **Delegate Analysis**: Use Gemini MCP (`mcp__gemini-cli__ask-gemini`) to generate `rg` keywords from the `TASK`.
+- **Gather Context**: Use `rg` with the generated keywords to find the most relevant file(s).
+- **Delegate Implementation**: Pass the `TASK` and relevant file context to Codex MCP (`mcp__codex__codex`) for implementation.
 - Run tests automatically after implementation.
 - No approval gates - assume task is straightforward.
 
 ## Workflow
 1. Validate `TASK` is provided and suitable for quick mode.
-2. Use `mcp__codex__codex` tool to implement the task directly.
+2. Use Gemini to generate `rg` keywords, then use `rg` to find the relevant file context.
+3. Use `mcp__codex__codex` to implement the `TASK` using the gathered file context.
 3. Capture a short session summary in `ai-docs/sessions/SESSION-[date]-quick.md`.
-4. Run `npm run vectorize` to index the new summary and code changes.
-5. Run tests using `npm test` or appropriate test command.
-6. Trigger `npm run tasks:session-start` so the ledger reflects the change.
-7. Report results with token usage.
+5. Trigger `npm run tasks:session-start` so the ledger reflects the change.
+6. Report results with token usage.
 
 ## Report
 - List files created/modified.

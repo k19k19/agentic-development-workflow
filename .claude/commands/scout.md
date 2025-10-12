@@ -1,7 +1,7 @@
 ---
 description: Gather repository context relevant to the requested feature
 argument-hint: [user_prompt]
-allowed-tools: ["Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
+allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
 model: claude-sonnet-4-5
 ---
 
@@ -14,11 +14,10 @@ Collect the most relevant code, documentation, and prior automation outputs need
 USER_PROMPT: $1
 
 ## Instructions
-- Break down the request into keywords and likely components.
-- Default to `rg` for all textual searches (fallback to `find` only if `rg` is unavailable). Combine with `ls` and targeted file reads to inspect matching areas of the codebase and docs.
+- **Delegate Analysis**: Use Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate a list of optimal `rg` search keywords and relevant file globs.
+- **Execute Search**: Use the keywords and globs from Gemini to search the codebase with `rg`. Only fall back to `find` or `grep` if `rg` is unavailable.
 - Review `ai-docs/workflow/` for prior status entries related to the same feature.
 - Capture enough context for the planning phase: existing implementations, shared utilities, constraints, and open questions.
-
 ## Workflow
 1. Parse `USER_PROMPT` to identify primary feature areas and constraints.
 2. Inspect documentation (`app-docs/`, `ai-docs/knowledge-ledger/`, relevant specs) for background details.

@@ -1,7 +1,7 @@
 ---
 description: Scout and build workflow for medium tasks (skips plan approval)
 argument-hint: [task]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
+allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
@@ -17,8 +17,8 @@ TASK: $1
 - **When to use**: Medium projects (10-50 files), known patterns, task well-understood.
 - **When NOT to use**: Unfamiliar features, architectural changes, high-risk tasks.
 - If `TASK` is missing, stop and ask the user to provide it.
-- Execute scout phase using vector search.
-- Hand off implementation steps to Codex MCP through `mcp__codex__codex`; Claude stays focused on summarizing findings and coordinating follow-ups.
+- For the scout phase, delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `TASK` and generate optimal `rg` search keywords and file globs.
+- For the build phase, delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate the build based on scout findings and report the results.
 - Skip plan approval gate for speed.
 - Build using existing patterns found during scout.
 - Run tests automatically after build.

@@ -1,7 +1,7 @@
 ---
 description: Run a three step engineering workflow to deliver on the user_prompt
 argument-hint: [user_prompt] [document-urls] [mode]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
+allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Write", "Edit", "Glob", "Grep", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
@@ -19,14 +19,16 @@ DOCUMENTATION_URLS: $2
 MODE: $3 (default: standard)
 
 ## Instructions
-- Execute each step in order, top to bottom, without pausing between stages.
+- Execute each workflow step in order, pausing only for explicit approval gates as defined in the `Workflow` section.
 - Accepted MODE values:
-  - `standard` (default) — run the full workflow with vector search scout and detailed plan.
+  - `standard` (default) — run the full workflow with `rg` (ripgrep) search scout and detailed plan.
   - `budget` — minimize paid model usage (concise ~350-word plan).
 - If an unexpected result is returned, stop immediately and notify the user.
 - Place every SlashCommand argument in double quotes and convert nested double quotes to single quotes.
 - Only modify the `USER_PROMPT` when MODE is `budget` (append ` [BUDGET MODE]` before passing it downstream).
-- For the build phase, pass implementation work to Codex MCP using `mcp__codex__codex`; Claude remains responsible for approvals and summaries.
+- **Tool Delegation Strategy**:
+  - **Scout Phase**: Delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate optimal `rg` search keywords and file globs.
+  - **Build Phase**: Delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate, review, and manage approvals.
 
 ## Workflow
 1. Run SlashCommand(`/scout "[USER_PROMPT]"`) -> `relevant_files_collection_path`.
