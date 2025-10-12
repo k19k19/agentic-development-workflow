@@ -1,7 +1,7 @@
 ---
 description: Build the codebase based on the plan and produce a detailed report
 argument-hint: [path-to-plan]
-allowed-tools: Read, Write, Bash
+allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command", "Bash"]
 model: claude-sonnet-4-5
 ---
 
@@ -18,9 +18,10 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.
 2. Read and internalize the plan, noting acceptance criteria and tooling requirements.
-3. Implement the plan step by step, running lint/tests or other safeguards when needed.
-4. Capture validation output (commands, logs, screenshots) for inclusion in the final report.
-5. Summarize decisions, risks, and documentation updates so the report is self-contained.
+3. Delegate code implementation to Codex MCP using `mcp__codex__codex`; keep Claude focused on orchestration, validation, and reporting.
+4. Implement the plan step by step, running lint/tests or other safeguards when needed.
+5. Capture validation output (commands, logs, screenshots) for inclusion in the final report.
+6. Summarize decisions, risks, and documentation updates so the report is self-contained.
 
 ## Report
 Organize your final message into:

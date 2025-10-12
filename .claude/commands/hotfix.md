@@ -1,7 +1,7 @@
 ---
 description: Triage and fix production bug
 argument-hint: [bug-id]
-allowed-tools: ["Read", "Write", "Grep", "Glob", "run_shell_command"]
+allowed-tools: ["mcp__codex__codex", "Read", "Write", "Grep", "Glob", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
@@ -20,6 +20,7 @@ BUG_REPORTS_DIRECTORY: app-docs/debugging/
 - Trigger `/triage_bug` for focused root cause analysis.
 - Skip broad scout phase - use targeted search only.
 - Jump directly to `/plan` or `/build` based on complexity.
+- When it's time to patch code, delegate execution to Codex MCP via `mcp__codex__codex` and keep Claude focused on coordination and reviews.
 - Update bug tracking system when complete.
 
 ## Workflow

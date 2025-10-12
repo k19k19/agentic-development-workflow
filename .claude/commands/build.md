@@ -1,7 +1,7 @@
 ---
 description: Build the codebase based on the plan
 argument-hint: [path-to-plan]
-allowed-tools: Read, Write, Bash
+allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command", "Bash"]
 model: claude-sonnet-4-5
 ---
 
@@ -17,6 +17,7 @@ PATH_TO_PLAN: $1
 - **Build on Existing Code:** Before writing any new code, check `app-docs/mappings/feature-to-source.md` to see if a similar function or component already exists. If it does, build upon it rather than creating a new one.
 - If no `PATH_TO_PLAN` is provided, stop immediately and request it from the user.
 - Read the plan at `PATH_TO_PLAN`, reason through the steps, and implement them in the codebase using the delegated tools.
+- Delegate all code editing to Codex MCP via `mcp__codex__codex`; reserve Claude for orchestration, reviews, and approvals.
 
 ## Report
 - Summarize the work you completed in concise bullet points.

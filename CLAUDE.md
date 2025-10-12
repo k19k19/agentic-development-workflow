@@ -26,6 +26,8 @@ All engineering work flows through commands in `.claude/commands/*.md`:
 - `/scout_build [task]` – Medium tasks: scout + build without plan approval
 - `/full [task] [docs] [mode]` – Large features with scout → plan → approval → build cycle
 
+All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits. Claude orchestrates the workflow, reviews Codex output, and handles approvals/communication.
+
 **Workflow Phases:**
 - `/start [feature-id]` – Initialize feature folder + session log
 - `/scout [prompt]` – Gather context via grep/glob, emit scout results
@@ -120,6 +122,7 @@ npm run work                   # Display unified dashboard
    - Large feature (>50 files) → `/full "[task]" "" "budget"`
 2. Ask if you should execute the command
 3. Only proceed after user confirmation
+4. When a command enters an implementation phase, immediately delegate edits to Codex MCP and keep Claude focused on oversight and reporting.
 
 ### Command Execution Flow
 1. **Before command:** Read existing feature spec from `app-docs/specs/active/` if it exists
