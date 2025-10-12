@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "manage-knowledge": "node scripts/manage-knowledge.js",
+    "scaffold:feature": "node scripts/scaffold-feature.js",
     "work": "node scripts/unified-dashboard.js",
     "tasks:session-start": "node scripts/tasks-session-start.js",
     "workflow:sync": "node scripts/update-workflow-status.js",
