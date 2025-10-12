@@ -1,0 +1,90 @@
+{
+  "version": "1.1",
+  "generatedAt": "2025-10-12T14:27:16.145Z",
+  "features": [
+    {
+      "featureId": "fleet-management-system",
+      "title": "Fleet Management System",
+      "currentPhase": "plan",
+      "status": "needs_validation",
+      "lastCommand": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
+      "nextCommand": "/build_w_report \"ai-docs/plans/20251012-fleet-management-system/plan.md\"",
+      "updatedAt": "2025-10-12T00:00:00.000Z",
+      "summary": "Comprehensive implementation plan created for greenfield fleet management platform with MVP scoped to 8 weeks covering real-time GPS tracking, driver/vehicle management, geofencing, and basic reporting",
+      "outputPath": "ai-docs/plans/20251012-fleet-management-system/plan.md",
+      "documentation": [
+        "ai-docs/workflow/fleet-management-research/scout-results.md"
+      ],
+      "notes": null,
+      "history": [
+        {
+          "phase": "plan",
+          "status": "needs_validation",
+          "timestamp": "2025-10-12T00:00:00.000Z",
+          "command": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
+          "nextCommand": "/build_w_report \"ai-docs/plans/20251012-fleet-management-system/plan.md\"",
+          "summary": "Comprehensive implementation plan created for greenfield fleet management platform with MVP scoped to 8 weeks covering real-time GPS tracking, driver/vehicle management, geofencing, and basic reporting",
+          "outputPath": "ai-docs/plans/20251012-fleet-management-system/plan.md"
+        }
+      ],
+      "sourceFiles": [
+        "ai-docs/workflow/fleet-management-system/2025-10-12T00:00:00.000Z-plan.json"
+      ]
+    },
+    {
+      "featureId": "fleet-management-research",
+      "title": "Fleet Management Software Research",
+      "currentPhase": "scout",
+      "status": "completed",
+      "lastCommand": "/scout \"what will make a good fleet management software\"",
+      "nextCommand": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
+      "updatedAt": "2025-10-12T00:00:00.000Z",
+      "summary": "Completed comprehensive research on fleet management software requirements, architecture, and best practices",
+      "outputPath": "ai-docs/workflow/fleet-management-research/scout-results.md",
+      "documentation": [
+        "ai-docs/workflow/fleet-management-research/scout-results.md"
+      ],
+      "notes": "Research phase completed using Gemini MCP. No existing fleet management code found in codebase. User needs to clarify: target market, industry vertical, build vs buy decision, compliance scope, and MVP timeline before proceeding to planning phase.",
+      "history": [
+        {
+          "phase": "scout",
+          "status": "completed",
+          "timestamp": "2025-10-12T00:00:00.000Z",
+          "command": "/scout \"what will make a good fleet management software\"",
+          "nextCommand": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
+          "summary": "Completed comprehensive research on fleet management software requirements, architecture, and best practices",
+          "outputPath": "ai-docs/workflow/fleet-management-research/scout-results.md"
+        }
+      ],
+      "sourceFiles": [
+        "ai-docs/workflow/fleet-management-research/2025-10-12T00-00-00-scout.json"
+      ]
+    }
+  ],
+  "knowledgeLedger": {
+    "version": "1.0",
+    "source": "ai-docs/knowledge-ledger/ledger.md",
+    "adopted": [
+      {
+        "id": "KL-001",
+        "title": "Knowledge Ledger Governance",
+        "adoptedOn": "2024-05-03",
+        "what": "Established a constitution-style knowledge ledger with a canonical index and individual `KL-` decision files.",
+        "why": "Prevent future iterations from discarding hard-earned context by requiring every adopted implementation to document its rationale and approach.",
+        "how": "`ai-docs/knowledge-ledger/README.md` defines the governance loop, `ai-docs/knowledge-ledger/ledger.md` tracks adopted decisions, and `ai-docs/knowledge-ledger/KL-001-knowledge-ledger-governance.md` captures the full decision record."
+      },
+      {
+        "id": "KL-002",
+        "title": "Workflow Status Ledger Integration",
+        "adoptedOn": "2024-05-04",
+        "what": "Linked the knowledge ledger to the workflow status index so the dashboard and status sync commands surface adopted decisions alongside feature progress.",
+        "why": "Ensure project monitoring tools consistently reference the ledger as the single source of truth, preventing later iterations from ignoring established implementations.",
+        "how": "`scripts/utils/knowledge-ledger.js` parses `ledger.md`, `scripts/workflow-status.js` embeds the parsed summary in `status-index.json`, and both `scripts/update-workflow-status.js` and `scripts/unified-dashboard.js` report ledger coverage during status checks."
+      }
+    ],
+    "superseded": []
+  },
+  "warnings": [
+    "Skipped ai-docs/workflow/fleet-management-system/2025-10-12T22:30:00.000Z-scout.json: featureId 'fleet-management-system-implementation-analysis' does not match directory 'fleet-management-system'"
+  ]
+}
