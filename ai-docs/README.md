@@ -20,8 +20,8 @@ Long-running initiatives live in `workflow/features/<feature-slug>/`. Each direc
 - `feature-manifest.json` – Metadata such as owner, lifecycle status, token guardrails, and linked ledger decisions.
 - `README.md` – Human-readable summary and navigation pointers.
 - `intake/`, `plans/`, `builds/`, `reports/`, `sessions/`, `workflow/`, `handoff/`, `artifacts/` – Phase-specific subdirectories that mirror the Large Feature Delivery Playbook in `app-docs/guides/large-feature-workflow.md`.
-- `intake/tasks/` – Structured specs captured by `/baw:task_prep` so breakout details stay linked to the core plan slice.
+- `intake/tasks/` – Structured specs captured by `/baw:dev_execution_prep` so breakout details stay linked to the core plan slice.
 
 Use `npm run baw:feature:scaffold -- --title "<Feature Title>"` to generate the structure and register the feature in `workflow/features/index.json`.
 
-When additional details surface after the initial `/baw:scout`, append them to the existing plan under `plans/<timestamp>-*/plan.md`, update the matching row in `plans/checklist.json`, and capture any open questions in `sessions/session-backlog.json`. Avoid creating duplicate plan slices or new feature directories just to hold clarifications.
+When additional details surface after the initial `/baw:dev_discovery`, append them to the existing plan under `plans/<timestamp>-*/plan.md`, update the matching row in `plans/checklist.json`, and capture any open questions in `sessions/session-backlog.json`. Avoid creating duplicate plan slices or new feature directories just to hold clarifications.

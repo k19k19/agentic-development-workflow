@@ -40,9 +40,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "dependency-plan"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-dependency-plan.json`.
 - Set `status` to `completed`, `needs_docs`, or `blocked` accordingly.
-- Point `nextCommand` toward `/baw:dev_breakout_plan` or `/baw:task_prep` and include the saved plan in `outputPath`.
+- Point `nextCommand` toward `/baw:dev_breakout_plan` or `/baw:dev_execution_prep` and include the saved plan in `outputPath`.
 - Remind the user to run `npm run baw:workflow:sync` after documentation changes.
 
 ## Next Steps
 - `/baw:dev_breakout_plan "<initiative-or-phase>" "<plan-docs>"`
-- `/baw:task_prep "<initiative-or-phase>" "<breakout-reference>"`
+- `/baw:dev_execution_prep "<initiative-or-phase>" "<breakout-reference>"`

@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Wri
 model: claude-sonnet-4-5
 ---
 
-# /baw:scout_build
+# /baw:dev_discovery_build
 
 ## Purpose
 Medium-sized workflow that scouts for relevant files, then builds directly without plan approval. Suitable for known patterns and medium-complexity tasks (~30K tokens).
@@ -26,7 +26,7 @@ TASK: $1
 
 ## Workflow
 1. Validate `TASK` is provided.
-2. Run SlashCommand(`/baw:scout "[TASK]"`) -> `relevant_files_collection_path`.
+2. Run SlashCommand(`/baw:dev_discovery "[TASK]"`) -> `relevant_files_collection_path`.
 3. Identify existing patterns from scouted files.
 4. Build directly using identified patterns (no plan approval) and execute code edits through Codex MCP.
 5. Run tests using `npm test` or appropriate test command.
@@ -44,22 +44,22 @@ TASK: $1
 **→ Review and test:**
 ```bash
 git diff --stat  # Review changes
-/baw:test            # Run full test suite
+/baw:dev_test            # Run full test suite
 ```
 
 **If tests pass:**
 ```bash
-/baw:deploy_staging
+/baw:dev_deploy_staging
 ```
 
 **If tests fail:**
 - Fix issues
-- Re-run: `/baw:test`
+- Re-run: `/baw:dev_test`
 
 **If build was insufficient:**
 - Use full workflow with plan approval:
 ```bash
-/baw:full "[task]" "[docs]" "budget"
+/baw:dev_full_pipeline "[task]" "[docs]" "budget"
 ```
 
 After wrapping up, refresh the dashboard so the ledger stays in sync:

@@ -35,24 +35,24 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Display UAT results summary.
 - Show critical user flows tested.
 - List any failures with screenshots (reference workspace paths).
-- Suggest next step: `/baw:release` if passing, or fix issues.
+- Suggest next step: `/baw:dev_release` if passing, or fix issues.
 
 ## Next Steps
 
 **✅ If all UAT tests pass:**
 ```bash
-/baw:finalize "[feature-id]"
+/baw:dev_finalize "[feature-id]"
 ```
 
 Then prepare for production:
 ```bash
-/baw:release
+/baw:dev_release
 ```
 
 **❌ If UAT tests fail:**
 1. Document the failures
 2. Fix the issues
-3. Re-deploy to staging: `/baw:deploy_staging`
+3. Re-deploy to staging: `/baw:dev_deploy_staging`
 4. Re-test: `/baw:uat`
 
 **🔴 If major issues found:**

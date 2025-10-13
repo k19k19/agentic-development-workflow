@@ -16,7 +16,7 @@
   "createdAt": "",
   "updatedAt": "",
   "commands": {
-    "scout": true,
+    "discovery": true,
     "plan": true,
     "build": true,
     "report": true,

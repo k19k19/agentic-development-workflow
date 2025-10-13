@@ -165,7 +165,7 @@ async function writeChecklist(featureDir, timestamps) {
     items: [],
     metadata: {
       lastUpdated: timestamps.updatedAt,
-      notes: 'Populate with plan slices using the scaffolding script or manually via /baw:plan.',
+      notes: 'Populate with plan slices using the scaffolding script or manually via /baw:dev_plan.',
     },
   };
   await fs.writeFile(checklistPath, `${JSON.stringify(content, null, 2)}\n`);
@@ -245,9 +245,9 @@ async function main() {
     console.log(`✔ Created feature workspace at ${path.relative(REPO_ROOT, featureDir)}`);
     console.log('Next steps:');
     console.log('  1. Fill in intake/requirements.md with the problem statement.');
-    console.log('  2. Draft the first plan slice in plans/checklist.json and run /baw:plan.');
+    console.log('  2. Draft the first plan slice in plans/checklist.json and run /baw:dev_plan.');
     console.log('  3. Record the decision in the knowledge ledger if this is a new initiative.');
-    console.log('  4. When /baw:scout uncovers missing context, update the same plan/checklist/backlog entries instead of scaffolding another feature.');
+    console.log('  4. When /baw:dev_discovery uncovers missing context, update the same plan/checklist/backlog entries instead of scaffolding another feature.');
   } catch (error) {
     console.error(`Failed to scaffold feature: ${error.message}`);
     process.exit(1);

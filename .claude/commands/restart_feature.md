@@ -18,14 +18,14 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - **You don't run this manually** - Claude runs it automatically after failure report.
-- Jump back to Step 1 (/baw:scout).
+- Jump back to Step 1 (/baw:dev_discovery).
 - **Prioritize** reading the most recent failure report from `FAILURES_DIRECTORY` for context.
 - Incorporate lessons learned into next planning cycle.
 
 ## Workflow
 1. Read the most recent failure report from `FAILURES_DIRECTORY`.
 2. Extract lessons learned and what to avoid.
-3. Re-run `/baw:scout` with focus on areas identified in failure report.
+3. Re-run `/baw:dev_discovery` with focus on areas identified in failure report.
 4. Proceed through workflow with enhanced context.
 
 ## Report

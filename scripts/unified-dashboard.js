@@ -64,7 +64,7 @@ async function showDashboard() {
   console.log('');
 
   if (features.length === 0) {
-    console.log('No workflow entries found. Run a slash command (e.g., /baw:scout or /baw:plan) to create status JSON and then rerun this dashboard.\n');
+    console.log('No workflow entries found. Run a slash command (e.g., /baw:dev_discovery or /baw:dev_plan) to create status JSON and then rerun this dashboard.\n');
   } else {
     console.log('Top features:');
     features

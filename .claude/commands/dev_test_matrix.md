@@ -30,7 +30,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 2. Define testing objectives and trace them to requirements.
 3. Enumerate tests per environment and persona.
 4. Identify automation opportunities and manual validation steps.
-5. Recommend follow-up commands (`/baw:test`, `/baw:uat`, `/baw:report_failure`) as needed.
+5. Recommend follow-up commands (`/baw:dev_test`, `/baw:uat`, `/baw:report_failure`) as needed.
 
 ## Report
 - Provide a test matrix with environment, scope, owner, and evidence columns.
@@ -40,11 +40,11 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "verification"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-test-matrix.json`.
 - Set `status` to `completed`, `needs_docs`, `needs_validation`, or `blocked`.
-- Point `nextCommand` toward `/baw:test`, `/baw:uat`, or `/baw:dev_deploy_plan` depending on readiness.
+- Point `nextCommand` toward `/baw:dev_test`, `/baw:uat`, or `/baw:dev_deploy_plan` depending on readiness.
 - Attach the saved matrix path under `outputPath` and list referenced docs in `documentation`.
 - Remind the user to run `npm run baw:workflow:sync` after documentation updates.
 
 ## Next Steps
-- `/baw:test "<task-or-release>"`
+- `/baw:dev_test "<task-or-release>"`
 - `/baw:uat "<release-name>"`
 - `/baw:dev_deploy_plan "<release-name>" "<test-matrix-path>"`

@@ -40,10 +40,10 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "ops-coordination"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-workflow-radar.json`.
 - Use `status` values `needs_docs`, `in_progress`, or `completed` depending on clarity.
-- Set `nextCommand` for each persona (e.g., `/baw:task_prep`, `/baw:product_helper`, `/baw:support_ticket`).
+- Set `nextCommand` for each persona (e.g., `/baw:dev_execution_prep`, `/baw:product_helper`, `/baw:support_ticket`).
 - Attach the radar report path and remind the user to rerun `npm run baw:workflow:sync` and `npm run baw:work` after updates.
 
 ## Next Steps
-- `/baw:task_prep "<task>"`
+- `/baw:dev_execution_prep "<task>"`
 - `/baw:support_ticket "<queue>"`
 - `/baw:product_helper "<topic>"`

@@ -15,10 +15,10 @@ Unify command guidance and the feature template so every discovery and execution
 `ai-docs/workflow/features/<feature-id>/` workspace:
 
 1. Expand the template with structured intake directories (`product/`, `personas/`, `support/`, `tasks/`) and
-   command-specific report folders (`reports/scout`, `reports/tests`, `reports/uat`, etc.).
+   command-specific report folders (`reports/discovery`, `reports/tests`, `reports/uat`, etc.).
 2. Update every `.claude/commands/*.md` to call out the feature workspace slug, identify the correct subfolder,
    and emit workflow logs that tie back to plan checklist entries.
-3. Document the scout ➝ task prep distinction so discovery remains iterative while breakout prep produces
+3. Document the discovery ➝ execution prep distinction so discovery remains iterative while breakout prep produces
    actionable checklists linked to the same plan slice.
 4. Refresh project guidance (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) so maintainers and downstream teams
    know where to inspect artifacts and how to scaffold new features.
@@ -28,7 +28,7 @@ Unify command guidance and the feature template so every discovery and execution
   `intake/personas/` and `intake/support/`.
 - Developer-focused commands reference dedicated `plans/dependency`, `plans/breakouts`, `plans/deployment`, and
   report directories, eliminating references to deprecated top-level folders.
-- Operations tooling (`/baw:workflow_radar`, `/baw:deploy_staging`, `/baw:release`) logs outputs in
+- Operations tooling (`/baw:workflow_radar`, `/baw:dev_deploy_staging`, `/baw:dev_release`) logs outputs in
   `reports/ops` and `reports/deployments`, ensuring the dashboard can trace readiness and release history.
 - Command docs explicitly remind agents to reuse the existing workspace slug, preventing accidental feature
   duplication.

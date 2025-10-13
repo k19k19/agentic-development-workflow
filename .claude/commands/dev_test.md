@@ -5,13 +5,13 @@ allowed-tools: ["run_shell_command", "Read", "Write"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:test
+# /baw:dev_test
 
 ## Purpose
 Run hermetic unit and integration tests in an isolated environment. Automatically triggers learning loop if tests fail.
 
 ## Variables
-FEATURE_ID: $1 (optional — if omitted derive from latest `/baw:build` output)
+FEATURE_ID: $1 (optional — if omitted derive from latest `/baw:dev_build` output)
 FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
 TEST_OUTPUT_DIRECTORY: <feature-workspace>/reports/tests/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
@@ -36,19 +36,19 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Show code coverage percentage.
 - List failed tests with error messages (if any).
 - Provide path to full test output inside the feature workspace.
-- Suggest next step: `/baw:deploy_staging` if passing, or review failures.
+- Suggest next step: `/baw:dev_deploy_staging` if passing, or review failures.
 
 ## Next Steps
 
 **✅ If all tests pass:**
 ```bash
-/baw:deploy_staging
+/baw:dev_deploy_staging
 ```
 
 **❌ If tests fail:**
 1. Review test output: `ai-docs/workflow/features/<feature-id>/reports/tests/<timestamp>-test-results.json`
 2. Fix the failing tests
-3. Re-run tests: `/baw:test`
+3. Re-run tests: `/baw:dev_test`
 
 **🔴 If tests keep failing:**
 ```bash

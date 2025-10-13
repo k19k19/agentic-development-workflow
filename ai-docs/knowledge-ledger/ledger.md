@@ -36,8 +36,8 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **Why:** Ad-hoc artifacts made it impossible to split plans, coordinate sessions, or monitor progress at epic scale; a structured workspace keeps automation and humans aligned.
 - **How:** `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, `ai-docs/workflow/features/_template/`, and `scripts/scaffold-feature.js` define and automate the new structure.
 
-### KL-004 — Scout-to-Plan Revision Policy (Adopted 2024-05-07)
-- **What:** Locked the `/baw:scout` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
+### KL-004 — Discovery-to-Plan Revision Policy (Adopted 2024-05-07)
+- **What:** Locked the `/baw:dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
 - **Why:** Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.
 - **How:** Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.
 
@@ -48,13 +48,13 @@ Each subsection should answer three questions: What was implemented? Why was tha
 
 ### KL-006 — BAW Namespace & Feature Workspace Unification (Adopted 2024-05-12)
 - **What:** Namespaced all workflow commands with `baw:` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.
-- **Why:** A unified namespace and directory layout eliminate drift between scout, plan, and build artifacts while keeping dashboards and hand-offs consistent.
+- **Why:** A unified namespace and directory layout eliminate drift between discovery, plan, and build artifacts while keeping dashboards and hand-offs consistent.
 - **How:** Updated `.claude/commands/`, `CLAUDE.md`, repository guides, and workflow scripts (`scripts/workflow-status.js`, installers, dashboards) to read/write the new structure and provide scaffolding updates (including `intake/tasks/`).
 
 ### KL-007 — Intake Alignment & Command Traceability (Adopted 2024-05-14)
 - **What:** Expanded the feature template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each feature workspace.
 - **Why:** Prevent artifact drift and make it obvious how research flows into plans, builds, tests, deployments, and operations without revisiting legacy folders.
-- **How:** Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the scout ➝ task prep split.
+- **How:** Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.
 
 ## Superseded Decisions
 

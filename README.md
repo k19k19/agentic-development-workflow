@@ -7,15 +7,15 @@ Zero-doc onboarding: every command explains itself, prints required follow-ups, 
 ## Daily Loop
 1. Start with discovery: `/baw:product_charter`, `/baw:product_features`, or `/baw:product_helper` to capture the latest understanding of the product and personas.
    - Every discovery command emits a workflow status JSON record so automation can track decision history.
-2. Move into build preparation: `/baw:dev_dependency_plan`, `/baw:dev_breakout_plan`, and `/baw:task_prep` sequence implementation-ready work.
-   - `/baw:scout` handles research + code discovery; `/baw:task_prep` converts an approved plan slice into an executable checklist (owners, validation, missing docs). Keep both commands writing into the same `ai-docs/workflow/features/<feature-id>/` workspace so revisions remain traceable.
-3. Execute implementation commands (`/baw:build`, `/baw:test`, `/baw:dev_deploy_plan`, `/baw:deploy_staging`, etc.) as prompted.
+2. Move into build preparation: `/baw:dev_dependency_plan`, `/baw:dev_breakout_plan`, and `/baw:dev_execution_prep` sequence implementation-ready work.
+   - `/baw:dev_discovery` handles research + code discovery; `/baw:dev_execution_prep` converts an approved plan slice into an executable checklist (owners, validation, missing docs). Keep both commands writing into the same `ai-docs/workflow/features/<feature-id>/` workspace so revisions remain traceable.
+3. Execute implementation commands (`/baw:dev_build`, `/baw:dev_test`, `/baw:dev_deploy_plan`, `/baw:dev_deploy_staging`, etc.) as prompted.
 4. Update documentation or specs under `app-docs/` as needed, then run `npm run baw:workflow:sync` to aggregate the latest command outputs.
    - New or migrating features should use `npm run baw:feature:scaffold` to copy the template workspace before the first command runs.
 5. Review the dashboard via `npm run baw:work` or generate a persona-oriented summary with `/baw:workflow_radar`.
 6. When a command pauses for verification, it will say:
    - `🛑 Waiting inside /baw:<command>. Reply 'resume' to continue or 'stop' to exit.`
-7. After a build completes, run `/baw:test`, capture `/baw:uat` notes, and finish with `/baw:release` when deployment is greenlit.
+7. After a build completes, run `/baw:dev_test`, capture `/baw:uat` notes, and finish with `/baw:dev_release` when deployment is greenlit.
 
 You can always type plain language; Claude will answer with the recommended command and offer to run it for you.
 
@@ -31,14 +31,14 @@ You can always type plain language; Claude will answer with the recommended comm
 ### Developer Delivery
 - `/baw:dev_dependency_plan "<initiative>"` → Build a dependency-ordered delivery roadmap.
 - `/baw:dev_breakout_plan "<phase>"` → Shape sprint-sized breakout increments.
-- `/baw:task_prep "<task>"` → Gather specs, acceptance criteria, and owners for each task.
+- `/baw:dev_execution_prep "<task>"` → Gather specs, acceptance criteria, and owners for each task.
 - `/baw:dev_test_matrix "<release>"` → Plan verification strategy across environments.
 - `/baw:dev_deploy_plan "<release>"` → Produce the deployment runbook.
-- `/baw:quick "fix typo"` → One-file change, ~5K tokens.
-- `/baw:scout_build "add JWT auth"` → Medium task, scout + build in one pass.
-- `/baw:full "implement billing" "https://link" budget` → Large feature with approval pause.
-- `/baw:start "FEATURE-ID"` → Set up spec + session log, then run `/baw:scout`.
-- `/baw:test` → Execute automated tests; prints follow-up commands (`/baw:deploy_staging`, etc.).
+- `/baw:dev_quick_build "fix typo"` → One-file change, ~5K tokens.
+- `/baw:dev_discovery_build "add JWT auth"` → Medium task, discovery + build in one pass.
+- `/baw:dev_full_pipeline "implement billing" "https://link" budget` → Large feature with approval pause.
+- `/baw:dev_feature_start "FEATURE-ID"` → Set up spec + session log, then run `/baw:dev_discovery`.
+- `/baw:dev_test` → Execute automated tests; prints follow-up commands (`/baw:dev_deploy_staging`, etc.).
 
 ### Operations + Support
 - `/baw:workflow_radar "<initiative>"` → Visualize outstanding work, missing docs, and blockers by persona.
@@ -56,7 +56,7 @@ Every command outputs:
 ## Automation Scripts (npm)
 - `npm run baw:knowledge:manage -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
 - `npm run baw:session:start` → Summarize cross-session context, token usage, and right-sized next tasks.
-- `npm run baw:workflow:sync` → Aggregate the latest scout/baw:plan/baw:build/report status files for the dashboard.
+- `npm run baw:workflow:sync` → Aggregate the latest discovery/baw:dev_plan/baw:dev_build/report status files for the dashboard.
 - `npm run baw:work` → Launch the feature workflow dashboard fed by `status-index.json`.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.
 
@@ -69,7 +69,7 @@ Scripts never copy documentation into consumer projects—only runtime assets (`
 - `ai-docs/` – Feature workspaces (`workflow/features/<feature>/`) plus knowledge ledger + legacy scratch space.
   - `workflow/features/<feature>/intake/` keeps discovery artifacts (product charter, feature catalog, wishlist, persona playbooks, support tickets, task dossiers).
   - `workflow/features/<feature>/plans/` contains plan slices and dependency/deployment/breakout roadmaps.
-  - `workflow/features/<feature>/reports/` holds command-specific outputs (scout verification, test runs, UAT evidence, deployment logs, radar summaries, etc.).
+  - `workflow/features/<feature>/reports/` holds command-specific outputs (discovery verification, test runs, UAT evidence, deployment logs, radar summaries, etc.).
   - `workflow/features/<feature>/workflow/` mirrors command history for the dashboard.
 - `scripts/` – Node utilities that commands rely on.
 - `.claude/` – Slash commands + hooks.

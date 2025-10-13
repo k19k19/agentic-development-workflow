@@ -5,7 +5,7 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command
 model: claude-sonnet-4-5
 ---
 
-# /baw:build_w_report
+# /baw:dev_build_report
 
 ## Purpose
 Execute the approved implementation plan and provide a thorough report covering code changes, validation evidence, and follow-up work.
@@ -42,7 +42,7 @@ Organize your final message into:
   - Write to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-build.json`.
   - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, or `completed`).
   - Reference the generated build report in `outputPath` and list supporting documentation.
-  - Set `nextCommand` to the next actionable slash command for the user (e.g., `/baw:test`, `/baw:report_failure`).
+  - Set `nextCommand` to the next actionable slash command for the user (e.g., `/baw:dev_test`, `/baw:report_failure`).
 - After writing artifacts, remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the latest state.
 
 ## Session Memory
@@ -58,18 +58,18 @@ After completing the build with report:
 
 - **→ Run tests:**
 ```bash
-/baw:test
+/baw:dev_test
 ```
 
 **If tests pass →** Deploy to staging:
 ```bash
-/baw:deploy_staging
+/baw:dev_deploy_staging
 ```
 
 **If tests fail →** Fix issues and re-test:
 - Review test output: `BUILD_OUTPUT_DIRECTORY/[timestamp]/test-output.txt`
 - Make necessary fixes
-- Run `/baw:test` again
+- Run `/baw:dev_test` again
 
 **Review your work:**
 ```bash

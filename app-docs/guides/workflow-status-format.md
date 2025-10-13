@@ -14,7 +14,7 @@ Each status JSON file must include the following fields:
 | --- | --- | --- |
 | `featureId` | string | Lowercase kebab-case identifier derived from the feature or plan title. Must match the directory name. |
 | `featureTitle` | string | Human-readable feature name shown on the dashboard. |
-| `phase` | string | Current workflow phase (`product-charter`, `feature-catalog`, `wishlist`, `product-research`, `dependency-plan`, `breakout-plan`, `task-prep`, `scout`, `plan`, `build`, `verification`, `deployment`, `ops-coordination`, `provider-functions`, `support-feedback`, etc.). |
+| `phase` | string | Current workflow phase (`product-charter`, `feature-catalog`, `wishlist`, `product-research`, `dependency-plan`, `breakout-plan`, `execution-prep`, `discovery`, `plan`, `build`, `verification`, `deployment`, `ops-coordination`, `provider-functions`, `support-feedback`, etc.). |
 | `status` | string | State within the phase (`pending`, `in_progress`, `needs_docs`, `needs_validation`, `blocked`, `failed`, `completed`). |
 | `command` | string | Slash command that produced this update. |
 | `nextCommand` | string | Ready-to-run follow-up command for the user. Leave an empty string if no immediate action. |
@@ -35,8 +35,8 @@ Each status JSON file must include the following fields:
   "featureTitle": "Add Auth Guard",
   "phase": "plan",
   "status": "needs_validation",
-  "command": "/baw:plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
-  "nextCommand": "/baw:plan \"Add Auth Guard\" --resume",
+  "command": "/baw:dev_plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
+  "nextCommand": "/baw:dev_plan \"Add Auth Guard\" --resume",
   "summary": "Plan drafted and waiting for validation feedback.",
   "outputPath": "ai-docs/workflow/features/add-auth-guard/plans/20250112-add-auth-guard/plan.md",
   "documentation": [
@@ -62,7 +62,7 @@ Each status JSON file must include the following fields:
 Use the following canonical values when possible so dashboards can group initiatives consistently:
 
 - `product-charter`, `feature-catalog`, `wishlist`, `product-research`
-- `dependency-plan`, `breakout-plan`, `task-prep`, `scout`, `plan`
+- `dependency-plan`, `breakout-plan`, `execution-prep`, `discovery`, `plan`
 - `build`, `verification`, `deployment`
 - `ops-coordination`, `provider-functions`, `support-feedback`
 - Legacy phases such as `test`, `report`, `release` remain valid for existing automation.

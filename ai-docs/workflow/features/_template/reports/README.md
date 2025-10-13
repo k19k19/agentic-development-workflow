@@ -2,7 +2,7 @@
 
 Automation and manual summaries land here. Subdirectories align with `/baw:` commands:
 
-- `scout/` – verification summaries and follow-up notes.
+- `discovery/` – verification summaries and follow-up notes.
 - `tests/` – raw test output and coverage snapshots.
 - `test-matrices/` – `/baw:dev_test_matrix` deliverables.
 - `uat/` – user acceptance test evidence and screenshots.

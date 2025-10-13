@@ -24,7 +24,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
   `BUG_REPORTS_DIRECTORY` if the organization tracks bugs centrally.
 - Trigger `/baw:triage_bug` for focused root cause analysis.
 - Skip broad scout phase - use targeted search only.
-- Jump directly to `/baw:plan` or `/baw:build` based on complexity.
+- Jump directly to `/baw:dev_plan` or `/baw:dev_build` based on complexity.
 - When it's time to patch code, delegate execution to Codex MCP via `mcp__codex__codex` and keep Claude focused on coordination and reviews.
 - Update bug tracking system when complete and capture the status in `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-hotfix.json` with
   `phase: "hotfix"`.
@@ -35,8 +35,8 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 3. Create internal bug report document.
 4. Run SlashCommand(`/baw:triage_bug "[BUG_ID]"`) for analysis.
 5. Based on complexity:
-   - Simple: Jump to `/baw:build` directly
-   - Complex: Run `/baw:plan` first
+   - Simple: Jump to `/baw:dev_build` directly
+   - Complex: Run `/baw:dev_plan` first
 6. Update bug status when fix is complete.
 
 ## Report

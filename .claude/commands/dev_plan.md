@@ -5,7 +5,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, MultiEdit
 model: claude-sonnet-4-5
 ---
 
-# /baw:plan
+# /baw:dev_plan
 
 ## Purpose
 Create a detailed implementation plan with complexity assessment based on user requirements supplied through the `USER_PROMPT`.
@@ -36,8 +36,8 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Read the referenced source files using the provided offsets and limits. Respect token budgets and only pull the necessary ranges.
 - **Budget Mode:** If `USER_PROMPT` contains `[BUDGET MODE]`, skip external scraping unless a URL is explicitly provided, cap the written plan at ~350 words, and limit the section list to: Summary, Key Steps (max 4 bullets), Risks, Tests.
 - After saving the plan, clearly state the verification pause:
-  - Print `🛑 Still inside /baw:plan. Reply 'resume' to hand off to /baw:build or 'stop' to exit.`
-  - Summarize what will happen on `resume` (e.g., call `/baw:build_w_report`).
+  - Print `🛑 Still inside /baw:dev_plan. Reply 'resume' to hand off to /baw:dev_build or 'stop' to exit.`
+  - Summarize what will happen on `resume` (e.g., call `/baw:dev_build_report`).
 
 ## Workflow
 1. Analyze Requirements - extract the problem statement, constraints, and success criteria from `USER_PROMPT`.
@@ -52,7 +52,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Report
 - Provide the saved plan path and list any documentation files retrieved.
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
-- Update the existing `plans/checklist.json` entry for this slice (or create it if new) so future sessions iterate on the same artifact. If the plan needs more information, note that the next `/baw:scout` run must enrich this entry rather than spawning a new plan.
+- Update the existing `plans/checklist.json` entry for this slice (or create it if new) so future sessions iterate on the same artifact. If the plan needs more information, note that the next `/baw:dev_discovery` run must enrich this entry rather than spawning a new plan.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Automation Trace
@@ -60,7 +60,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
   - Save to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-plan.json`.
   - Use `phase: "plan"` and set `status` to `needs_validation`, `ready_for_build`, or `blocked`.
   - Fill `outputPath` with the generated plan path and list any supporting docs.
-  - Set `nextCommand` to the recommended `/baw:build`, `/baw:build_w_report`, or follow-up `/baw:plan --resume` invocation.
+  - Set `nextCommand` to the recommended `/baw:dev_build`, `/baw:dev_build_report`, or follow-up `/baw:dev_plan --resume` invocation.
 - Remind the user to run `npm run baw:workflow:sync` once the plan is finalized so the dashboard reflects the updated phase.
 
 ## Next Steps
@@ -68,18 +68,18 @@ After reviewing the plan, proceed with implementation or expand into persona-ali
 
 **→ Execute the plan:**
 ```bash
-/baw:build "[path-to-plan]"
+/baw:dev_build "[path-to-plan]"
 ```
 
 **→ Execute with detailed reporting:**
 ```bash
-/baw:build_w_report "[path-to-plan]"
+/baw:dev_build_report "[path-to-plan]"
 ```
 **Before building:**
 - Review the plan file at the path shown above
 - Verify the approach makes sense
 - Make manual edits if needed
 
-**Need additional structure?** Kick off `/baw:dev_dependency_plan` for multi-phase roadmaps or `/baw:task_prep` to collect documentation per breakout.
+**Need additional structure?** Kick off `/baw:dev_dependency_plan` for multi-phase roadmaps or `/baw:dev_execution_prep` to collect documentation per breakout.
 
 When the user approves, confirm which build command they want and offer to run it.

@@ -8,7 +8,7 @@ model: claude-sonnet-4-5
 # /baw:report_failure
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered by test failure in `/baw:test` phase. Analyzes root cause and enters learning loop.
+**AI-INTERNAL COMMAND** - Automatically triggered by test failure in `/baw:dev_test` phase. Analyzes root cause and enters learning loop.
 
 ## Variables
 FEATURE_ID: $1

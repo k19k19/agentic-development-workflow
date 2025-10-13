@@ -8,7 +8,7 @@ model: claude-sonnet-4-5
 # /baw:pause_feature
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered during `/baw:plan` if complexity exceeds threshold. Pauses feature and suggests decomposition.
+**AI-INTERNAL COMMAND** - Automatically triggered during `/baw:dev_plan` if complexity exceeds threshold. Pauses feature and suggests decomposition.
 
 ## Variables
 FEATURE_ID: $1

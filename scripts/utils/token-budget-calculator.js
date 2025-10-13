@@ -189,7 +189,7 @@ function getSuggestedWorkflows(remainingTokens) {
   if (remainingTokens >= 150000) {
     suggestions.push({
       name: 'XLarge task',
-      command: '/baw:full "[task]" "[docs]" "standard"',
+      command: '/baw:dev_full_pipeline "[task]" "[docs]" "standard"',
       tokens: 150000,
       time: '2-4 hours'
     });
@@ -198,7 +198,7 @@ function getSuggestedWorkflows(remainingTokens) {
   if (remainingTokens >= 90000) {
     suggestions.push({
       name: 'Large task',
-      command: '/baw:full "[task]" "[docs]" "budget"',
+      command: '/baw:dev_full_pipeline "[task]" "[docs]" "budget"',
       tokens: 90000,
       time: '1-2 hours'
     });
@@ -207,7 +207,7 @@ function getSuggestedWorkflows(remainingTokens) {
   if (remainingTokens >= 30000) {
     suggestions.push({
       name: 'Medium task',
-      command: '/baw:scout_build "[task]"',
+      command: '/baw:dev_discovery_build "[task]"',
       tokens: 30000,
       time: '30-60 min'
     });
@@ -216,7 +216,7 @@ function getSuggestedWorkflows(remainingTokens) {
   if (remainingTokens >= 5000) {
     suggestions.push({
       name: 'Small task',
-      command: '/baw:quick "[task]"',
+      command: '/baw:dev_quick_build "[task]"',
       tokens: 5000,
       time: '5-15 min'
     });

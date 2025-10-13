@@ -5,7 +5,7 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command
 model: claude-sonnet-4-5
 ---
 
-# /baw:build
+# /baw:dev_build
 
 ## Purpose
 Implement the delivered plan and report the resulting changes.
@@ -31,7 +31,7 @@ PATH_TO_PLAN: $1
   - Save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-build.json`.
   - Use `phase: "build"` and set `status` to `in_progress`, `needs_validation`, `failed`, or `completed` based on the outcome.
   - Populate `outputPath` with the build summary/log and list any documentation needing updates.
-  - Set `nextCommand` to the recommended follow-up (`/baw:test`, `/baw:report_failure`, `/baw:build --resume`, etc.).
+  - Set `nextCommand` to the recommended follow-up (`/baw:dev_test`, `/baw:report_failure`, `/baw:dev_build --resume`, etc.).
 
 ## Session Memory (Auto-generate)
 After completing the build, automatically generate a session summary in `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
@@ -53,18 +53,18 @@ After completing the build:
 
 **→ Run tests:**
 ```bash
-/baw:test
+/baw:dev_test
 ```
 
 **If tests pass →** Deploy to staging:
 ```bash
-/baw:deploy_staging
+/baw:dev_deploy_staging
 ```
 
 **If tests fail →** Fix issues and re-test:
 - Review test output
 - Make necessary fixes
-- Run `/baw:test` again
+- Run `/baw:dev_test` again
 
 **Check your work:**
 ```bash

@@ -20,7 +20,7 @@ We formalized a durable workflow for large, multi-session features by introducin
 
 Why this approach was chosen:
 
-- **Alternative A – Continue using ad-hoc plans/baw:build directories:** This left artifacts scattered across `plans/`, `builds/`, and `sessions/`, making it impossible to track progress or respect token budgets at epic scale.
+- **Alternative A – Continue using ad-hoc plans/baw:dev_build directories:** This left artifacts scattered across `plans/`, `builds/`, and `sessions/`, making it impossible to track progress or respect token budgets at epic scale.
 - **Alternative B – Centralize everything in a single dashboard command:** A monolithic command could not ingest nuanced plan slices or session history, and it masked the need for human-readable artifacts.
 - **Chosen Approach – Structured feature workspaces:** Creating first-class feature directories with manifests, checklists, and session logs gives both humans and automation a shared source of truth.
 
@@ -36,7 +36,7 @@ Why this approach was chosen:
 
 ### Key Factors
 
-- Need to enforce plan token budgets and avoid oversized `/baw:plan` prompts.
+- Need to enforce plan token budgets and avoid oversized `/baw:dev_plan` prompts.
 - Desire to preserve historical session context without ballooning agent tokens.
 - Requirement to expand dashboard views beyond the current unified summary.
 
@@ -76,7 +76,7 @@ How we know this works:
 - Number of features tracked via `index.json` provides visibility into adoption.
 
 ### User Feedback
-- Early reviewers highlighted the ability to resume work mid-plan without repeating scouting steps.
+- Early reviewers highlighted the ability to resume work mid-plan without repeating discovery steps.
 
 ## Future
 

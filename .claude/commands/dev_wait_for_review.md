@@ -5,10 +5,10 @@ allowed-tools: ["Read", "Write", "Grep", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:wait_for_review
+# /baw:dev_wait_for_review
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered after `/baw:build` completes. Generates code critique and pauses for human review.
+**AI-INTERNAL COMMAND** - Automatically triggered after `/baw:dev_build` completes. Generates code critique and pauses for human review.
 
 ## Instructions
 - **You don't run this manually** - Claude runs it automatically after build.

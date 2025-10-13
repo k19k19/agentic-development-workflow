@@ -19,7 +19,7 @@ FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
 - Read the product roadmap.
 - Identify next priority feature.
 - Check if spec exists for that feature.
-- Suggest running `/baw:start [feature-id]` to begin, ensuring a feature workspace skeleton exists at
+- Suggest running `/baw:dev_feature_start [feature-id]` to begin, ensuring a feature workspace skeleton exists at
   `FEATURE_WORKSPACE_ROOT/<feature-id>/`.
 
 ## Workflow
@@ -33,7 +33,7 @@ FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
 - Show feature priority and estimated complexity.
 - Indicate if spec exists or needs to be created.
 - Highlight whether `ai-docs/workflow/features/<feature-id>/` already exists or should be scaffolded via `npm run baw:scaffold:feature`.
-- Suggest running `/baw:start "[feature-id]"` to begin.
+- Suggest running `/baw:dev_feature_start "[feature-id]"` to begin.
 
 ## Budget
 FREE (no AI calls, just file reading)

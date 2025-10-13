@@ -85,7 +85,7 @@ else
     log_info "Preserved existing ai-docs/"
 fi
 
-LEGACY_AI_DOCS_DIRS=(plans builds sessions failures logs scout tasks)
+LEGACY_AI_DOCS_DIRS=(plans builds sessions failures logs discovery tasks)
 for relative_dir in "${LEGACY_AI_DOCS_DIRS[@]}"; do
     if [ ! -d "$PROJECT_ROOT/ai-docs/$relative_dir" ]; then
         mkdir -p "$PROJECT_ROOT/ai-docs/$relative_dir"
@@ -316,7 +316,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 log_info "📋 Next Steps (no docs required):"
 echo ""
-echo "  1. Run your first slash command (e.g., /baw:scout or /baw:plan) to capture context."
+echo "  1. Run your first slash command (e.g., /baw:dev_discovery or /baw:dev_plan) to capture context."
 echo ""
 echo "  2. Refresh automation data:"
 echo "     \$ npm run baw:workflow:sync"
@@ -326,11 +326,11 @@ echo "  3. Need a reminder later? Type plain text and Claude will reply"
 echo "     with the best slash command to run next."
 echo ""
 echo "  4. Ready to work? Typical entry points are:"
-echo "     • /baw:quick \"add env var validation\"       # small change"
-echo "     • /baw:scout_build \"add JWT auth\"            # medium change"
-echo "     • /baw:full \"implement billing\" \"docs\" budget  # large change"
+echo "     • /baw:dev_quick_build \"add env var validation\"       # small change"
+echo "     • /baw:dev_discovery_build \"add JWT auth\"            # medium change"
+echo "     • /baw:dev_full_pipeline \"implement billing\" \"docs\" budget  # large change"
 echo ""
-echo "  5. After any build command, run /baw:test and follow the prompts."
+echo "  5. After any build command, run /baw:dev_test and follow the prompts."
 echo ""
 log_success "Happy shipping! 🚀"
 echo ""

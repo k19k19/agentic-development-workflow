@@ -16,18 +16,18 @@ All outputs save workflow status JSON using the `product-charter`, `feature-cata
 | Step | Command | What It Produces | Typical Next Step |
 | --- | --- | --- | --- |
 | Sequence the roadmap | `/baw:dev_dependency_plan "<initiative>"` | Dependency-ordered milestones with entry/exit criteria | `/baw:dev_breakout_plan` |
-| Shape sprint-sized work | `/baw:dev_breakout_plan "<phase>"` | Breakout plan(s) with acceptance criteria | `/baw:task_prep` |
-| Gather task specs | `/baw:task_prep "<task>"` | Checklist of docs, owners, and validations | `/baw:scout`, `/baw:build`, or `/baw:dev_test_matrix` |
-| Plan validation | `/baw:dev_test_matrix "<release>"` | Test matrix across dev/staging/prod | `/baw:test`, `/baw:uat`, `/baw:dev_deploy_plan` |
-| Prepare deployment | `/baw:dev_deploy_plan "<release>"` | Release checklist with rollback strategy | `/baw:deploy_staging`, `/baw:release`, `/baw:workflow_radar` |
+| Shape sprint-sized work | `/baw:dev_breakout_plan "<phase>"` | Breakout plan(s) with acceptance criteria | `/baw:dev_execution_prep` |
+| Gather task specs | `/baw:dev_execution_prep "<task>"` | Checklist of docs, owners, and validations | `/baw:dev_discovery`, `/baw:dev_build`, or `/baw:dev_test_matrix` |
+| Plan validation | `/baw:dev_test_matrix "<release>"` | Test matrix across dev/staging/prod | `/baw:dev_test`, `/baw:uat`, `/baw:dev_deploy_plan` |
+| Prepare deployment | `/baw:dev_deploy_plan "<release>"` | Release checklist with rollback strategy | `/baw:dev_deploy_staging`, `/baw:dev_release`, `/baw:workflow_radar` |
 
-The original commands (`/baw:scout`, `/baw:plan`, `/baw:build`, `/baw:test`, `/baw:deploy_staging`, `/baw:release`, etc.) remain available and are referenced as follow-ups inside these planning steps. Each command emits workflow status JSON with phases like `dependency-plan`, `breakout-plan`, `task-prep`, `verification`, and `deployment`.
+The original commands (`/baw:dev_discovery`, `/baw:dev_plan`, `/baw:dev_build`, `/baw:dev_test`, `/baw:dev_deploy_staging`, `/baw:dev_release`, etc.) remain available and are referenced as follow-ups inside these planning steps. Each command emits workflow status JSON with phases like `dependency-plan`, `breakout-plan`, `execution-prep`, `verification`, and `deployment`.
 
 ## 3. Operations & Support Track
 | Step | Command | What It Produces | Typical Next Step |
 | --- | --- | --- | --- |
-| Summarize initiative health | `/baw:workflow_radar "<initiative>"` | Persona-based backlog of blockers, missing docs, and KPIs | Drives `/baw:task_prep`, `/baw:product_helper`, `/baw:support_ticket` |
-| Define provider/admin functions | `/baw:provider_functions "<product>"` | Operational workflows, permissions, and analytics needs | `/baw:task_prep`, `/baw:workflow_radar` |
+| Summarize initiative health | `/baw:workflow_radar "<initiative>"` | Persona-based backlog of blockers, missing docs, and KPIs | Drives `/baw:dev_execution_prep`, `/baw:product_helper`, `/baw:support_ticket` |
+| Define provider/admin functions | `/baw:provider_functions "<product>"` | Operational workflows, permissions, and analytics needs | `/baw:dev_execution_prep`, `/baw:workflow_radar` |
 | Convert feedback into action | `/baw:support_ticket "<queue>"` | Prioritized backlog of fixes, data work, or enhancements | `/baw:triage_bug`, `/baw:workflow_radar`, `/baw:product_wishlist` |
 
 Support-focused commands save workflow status JSON with `ops-coordination`, `provider-functions`, and `support-feedback` phases so the dashboard can surface outstanding work for non-engineering stakeholders.

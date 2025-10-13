@@ -12,7 +12,7 @@
 ## Problem
 
 Command sprawl and split storage under `ai-docs/plans/` vs `ai-docs/workflow/` confused contributors and prevented
-multi-session features from staying organized. New prompts frequently reused `/baw:scout` output but saved plans elsewhere,
+multi-session features from staying organized. New prompts frequently reused `/baw:dev_discovery` output but saved plans elsewhere,
 forcing humans to reconcile artifacts manually. Command names also collided with third-party tools and lacked a
 consistent namespace.
 

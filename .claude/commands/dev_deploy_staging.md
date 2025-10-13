@@ -5,13 +5,13 @@ allowed-tools: ["run_shell_command", "Read"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:deploy_staging
+# /baw:dev_deploy_staging
 
 ## Purpose
 Deploy the current build to staging environment for user acceptance testing.
 
 ## Feature Workspace
-- Identify the feature currently moving toward release (usually the subject of the most recent `/baw:build` or `/baw:test`).
+- Identify the feature currently moving toward release (usually the subject of the most recent `/baw:dev_build` or `/baw:dev_test`).
 - Confirm the workspace at `ai-docs/workflow/features/<feature-id>/` exists; if unclear, ask the user to specify the feature slug.
 - Write deployment notes to `ai-docs/workflow/features/<feature-id>/reports/deployments/` and automation logs to
   `ai-docs/workflow/features/<feature-id>/workflow/`.
@@ -52,7 +52,7 @@ Deploy the current build to staging environment for user acceptance testing.
 **If deployment failed:**
 1. Review deployment logs
 2. Fix configuration issues
-3. Re-deploy: `/baw:deploy_staging`
+3. Re-deploy: `/baw:dev_deploy_staging`
 
 ## Budget
 FREE (no AI calls)

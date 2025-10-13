@@ -4,14 +4,14 @@ The slash-command workflow is defined in `.claude/commands/*.md`. Each command a
 
 ## 1. Allow the Codex MCP tool
 - In the command front matter, make sure the `allowed-tools` array includes `"mcp__codex__codex"` alongside the standard filesystem tools.
-- Example (`/baw:quick` already ships this setup):
+- Example (`/baw:dev_quick_build` already ships this setup):
   ```yaml
   allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command"]
   ```
-  This grants the workflow agent permission to call Codex when the command is executed.【F:.claude/commands/quick.md†L1-L20】
+  This grants the workflow agent permission to call Codex when the command is executed.【F:.claude/commands/dev_quick_build.md†L1-L20】
 
 ## 2. Point instructions at Codex work
-- Spell out in the command body when Codex should take over. `/baw:quick` demonstrates the pattern with explicit guidance to “Use Codex MCP directly to implement the task.”【F:.claude/commands/quick.md†L21-L37】
+- Spell out in the command body when Codex should take over. `/baw:dev_quick_build` demonstrates the pattern with explicit guidance to “Use Codex MCP directly to implement the task.”【F:.claude/commands/dev_quick_build.md†L21-L37】
 - Reuse this language in other commands so the orchestrator consistently delegates implementation steps to Codex.
 
 ## 3. Keep Codex in the budget model list

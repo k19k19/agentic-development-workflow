@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:scout
+# /baw:dev_discovery
 
 ## Purpose
 Collect the most relevant code, documentation, and prior automation outputs needed to understand the feature described in `USER_PROMPT`.
@@ -25,12 +25,12 @@ USER_PROMPT: $1
 3. Search the codebase with `rg` to surface candidate files and read the important sections (only fall back to other tools if `rg` is not installed).
 4. Summarize discoveries, highlighting reusable code, gaps, and risks that the plan must address.
 5. Record any documentation that should be updated before continuing. When the goal is to gather structured specs from subject
-   matter experts, note those gaps so `/baw:task_prep` can focus on that follow-up instead of re-running discovery here.
+   matter experts, note those gaps so `/baw:dev_execution_prep` can focus on that follow-up instead of re-running discovery here.
 
 ## Report
 - Provide bullet summaries of the most relevant files and excerpts discovered.
 - List any documentation or specs the user should review or update.
-- Call out risks, unknowns, or follow-up questions uncovered during scouting.
+- Call out risks, unknowns, or follow-up questions uncovered during discovery.
 - If this run is clarifying an approved plan slice, explicitly point to the existing feature workspace plan under
   `ai-docs/workflow/features/<feature-id>/plans/` to update rather than suggesting a new feature or plan file.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
@@ -38,27 +38,27 @@ USER_PROMPT: $1
 ## Automation Trace
 - Emit a workflow status JSON entry following `app-docs/guides/workflow-status-format.md`.
   - Derive `featureId` from the request title in kebab-case. When the feature workspace already exists, reuse that slug.
-  - Save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-scout.json`.
-  - Use `phase: "scout"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
+  - Save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-dev-discovery.json`.
+  - Use `phase: "discovery"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
   - Set `nextCommand` to the exact follow-up slash command the user should run.
   - Include any documentation paths that must be updated before resuming.
-- Remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the new scout results.
+- Remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the new discovery results.
 
 ## Next Steps
-After completing scout, you typically want to:
+After completing discovery, you typically want to:
 
 **→ Create an implementation plan:**
 ```bash
-/baw:plan "[your-task]" "[doc-urls]" "[scout-notes-path]"
+/baw:dev_plan "[your-task]" "[doc-urls]" "[discovery-notes-path]"
 ```
 
-Where `[scout-notes-path]` is the file path shown in the scout output.
+Where `[discovery-notes-path]` is the file path shown in the discovery output.
 
 If the plan already exists, remind the user to append the new context to the same plan document and checklist entry.
 
 **Short circuit:**
 ```bash
-/baw:scout_build "[your-task]"
+/baw:dev_discovery_build "[your-task]"
 ```
 
 When you hand off to the next command, summarize the available context and highlight any missing documentation the user should supply.

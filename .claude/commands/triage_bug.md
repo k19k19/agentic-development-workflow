@@ -22,7 +22,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Highly focused analysis to pinpoint bug location.
 - Load the relevant bug report from `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` (mirror from `BUG_REPORTS_DIRECTORY` when necessary).
 - Propose fix strategy.
-- Skip broad scout, jump directly to `/baw:plan` or `/baw:build`.
+- Skip broad scout, jump directly to `/baw:dev_plan` or `/baw:dev_build`.
 
 ## Workflow
 1. Read bug report from `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` (fallback to `BUG_REPORTS_DIRECTORY/BUG_REPORT_[BUG_ID].md`).
@@ -37,7 +37,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Show exact bug location (file:line).
 - Present proposed fix strategy.
 - Assess severity and complexity.
-- Suggest jumping to `/baw:build` (simple) or `/baw:plan` (complex) and save the findings to `SUPPORT_INTAKE_DIRECTORY/<ISO-timestamp>-triage.md`.
+- Suggest jumping to `/baw:dev_build` (simple) or `/baw:dev_plan` (complex) and save the findings to `SUPPORT_INTAKE_DIRECTORY/<ISO-timestamp>-triage.md`.
 - Log `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-triage.json` with `phase: "triage"` and recommended follow-up.
 
 ## Budget

@@ -36,15 +36,15 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Report
 - Present breakout summaries in a table or ordered list.
 - Include acceptance criteria, dependencies, and risk mitigation for each breakout.
-- End with `/baw:task_prep` guidance for the highest-priority breakout.
+- End with `/baw:dev_execution_prep` guidance for the highest-priority breakout.
 
 ## Automation Trace
 - Save workflow status with `phase: "breakout-plan"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-breakout-plan.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked`.
 - Record the saved breakout files under `outputPath` and any documentation gaps under `documentation`.
-- Set `nextCommand` to `/baw:task_prep` (or `/baw:scout` if discovery gaps remain).
+- Set `nextCommand` to `/baw:dev_execution_prep` (or `/baw:dev_discovery` if discovery gaps remain).
 - Remind the user to run `npm run baw:workflow:sync`.
 
 ## Next Steps
-- `/baw:task_prep "<breakout-title>" "<spec-references>"`
-- `/baw:scout "<breakout-title>"`
+- `/baw:dev_execution_prep "<breakout-title>" "<spec-references>"`
+- `/baw:dev_discovery "<breakout-title>"`

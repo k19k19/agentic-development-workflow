@@ -40,9 +40,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "provider-functions"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-provider-functions.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked`.
-- Set `nextCommand` to `/baw:task_prep`, `/baw:workflow_radar`, or `/baw:support_ticket`.
+- Set `nextCommand` to `/baw:dev_execution_prep`, `/baw:workflow_radar`, or `/baw:support_ticket`.
 - Attach the saved provider doc path under `outputPath` and remind the user to run `npm run baw:workflow:sync` after docs are updated.
 
 ## Next Steps
-- `/baw:task_prep "<provider-feature>"`
+- `/baw:dev_execution_prep "<provider-feature>"`
 - `/baw:support_ticket "<support-area>"`
