@@ -28,7 +28,7 @@ TASK: $1
 2. Use Gemini to generate `rg` keywords, then use `rg` to find the relevant file context.
 3. Use `mcp__codex__codex` to implement the `TASK` using the gathered file context.
 3. Capture a short session summary in `ai-docs/sessions/SESSION-[date]-quick.md`.
-5. Trigger `npm run tasks:session-start` so the ledger reflects the change.
+5. Trigger `npm run baw:session:start` so the ledger reflects the change.
 6. Report results with token usage.
 
 ## Report

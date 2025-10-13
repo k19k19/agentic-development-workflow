@@ -42,6 +42,13 @@ All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits
 - `/hotfix [bug-id]`, `/triage_bug` – Production fixes
 - `/next` – Select next feature from roadmap
 
+### Scout-to-Plan Feedback Loop
+
+- When a `/scout` result is too thin to execute an approved plan slice, **re-run `/scout` against the same feature directory** instead of creating a new feature. Reference the active `plans/PLAN-*.md` file and append new findings in-place.
+- Promote all clarified requirements into the existing `plans/checklist.json` entry by updating its notes, acceptance criteria, or dependencies. Never spawn a second plan slice just to hold the extra data.
+- Use the session backlog to flag "Plan needs revision" so subsequent prompts continue refining the same artifact until it is executable.
+- Only call `/plan` again if the scope materially changes and the old plan entry is superseded—record the supersession inside `plans/checklist.json`.
+
 ### Workflow Status System
 Every command writes structured JSON to `ai-docs/workflow/<feature-id>/<timestamp>-<phase>.json` containing:
 ```javascript
@@ -60,9 +67,9 @@ Every command writes structured JSON to `ai-docs/workflow/<feature-id>/<timestam
 ```
 
 **Key scripts:**
-- `npm run workflow:sync` – Aggregates status JSON → `ai-docs/workflow/status-index.json`
-- `npm run work` – Renders unified dashboard from status index
-- `npm run tasks:session-start` – Shows token budget + recommended tasks
+- `npm run baw:workflow:sync` – Aggregates status JSON → `ai-docs/workflow/status-index.json`
+- `npm run baw:work` – Renders unified dashboard from status index
+- `npm run baw:session:start` – Shows token budget + recommended tasks
 
 ### Directory Structure
 ```
@@ -99,16 +106,16 @@ npm test                  # Run test suite (if present)
 
 ### Knowledge Management
 ```bash
-npm run manage-knowledge -- list                    # Show specs in active/archive/reference
-npm run manage-knowledge -- archive <spec.md>       # Move spec to archive/
-npm run manage-knowledge -- restore <spec.md>       # Restore from archive/
+npm run baw:knowledge:manage -- list                    # Show specs in active/archive/reference
+npm run baw:knowledge:manage -- archive <spec.md>       # Move spec to archive/
+npm run baw:knowledge:manage -- restore <spec.md>       # Restore from archive/
 ```
 
 ### Session Management
 ```bash
-npm run tasks:session-start    # Show token budget, workflow status, recommended tasks
-npm run workflow:sync          # Update status-index.json from individual JSON files
-npm run work                   # Display unified dashboard
+npm run baw:session:start    # Show token budget, workflow status, recommended tasks
+npm run baw:workflow:sync          # Update status-index.json from individual JSON files
+npm run baw:work                   # Display unified dashboard
 ```
 
 ---
@@ -130,7 +137,7 @@ npm run work                   # Display unified dashboard
 3. **After command:**
    - Write workflow status JSON to `ai-docs/workflow/<feature-id>/<timestamp>-<phase>.json`
    - Update session log in `ai-docs/sessions/SESSION-<date>-<slug>.md`
-   - Remind user to run `npm run workflow:sync`
+   - Remind user to run `npm run baw:workflow:sync`
    - Print verification message for approval gates:
      ```
      🛑 Still inside /<command>. Reply 'resume' to continue or 'stop' to exit.
@@ -228,7 +235,7 @@ After each build/test cycle:
    - Validation highlights
    - Follow-up tasks for next agent
 3. Emit workflow status JSON
-4. Prompt `npm run workflow:sync`
+4. Prompt `npm run baw:workflow:sync`
 5. Suggest next command (usually `/test`)
 
 ---
@@ -274,13 +281,13 @@ After implementation:
 - Create new files when editing existing ones suffices
 - Batch multiple todo completions (mark done immediately)
 - Skip workflow status JSON emission
-- Forget to remind user about `npm run workflow:sync`
+- Forget to remind user about `npm run baw:workflow:sync`
 
 **DO:**
 - Check `app-docs/guides/workflow-status-format.md` before writing status JSON
 - Read `app-docs/specs/active/` for existing feature context
 - Update `app-docs/mappings/feature-to-source.md` when files change
-- Use `npm run tasks:session-start` at session start for budget awareness
+- Use `npm run baw:session:start` at session start for budget awareness
 - Delegate appropriately (Gemini for docs, Codex for boilerplate, Claude for complexity)
 
 ---

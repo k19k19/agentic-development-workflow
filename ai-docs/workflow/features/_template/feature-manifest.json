@@ -1,0 +1,25 @@
+{
+  "title": "",
+  "slug": "",
+  "description": "",
+  "owner": "",
+  "status": "draft",
+  "stage": "intake",
+  "maxPlanTokens": 2000,
+  "tokenBudget": {
+    "planning": 0,
+    "build": 0,
+    "reporting": 0
+  },
+  "linkedLedgerEntries": [],
+  "relatedFeatures": [],
+  "createdAt": "",
+  "updatedAt": "",
+  "commands": {
+    "scout": true,
+    "plan": true,
+    "build": true,
+    "report": true,
+    "deploy": false
+  }
+}

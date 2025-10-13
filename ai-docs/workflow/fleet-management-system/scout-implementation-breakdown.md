@@ -441,7 +441,7 @@ Phase 1e (Mobile) ← Can run parallel with 1d
 
 4. **Monitor Token Budget**:
    ```bash
-   npm run tasks:session-start
+   npm run baw:session:start
    ```
    Check remaining budget before each phase.
 

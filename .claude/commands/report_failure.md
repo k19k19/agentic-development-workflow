@@ -44,7 +44,7 @@ FAILURES_DIRECTORY: ai-docs/failures/
   - Use `phase: "report"` and set `status` to `failed` or `blocked` based on severity.
   - Include the generated failure report path and any documentation requiring updates.
   - Set `nextCommand` to `/restart_feature <feature-id>` or other recovery command the user must run.
-- Prompt the user to run `npm run workflow:sync` so the dashboard shows the failure context.
+- Prompt the user to run `npm run baw:workflow:sync` so the dashboard shows the failure context.
 
 ## Budget
 ~5K tokens (Claude root cause analysis)

@@ -52,7 +52,7 @@ Where to find this decision in the codebase:
 ### Commands
 ```bash
 # Run when auditing knowledge assets
-npm run manage-knowledge -- list
+npm run baw:knowledge:manage -- list
 ```
 
 ### Configuration

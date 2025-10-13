@@ -39,7 +39,7 @@ Why this approach was chosen:
   - Encourages teams to maintain `ledger.md` because omissions show up as warnings during status syncs.
 - **Cons**:
   - Adds parser maintenance whenever the ledger format expands.
-  - Slightly increases runtime for `npm run workflow:sync`.
+  - Slightly increases runtime for `npm run baw:workflow:sync`.
 
 ### Key Factors
 
@@ -61,10 +61,10 @@ Where to find this decision in the codebase:
 ### Commands
 ```bash
 # Aggregate workflow status and surface ledger coverage
-npm run workflow:sync
+npm run baw:workflow:sync
 
 # Open the dashboard to view workflow phases with current ledger decisions
-npm run work
+npm run baw:work
 ```
 
 ### Configuration
@@ -76,7 +76,7 @@ How we know this works:
 
 ### Manual checks
 - ✅ Ran `node scripts/update-workflow-status.js` locally to confirm `status-index.json` includes `knowledgeLedger` data.
-- ✅ Verified `npm run work` output prints adopted decisions with their IDs and summaries.
+- ✅ Verified `npm run baw:work` output prints adopted decisions with their IDs and summaries.
 
 ### Metrics
 - Not applicable.

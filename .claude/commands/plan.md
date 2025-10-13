@@ -45,6 +45,7 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
 ## Report
 - Provide the saved plan path and list any documentation files retrieved.
 - Summarize the major implementation phases and testing strategy (Budget Mode: 3 bullets or fewer).
+- Update the existing `plans/checklist.json` entry for this slice (or create it if new) so future sessions iterate on the same artifact. If the plan needs more information, note that the next `/scout` run must enrich this entry rather than spawning a new plan.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Automation Trace
@@ -53,7 +54,7 @@ DOCUMENTATION_OUTPUT_DIRECTORY: ai-docs/plans/
   - Use `phase: "plan"` and set `status` to `needs_validation`, `ready_for_build`, or `blocked`.
   - Fill `outputPath` with the generated plan path and list any supporting docs.
   - Set `nextCommand` to the recommended `/build` or `/build_w_report` invocation (or `/plan --resume` if blocked).
-- Remind the user to run `npm run workflow:sync` once the plan is finalized so the dashboard reflects the updated phase.
+- Remind the user to run `npm run baw:workflow:sync` once the plan is finalized so the dashboard reflects the updated phase.
 
 ## Next Steps
 After reviewing the plan, proceed with implementation:

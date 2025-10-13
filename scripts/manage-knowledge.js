@@ -4,9 +4,9 @@
  * Manage knowledge lifecycle for docs referenced by automation.
  *
  * Usage examples:
- *   npm run manage-knowledge -- list
- *   npm run manage-knowledge -- archive round5-caching.md
- *   npm run manage-knowledge -- restore round5-caching.md
+ *   npm run baw:knowledge:manage -- list
+ *   npm run baw:knowledge:manage -- archive round5-caching.md
+ *   npm run baw:knowledge:manage -- restore round5-caching.md
  */
 
 const fs = require('fs/promises');

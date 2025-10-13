@@ -8,8 +8,9 @@ Zero-doc onboarding: every command explains itself, prints required follow-ups, 
 1. Execute the recommended slash command for the feature you’re working on (`/scout`, `/plan`, `/build`, `/report_failure`).
    - Each command emits a status JSON record so automation can track progress.
 2. Update documentation or specs under `app-docs/` as needed.
-3. Run `npm run workflow:sync` to aggregate the latest command outputs.
-4. Review the dashboard via `npm run work` for feature states, summaries, and resume commands.
+3. Run `npm run baw:workflow:sync` to aggregate the latest command outputs.
+   - When `/scout` reveals gaps in an approved plan slice, revise the same plan file and checklist entry instead of scaffolding something new.
+4. Review the dashboard via `npm run baw:work` for feature states, summaries, and resume commands.
 5. When a command pauses for verification, it will say:
    - `🛑 Waiting inside /<command>. Reply 'resume' to continue or 'stop' to exit.`
 6. After a build completes, run `/test`, then follow any prompts (deploy, retry, etc.).
@@ -33,10 +34,10 @@ Every command outputs:
 ---
 
 ## Automation Scripts (npm)
-- `npm run manage-knowledge -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
-- `npm run tasks:session-start` → Summarize cross-session context, token usage, and right-sized next tasks.
-- `npm run workflow:sync` → Aggregate the latest scout/plan/build/report status files for the dashboard.
-- `npm run work` → Launch the feature workflow dashboard fed by `status-index.json`.
+- `npm run baw:knowledge:manage -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
+- `npm run baw:session:start` → Summarize cross-session context, token usage, and right-sized next tasks.
+- `npm run baw:workflow:sync` → Aggregate the latest scout/plan/build/report status files for the dashboard.
+- `npm run baw:work` → Launch the feature workflow dashboard fed by `status-index.json`.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.
 
 Scripts never copy documentation into consumer projects—only runtime assets (`.claude/`, `scripts/`) plus empty scaffolding (`app-docs/` and `ai-docs/`).

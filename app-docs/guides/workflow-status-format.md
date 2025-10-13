@@ -55,6 +55,6 @@ Each status JSON file must include the following fields:
 
 ## Dashboards
 - `node scripts/update-workflow-status.js` aggregates per-feature updates.
-- `npm run work` renders the unified dashboard and shows the latest status + resume commands.
+- `npm run baw:work` renders the unified dashboard and shows the latest status + resume commands.
 
-Keep every command’s status JSON concise and machine-parseable so automation can run without manual bookkeeping—`npm run workflow:sync` will handle aggregation automatically.
+Keep every command’s status JSON concise and machine-parseable so automation can run without manual bookkeeping—`npm run baw:workflow:sync` will handle aggregation automatically.
