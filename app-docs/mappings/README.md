@@ -20,7 +20,7 @@ This file is:
 
 ## How It Works
 
-### During Planning (`/plan`)
+### During Planning (`/baw:plan`)
 AI reads `feature-to-source.md` to find existing patterns:
 ```markdown
 Task: "Add new API endpoint for users"
@@ -29,7 +29,7 @@ Finds: Existing API pattern in app/api/health.js
 Follows: Same pattern for new endpoint
 ```
 
-### During Building (`/build`)
+### During Building (`/baw:build`)
 AI uses mappings to locate related code:
 ```markdown
 Task: "Modify authentication"

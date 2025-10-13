@@ -5,15 +5,16 @@ allowed-tools: ["Read", "Write", "Grep", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# Wait For Review (AI-Internal)
+# /baw:wait_for_review
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered after `/build` completes. Generates code critique and pauses for human review.
+**AI-INTERNAL COMMAND** - Automatically triggered after `/baw:build` completes. Generates code critique and pauses for human review.
 
 ## Instructions
 - **You don't run this manually** - Claude runs it automatically after build.
+- Derive the feature workspace from the build plan path and store critique artifacts under `ai-docs/workflow/features/<feature-id>/reports/review/`.
 - Analyze code for complexity, standards adherence, risks.
-- Generate Code Critique Summary.
+- Generate Code Critique Summary (`reports/review/<ISO-timestamp>-critique.md`).
 - **PAUSE** and wait for user approval.
 
 ## Workflow
@@ -22,14 +23,14 @@ model: claude-sonnet-4-5
    - Function/file complexity metrics
    - Code standards adherence (linting, formatting)
    - Risk assessment
-3. Generate critique summary with recommendations.
+3. Generate critique summary with recommendations and save it to the feature workspace review directory.
 4. **PAUSE** and wait for user response (yes/no/revise).
 
 ## Report
 - Display complexity analysis (function sizes, cyclomatic complexity).
 - Show standards adherence checklist.
 - Present risk assessment (Low/Medium/High).
-- List recommendations for improvement.
+- List recommendations for improvement and reference the saved critique path.
 - **WAIT** for user approval before proceeding.
 
 ## Budget

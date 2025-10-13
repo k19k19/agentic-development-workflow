@@ -3,7 +3,7 @@
 Use this guide when emitting structured workflow status updates from slash commands.
 
 ## Directory Layout
-- Status updates live in `ai-docs/workflow/<feature-id>/`.
+- Status updates live in `ai-docs/workflow/features/<feature-id>/workflow/`.
 - Each command writes a separate JSON file named `<iso-timestamp>-<phase>.json`.
 - The sync script aggregates the latest file per feature into `ai-docs/workflow/status-index.json`.
 
@@ -14,7 +14,7 @@ Each status JSON file must include the following fields:
 | --- | --- | --- |
 | `featureId` | string | Lowercase kebab-case identifier derived from the feature or plan title. Must match the directory name. |
 | `featureTitle` | string | Human-readable feature name shown on the dashboard. |
-| `phase` | string | Current workflow phase (`scout`, `plan`, `build`, `report`, `test`, etc.). |
+| `phase` | string | Current workflow phase (`product-charter`, `feature-catalog`, `wishlist`, `product-research`, `dependency-plan`, `breakout-plan`, `task-prep`, `scout`, `plan`, `build`, `verification`, `deployment`, `ops-coordination`, `provider-functions`, `support-feedback`, etc.). |
 | `status` | string | State within the phase (`pending`, `in_progress`, `needs_docs`, `needs_validation`, `blocked`, `failed`, `completed`). |
 | `command` | string | Slash command that produced this update. |
 | `nextCommand` | string | Ready-to-run follow-up command for the user. Leave an empty string if no immediate action. |
@@ -35,10 +35,10 @@ Each status JSON file must include the following fields:
   "featureTitle": "Add Auth Guard",
   "phase": "plan",
   "status": "needs_validation",
-  "command": "/plan \"Add Auth Guard\" \"\" \"ai-docs/scout/add-auth-guard/context.md\"",
-  "nextCommand": "/plan \"Add Auth Guard\" --resume",
+  "command": "/baw:plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
+  "nextCommand": "/baw:plan \"Add Auth Guard\" --resume",
   "summary": "Plan drafted and waiting for validation feedback.",
-  "outputPath": "ai-docs/plans/20250112-add-auth-guard/plan.md",
+  "outputPath": "ai-docs/workflow/features/add-auth-guard/plans/20250112-add-auth-guard/plan.md",
   "documentation": [
     "app-docs/specs/active/add-auth-guard.md"
   ],
@@ -55,6 +55,16 @@ Each status JSON file must include the following fields:
 
 ## Dashboards
 - `node scripts/update-workflow-status.js` aggregates per-feature updates.
-- `npm run work` renders the unified dashboard and shows the latest status + resume commands.
+- `npm run baw:work` renders the unified dashboard and shows the latest status + resume commands.
+- `npm run baw:session:start` highlights token usage and suggested follow-ups.
 
-Keep every command’s status JSON concise and machine-parseable so automation can run without manual bookkeeping—`npm run workflow:sync` will handle aggregation automatically.
+## Recommended Phase Names
+Use the following canonical values when possible so dashboards can group initiatives consistently:
+
+- `product-charter`, `feature-catalog`, `wishlist`, `product-research`
+- `dependency-plan`, `breakout-plan`, `task-prep`, `scout`, `plan`
+- `build`, `verification`, `deployment`
+- `ops-coordination`, `provider-functions`, `support-feedback`
+- Legacy phases such as `test`, `report`, `release` remain valid for existing automation.
+
+Keep every command’s status JSON concise and machine-parseable so automation can run without manual bookkeeping—`npm run baw:workflow:sync` will handle aggregation automatically.

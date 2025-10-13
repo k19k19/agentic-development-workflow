@@ -13,7 +13,7 @@ Keeping this loop tight ensures later versions build on prior knowledge instead 
 
 ## Workflow integration
 
-Running `npm run workflow:sync` now ingests `ledger.md` and surfaces adopted decisions alongside the feature dashboard. The
+Running `npm run baw:workflow:sync` now ingests `ledger.md` and surfaces adopted decisions alongside the feature dashboard. The
 aggregated status index records every adopted `KL-` entry so the unified dashboard can highlight the most recent "laws of the
 project" next to active work in flight.
 

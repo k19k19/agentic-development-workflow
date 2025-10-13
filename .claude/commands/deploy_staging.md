@@ -5,15 +5,23 @@ allowed-tools: ["run_shell_command", "Read"]
 model: claude-sonnet-4-5
 ---
 
-# Deploy Staging
+# /baw:deploy_staging
 
 ## Purpose
 Deploy the current build to staging environment for user acceptance testing.
 
+## Feature Workspace
+- Identify the feature currently moving toward release (usually the subject of the most recent `/baw:build` or `/baw:test`).
+- Confirm the workspace at `ai-docs/workflow/features/<feature-id>/` exists; if unclear, ask the user to specify the feature slug.
+- Write deployment notes to `ai-docs/workflow/features/<feature-id>/reports/deployments/` and automation logs to
+  `ai-docs/workflow/features/<feature-id>/workflow/`.
+
 ## Instructions
 - Run pre-deployment validation script.
 - Deploy to staging environment using project-appropriate command.
-- Verify deployment health checks.
+- Save deployment console output to `reports/deployments/<ISO-timestamp>-staging.log` inside the feature workspace.
+- Verify deployment health checks and capture results in the same directory.
+- Emit a workflow entry (`phase: "deploy-staging"`) so dashboards track the hand-off to `/baw:uat`.
 - No AI calls needed - just orchestration.
 
 ## Workflow
@@ -26,14 +34,14 @@ Deploy the current build to staging environment for user acceptance testing.
 ## Report
 - Confirm staging deployment status.
 - Show deployment URL.
-- Display health check results.
-- Suggest running `/uat` for user acceptance testing.
+- Display health check results (reference the saved log path under the feature workspace).
+- Suggest running `/baw:uat` for user acceptance testing.
 
 ## Next Steps
 
 **→ Run user acceptance tests:**
 ```bash
-/uat
+/baw:uat
 ```
 
 **Check staging environment:**
@@ -44,7 +52,7 @@ Deploy the current build to staging environment for user acceptance testing.
 **If deployment failed:**
 1. Review deployment logs
 2. Fix configuration issues
-3. Re-deploy: `/deploy_staging`
+3. Re-deploy: `/baw:deploy_staging`
 
 ## Budget
 FREE (no AI calls)

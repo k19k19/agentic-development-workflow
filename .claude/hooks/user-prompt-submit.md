@@ -4,7 +4,7 @@ Triggered on the first user message of a Claude Code session.
 
 **Do this automatically:**
 ```bash
-npm run tasks:session-start
+npm run baw:session:start
 ```
 
 The dashboard shows token budget, active tasks, and one recommended slash command. Remind the user to run that command immediately.

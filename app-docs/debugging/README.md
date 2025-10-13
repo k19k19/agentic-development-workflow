@@ -107,7 +107,7 @@ When AI encounters errors, it should:
 
 ## Related
 
-- **Failures**: `ai-docs/failures/` (AI-generated failure reports)
+- **Failures**: `ai-docs/workflow/features/<feature>/reports/failures/` (AI-generated failure reports)
 - **Guides**: `app-docs/guides/implementation-guidelines.md`
 - **Architecture**: `app-docs/architecture/` (System design)
 

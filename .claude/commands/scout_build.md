@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Wri
 model: claude-sonnet-4-5
 ---
 
-# Scout Build (Budget Shortcut)
+# /baw:scout_build
 
 ## Purpose
 Medium-sized workflow that scouts for relevant files, then builds directly without plan approval. Suitable for known patterns and medium-complexity tasks (~30K tokens).
@@ -19,17 +19,18 @@ TASK: $1
 - If `TASK` is missing, stop and ask the user to provide it.
 - For the scout phase, delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `TASK` and generate optimal `rg` search keywords and file globs.
 - For the build phase, delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate the build based on scout findings and report the results.
+- Derive or confirm the feature workspace slug from the scout output and ensure all artifacts land in `ai-docs/workflow/features/<feature-id>/`.
 - Skip plan approval gate for speed.
 - Build using existing patterns found during scout.
 - Run tests automatically after build.
 
 ## Workflow
 1. Validate `TASK` is provided.
-2. Run SlashCommand(`/scout "[TASK]"`) -> `relevant_files_collection_path`.
+2. Run SlashCommand(`/baw:scout "[TASK]"`) -> `relevant_files_collection_path`.
 3. Identify existing patterns from scouted files.
 4. Build directly using identified patterns (no plan approval) and execute code edits through Codex MCP.
 5. Run tests using `npm test` or appropriate test command.
-6. Report results with token usage.
+6. Save a session summary under `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-scout-build.md` and report results with token usage.
 
 ## Report
 - Show scout results (files found).
@@ -43,27 +44,27 @@ TASK: $1
 **→ Review and test:**
 ```bash
 git diff --stat  # Review changes
-/test            # Run full test suite
+/baw:test            # Run full test suite
 ```
 
 **If tests pass:**
 ```bash
-/deploy_staging
+/baw:deploy_staging
 ```
 
 **If tests fail:**
 - Fix issues
-- Re-run: `/test`
+- Re-run: `/baw:test`
 
 **If build was insufficient:**
 - Use full workflow with plan approval:
 ```bash
-/full "[task]" "[docs]" "budget"
+/baw:full "[task]" "[docs]" "budget"
 ```
 
 After wrapping up, refresh the dashboard so the ledger stays in sync:
 ```bash
-npm run tasks:session-start
+npm run baw:workflow:sync
 ```
 
 ## Budget

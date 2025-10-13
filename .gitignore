@@ -10,7 +10,7 @@ yarn-error.log*
 .env.*.local
 
 # AI Artifacts (ephemeral, not committed)
-ai-docs/scout/
+ai-docs/baw:scout/
 ai-docs/plans/
 ai-docs/builds/
 ai-docs/sessions/

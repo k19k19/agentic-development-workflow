@@ -78,12 +78,31 @@ log_success "Scaffolded app-docs/ directory"
 
 # Create ai-docs structure (empty on install)
 if [ ! -d "$PROJECT_ROOT/ai-docs" ]; then
-    mkdir -p "$PROJECT_ROOT/ai-docs"/{plans,builds,sessions,failures,logs,scout,tasks}
-    touch "$PROJECT_ROOT/ai-docs"/{.gitkeep,plans/.gitkeep,builds/.gitkeep,sessions/.gitkeep,failures/.gitkeep,logs/.gitkeep,scout/.gitkeep,tasks/.gitkeep}
-    log_success "Created ai-docs/ structure (empty)"
+    mkdir -p "$PROJECT_ROOT/ai-docs"
+    touch "$PROJECT_ROOT/ai-docs/.gitkeep"
+    log_success "Created ai-docs/ root"
 else
     log_info "Preserved existing ai-docs/"
 fi
+
+LEGACY_AI_DOCS_DIRS=(plans builds sessions failures logs scout tasks)
+for relative_dir in "${LEGACY_AI_DOCS_DIRS[@]}"; do
+    if [ ! -d "$PROJECT_ROOT/ai-docs/$relative_dir" ]; then
+        mkdir -p "$PROJECT_ROOT/ai-docs/$relative_dir"
+        touch "$PROJECT_ROOT/ai-docs/$relative_dir/.gitkeep"
+    fi
+done
+
+WORKFLOW_ROOT="$PROJECT_ROOT/ai-docs/workflow"
+mkdir -p "$WORKFLOW_ROOT"
+if [ ! -f "$WORKFLOW_ROOT/status-index.json" ]; then
+    echo '{"features":[],"generatedAt":null,"version":"1.1","warnings":[]}' > "$WORKFLOW_ROOT/status-index.json"
+    log_success "Initialized ai-docs/workflow/status-index.json"
+fi
+
+FEATURES_ROOT="$WORKFLOW_ROOT/features"
+mkdir -p "$FEATURES_ROOT"
+touch "$FEATURES_ROOT/.gitkeep"
 
 # Ensure knowledge ledger scaffold exists
 KNOWLEDGE_LEDGER_DIR="$PROJECT_ROOT/ai-docs/knowledge-ledger"
@@ -191,10 +210,10 @@ node -e "
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
   pkg.scripts = pkg.scripts || {};
-  pkg.scripts['manage-knowledge'] = pkg.scripts['manage-knowledge'] || 'node scripts/manage-knowledge.js';
-  pkg.scripts['tasks:session-start'] = pkg.scripts['tasks:session-start'] || 'node scripts/tasks-session-start.js';
-  pkg.scripts.work = pkg.scripts.work || 'node scripts/unified-dashboard.js';
-  pkg.scripts['workflow:sync'] = pkg.scripts['workflow:sync'] || 'node scripts/update-workflow-status.js';
+  pkg.scripts['baw:knowledge:manage'] = pkg.scripts['baw:knowledge:manage'] || 'node scripts/manage-knowledge.js';
+  pkg.scripts['baw:session:start'] = pkg.scripts['baw:session:start'] || 'node scripts/tasks-session-start.js';
+  pkg.scripts['baw:work'] = pkg.scripts['baw:work'] || 'node scripts/unified-dashboard.js';
+  pkg.scripts['baw:workflow:sync'] = pkg.scripts['baw:workflow:sync'] || 'node scripts/update-workflow-status.js';
   pkg.scripts.test = pkg.scripts.test || 'jest --passWithNoTests';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
@@ -212,7 +231,7 @@ node -e "
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: manage-knowledge, tasks:session-start, work, workflow:sync, test, lint, format');
+  console.log('✓ Scripts added: baw:knowledge:manage, baw:session:start, baw:work, baw:workflow:sync, test, lint, format');
   console.log('✓ Dependencies added: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
 " || log_error "Failed to merge package.json"
 
@@ -235,12 +254,10 @@ GIT_IGNORE_PATTERNS=(
     ".env.local"
     "*.log"
     ".DS_Store"
-    "ai-docs/scout/"
-    "ai-docs/plans/"
-    "ai-docs/builds/"
-    "ai-docs/sessions/"
-    "ai-docs/failures/"
-    "ai-docs/logs/"
+    "ai-docs/workflow/features/*/builds/"
+    "ai-docs/workflow/features/*/reports/"
+    "ai-docs/workflow/features/*/sessions/"
+    "ai-docs/workflow/features/*/workflow/"
     "!ai-docs/.gitkeep"
     "!ai-docs/**/.gitkeep"
     "!ai-docs/README.md"
@@ -270,21 +287,15 @@ echo ""
 
 # --- 6. Prepare Workflow Automation ---
 log_info "🧭 Step 6/7: Preparing workflow automation..."
-
-mkdir -p "$PROJECT_ROOT/ai-docs/workflow"
-if [ ! -f "$PROJECT_ROOT/ai-docs/workflow/status-index.json" ]; then
-    echo '{"features":[],"generatedAt":null}' > "$PROJECT_ROOT/ai-docs/workflow/status-index.json"
-    log_success "Initialized ai-docs/workflow/status-index.json"
-else
-    log_info "Preserved existing workflow status index"
-fi
+mkdir -p "$PROJECT_ROOT/ai-docs/workflow/features"
+log_info "Workflow automation directories confirmed."
 
 echo ""
 
 # --- 7. Final Reminders ---
 log_info "✅ Step 7/7: Final reminders..."
 log_info "Run 'npm install' if dependencies were not installed automatically."
-log_info "After your first slash command, run 'npm run workflow:sync' before opening the dashboard with 'npm run work'."
+log_info "After your first slash command, run 'npm run baw:workflow:sync' before opening the dashboard with 'npm run baw:work'."
 
 # --- Clean Up Template Artifacts ---
 log_info "🧹 Cleaning up template artifacts..."
@@ -305,21 +316,21 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo ""
 log_info "📋 Next Steps (no docs required):"
 echo ""
-echo "  1. Run your first slash command (e.g., /scout or /plan) to capture context."
+echo "  1. Run your first slash command (e.g., /baw:scout or /baw:plan) to capture context."
 echo ""
 echo "  2. Refresh automation data:"
-echo "     \$ npm run workflow:sync"
-echo "     \$ npm run work"
+echo "     \$ npm run baw:workflow:sync"
+echo "     \$ npm run baw:work"
 echo ""
 echo "  3. Need a reminder later? Type plain text and Claude will reply"
 echo "     with the best slash command to run next."
 echo ""
 echo "  4. Ready to work? Typical entry points are:"
-echo "     • /quick \"add env var validation\"       # small change"
-echo "     • /scout_build \"add JWT auth\"            # medium change"
-echo "     • /full \"implement billing\" \"docs\" budget  # large change"
+echo "     • /baw:quick \"add env var validation\"       # small change"
+echo "     • /baw:scout_build \"add JWT auth\"            # medium change"
+echo "     • /baw:full \"implement billing\" \"docs\" budget  # large change"
 echo ""
-echo "  5. After any build command, run /test and follow the prompts."
+echo "  5. After any build command, run /baw:test and follow the prompts."
 echo ""
 log_success "Happy shipping! 🚀"
 echo ""

@@ -5,10 +5,10 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command
 model: claude-sonnet-4-5
 ---
 
-# Quick (Budget Shortcut)
+# /baw:quick
 
 ## Purpose
-Direct implementation for small, well-understood tasks using Codex MCP. Bypasses scout/plan phases for maximum speed and minimal token usage (~5K tokens).
+Direct implementation for small, well-understood tasks using Codex MCP. Bypasses scout/baw:plan phases for maximum speed and minimal token usage (~5K tokens).
 
 ## Variables
 TASK: $1
@@ -27,8 +27,9 @@ TASK: $1
 1. Validate `TASK` is provided and suitable for quick mode.
 2. Use Gemini to generate `rg` keywords, then use `rg` to find the relevant file context.
 3. Use `mcp__codex__codex` to implement the `TASK` using the gathered file context.
-3. Capture a short session summary in `ai-docs/sessions/SESSION-[date]-quick.md`.
-5. Trigger `npm run tasks:session-start` so the ledger reflects the change.
+4. Derive or confirm the feature workspace slug (reuse an existing feature when possible; otherwise slugify the task) and write automation outputs inside `ai-docs/workflow/features/<feature-id>/`.
+5. Capture a short session summary in `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-quick.md`.
+5. Trigger `npm run baw:session:start` so the ledger reflects the change.
 6. Report results with token usage.
 
 ## Report
@@ -42,21 +43,21 @@ TASK: $1
 
 **✅ If implementation successful:**
 ```bash
-/deploy_staging
+/baw:deploy_staging
 ```
 
 **Test first (if critical):**
 ```bash
-/test
-# If tests pass → /deploy_staging
+/baw:test
+# If tests pass → /baw:deploy_staging
 ```
 
 **If task was too complex for quick mode:**
 - Use proper workflow instead:
 ```bash
-/scout_build "[task]"  # For medium tasks
+/baw:scout_build "[task]"  # For medium tasks
 # or
-/full "[task]" "" "budget"  # For large tasks
+/baw:full "[task]" "" "budget"  # For large tasks
 ```
 
 ## Budget

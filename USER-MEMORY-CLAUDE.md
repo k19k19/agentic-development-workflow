@@ -192,11 +192,11 @@ Claude: [uses Codex MCP directly]
 
 **Before implementation:**
 - Write spec in `app-docs/specs/[feature].md`
-- Run `/plan` which reads spec automatically
+- Run `/baw:plan` which reads spec automatically
 - Get user approval
 
 **After implementation:**
-- `/report` phase auto-updates:
+- `/baw:build_w_report` phase auto-updates:
   - `app-docs/mappings/feature-to-source.md` (create if missing)
   - `README.md` (if needed)
   - Architecture docs (if structural changes)
@@ -264,7 +264,7 @@ git diff --stat
 
 ## 🚀 Token Optimization Rules
 
-1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /scout_build, Large  /scout_plan_build_report).
+1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /baw:scout_build, Large  /scout_plan_build_report).
 2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
 3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
 4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **scouting phase** and the **feature-to-source.md mapping file** to find the minimal required context.
@@ -329,8 +329,8 @@ After every workflow, check report for:
 ```
 feat: Add user authentication (spec: app-docs/specs/auth.md)
 
-Implementation plan: ai-docs/plans/2025-10-07-auth.md
-Build report: ai-docs/builds/2025-10-07-auth/build-report.md
+Implementation plan: ai-docs/workflow/features/auth-upgrade/plans/2025-10-07-auth/plan.md
+Build report: ai-docs/workflow/features/auth-upgrade/reports/2025-10-07-auth/report.md
 
 - Added JWT token generation
 - Implemented login/logout endpoints
@@ -518,7 +518,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ```
 1. Don't retry immediately
-2. Read: ai-docs/builds/[latest]/build-report.md
+2. Read: ai-docs/workflow/features/<feature>/reports/[latest]/report.md
 3. Identify: Which specific task caused failure
 4. Fix: Use appropriate tool for that task
 5. Re-run: Only that task, not entire build
@@ -527,9 +527,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### Scout Found No Files
 
 ```
-1. Lower scale: /scout "[task]" "2"
+1. Lower scale: /baw:scout "[task]" "2"
 2. Or manual: List files yourself
-3. Skip to plan: /plan_w_docs "[task]" "" "[manual-files]"
+3. Skip to plan: /baw:plan "[task]" "" "[manual-files]"
 4. Learn: Add patterns to app-docs/guides/
 ```
 

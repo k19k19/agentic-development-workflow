@@ -19,31 +19,51 @@ The workflow is built around self-documenting slash commands that enforce automa
 ## Core Architecture
 
 ### Slash Command System
-All engineering work flows through commands in `.claude/commands/*.md`:
+All engineering work flows through commands in `.claude/commands/*.md`. They are organized around three persona tracks:
 
-**Entry Points:**
-- `/quick [task]` – Direct implementation via Codex MCP (~5K tokens, <10 files)
-- `/scout_build [task]` – Medium tasks: scout + build without plan approval
-- `/full [task] [docs] [mode]` – Large features with scout → plan → approval → build cycle
+**Product + Strategy:**
+- `/baw:product_charter [product]` – Define personas, value proposition, and metrics.
+- `/baw:product_features [product]` – Catalog core features with dependencies and readiness signals.
+- `/baw:product_wishlist [product]` – Capture stretch ideas and activation triggers.
+- `/baw:product_helper [topic]` – Run targeted research to close discovery gaps.
+
+**Developer Delivery:**
+- `/baw:dev_dependency_plan [initiative]` – Sequence milestones based on dependencies.
+- `/baw:dev_breakout_plan [phase]` – Shape sprint-sized breakout increments.
+- `/baw:task_prep [task]` – Gather specs, acceptance criteria, and owners for implementation.
+- `/baw:dev_test_matrix [release]` – Define verification strategy across environments.
+- `/baw:dev_deploy_plan [release]` – Produce deployment/rollback runbooks.
+- `/baw:quick [task]`, `/baw:scout_build [task]`, `/baw:full [task] [docs] [mode]` – Implementation accelerators using Codex MCP.
+
+**Operations + Support:**
+- `/baw:workflow_radar [initiative]` – Visualize blockers and missing documentation by persona.
+- `/baw:provider_functions [product]` – Map provider/admin workflows and operational requirements.
+- `/baw:support_ticket [queue]` – Convert support feedback into prioritized actions.
+- `/baw:verify_scout`, `/baw:pause_feature`, `/baw:restart_feature`, `/baw:report_failure`, `/baw:hotfix`, `/baw:triage_bug`, `/baw:next` – Guardrails, recovery, and triage utilities.
 
 All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits. Claude orchestrates the workflow, reviews Codex output, and handles approvals/communication.
 
 **Workflow Phases:**
-- `/start [feature-id]` – Initialize feature folder + session log
-- `/scout [prompt]` – Gather context via grep/glob, emit scout results
-- `/plan [prompt] [docs] [context]` – Write implementation plan, wait for approval
-- `/build [plan]` or `/build_w_report [plan]` – Execute plan, update mappings
-- `/test` – Run test suite, suggest next action
-- `/deploy_staging` → `/uat` → `/finalize` → `/release` – Deployment pipeline
+- Discovery: `/baw:product_charter`, `/baw:product_features`, `/baw:product_wishlist`, `/baw:product_helper`
+- Planning: `/baw:start`, `/baw:scout`, `/baw:plan`, `/baw:dev_dependency_plan`, `/baw:dev_breakout_plan`, `/baw:task_prep`
+- Implementation: `/baw:build`, `/baw:build_w_report`, `/baw:quick`, `/baw:scout_build`
+- Verification: `/baw:dev_test_matrix`, `/baw:test`, `/baw:uat`, `/baw:report_failure`
+- Deployment: `/baw:dev_deploy_plan`, `/baw:deploy_staging`, `/baw:finalize`, `/baw:release`
+- Operations: `/baw:workflow_radar`, `/baw:provider_functions`, `/baw:support_ticket`, `/baw:triage_bug`, `/baw:hotfix`
 
-**Support Commands:**
-- `/verify_scout` – Quality gate for scout output (auto-triggered)
-- `/pause_feature`, `/restart_feature`, `/report_failure` – Error handling
-- `/hotfix [bug-id]`, `/triage_bug` – Production fixes
-- `/next` – Select next feature from roadmap
+### Scout-to-Plan Feedback Loop
+
+- When a `/baw:scout` result is too thin to execute an approved plan slice, **re-run `/baw:scout` against the same feature workspace** instead of creating a new feature. Reference the active plan under `ai-docs/workflow/features/<feature-id>/plans/` and append new findings in-place.
+- Promote all clarified requirements into the existing `plans/checklist.json` entry inside the feature workspace by updating its notes, acceptance criteria, or dependencies. Never spawn a second plan slice just to hold the extra data.
+- Use the feature workspace session backlog to flag "Plan needs revision" so subsequent prompts continue refining the same artifact until it is executable.
+- Only call `/baw:plan` again if the scope materially changes and the old plan entry is superseded—record the supersession inside `plans/checklist.json`.
+
+**Scout vs Task Prep**
+- `/baw:scout` performs discovery—gather code/document context and risks. Its outputs live in `reports/scout/` and update the matching plan slice.
+- `/baw:task_prep` is the actionizer—turn a planned slice into an executable checklist with owners, validation hooks, and missing assets. Store those dossiers in `intake/tasks/` and keep them synced with the plan checklist entry.
 
 ### Workflow Status System
-Every command writes structured JSON to `ai-docs/workflow/<feature-id>/<timestamp>-<phase>.json` containing:
+Every command writes structured JSON to `ai-docs/workflow/features/<feature-id>/workflow/<timestamp>-<phase>.json` containing:
 ```javascript
 {
   featureId: "kebab-case-id",
@@ -60,9 +80,9 @@ Every command writes structured JSON to `ai-docs/workflow/<feature-id>/<timestam
 ```
 
 **Key scripts:**
-- `npm run workflow:sync` – Aggregates status JSON → `ai-docs/workflow/status-index.json`
-- `npm run work` – Renders unified dashboard from status index
-- `npm run tasks:session-start` – Shows token budget + recommended tasks
+- `npm run baw:workflow:sync` – Aggregates status JSON → `ai-docs/workflow/status-index.json`
+- `npm run baw:work` – Renders unified dashboard from status index
+- `npm run baw:session:start` – Shows token budget + recommended tasks
 
 ### Directory Structure
 ```
@@ -78,11 +98,36 @@ app-docs/                  User-maintained documentation
   operations/              Runbooks, data fixes
   debugging/               Known issues, troubleshooting
 ai-docs/                   AI-generated artifacts
-  plans/                   Implementation plans from /plan
-  builds/                  Build reports from /build_w_report
-  sessions/                Session summaries (cross-session memory)
-  workflow/                Status JSON files + index
+  workflow/
+    features/
+      <feature-id>/
+        intake/
+          requirements.md
+          product/        Charter, feature catalog, wishlist, research
+          personas/       Provider/consumer/support playbooks
+          support/        Ticket analysis, hotfix triage notes
+          tasks/          `/baw:task_prep` checklists
+        plans/
+          checklist.json
+          dependency/     `/baw:dev_dependency_plan`
+          breakouts/      `/baw:dev_breakout_plan`
+          deployment/     `/baw:dev_deploy_plan`
+        builds/            Build logs, compiled assets, automation output
+        reports/
+          scout/          Verification verdicts
+          tests/          `/baw:test` outputs
+          test-matrices/  `/baw:dev_test_matrix`
+          uat/            `/baw:uat` evidence
+          deployments/    `/baw:deploy_staging` & `/baw:release` logs
+          review/         `/baw:wait_for_review` critiques
+          failures/       `/baw:report_failure` analyses
+          ops/            `/baw:workflow_radar` dashboards
+        sessions/          Session hand-offs and backlog JSON
+        workflow/          Per-command status JSON history
+        handoff/           Launch checklists and release notes
+        artifacts/         Supporting documents (diagrams, exports, etc.)
   knowledge-ledger/        Architectural decision records
+  logs/, plans/, builds/   Legacy scratch space (read-only; keep new work in feature workspaces)
 ```
 
 ---
@@ -99,16 +144,16 @@ npm test                  # Run test suite (if present)
 
 ### Knowledge Management
 ```bash
-npm run manage-knowledge -- list                    # Show specs in active/archive/reference
-npm run manage-knowledge -- archive <spec.md>       # Move spec to archive/
-npm run manage-knowledge -- restore <spec.md>       # Restore from archive/
+npm run baw:knowledge:manage -- list                    # Show specs in active/archive/reference
+npm run baw:knowledge:manage -- archive <spec.md>       # Move spec to archive/
+npm run baw:knowledge:manage -- restore <spec.md>       # Restore from archive/
 ```
 
 ### Session Management
 ```bash
-npm run tasks:session-start    # Show token budget, workflow status, recommended tasks
-npm run workflow:sync          # Update status-index.json from individual JSON files
-npm run work                   # Display unified dashboard
+npm run baw:session:start    # Show token budget, workflow status, recommended tasks
+npm run baw:workflow:sync          # Update status-index.json from individual JSON files
+npm run baw:work                   # Display unified dashboard
 ```
 
 ---
@@ -117,9 +162,9 @@ npm run work                   # Display unified dashboard
 
 ### When User Provides Plain Request
 1. Map request to appropriate slash command based on scope:
-   - Single file/simple change → `/quick "[task]"`
-   - Medium task (10-50 files) → `/scout_build "[task]"`
-   - Large feature (>50 files) → `/full "[task]" "" "budget"`
+   - Single file/simple change → `/baw:quick "[task]"`
+   - Medium task (10-50 files) → `/baw:scout_build "[task]"`
+   - Large feature (>50 files) → `/baw:full "[task]" "" "budget"`
 2. Ask if you should execute the command
 3. Only proceed after user confirmation
 4. When a command enters an implementation phase, immediately delegate edits to Codex MCP and keep Claude focused on oversight and reporting.
@@ -128,12 +173,12 @@ npm run work                   # Display unified dashboard
 1. **Before command:** Read existing feature spec from `app-docs/specs/active/` if it exists
 2. **During command:** Follow the command's markdown instructions precisely
 3. **After command:**
-   - Write workflow status JSON to `ai-docs/workflow/<feature-id>/<timestamp>-<phase>.json`
-   - Update session log in `ai-docs/sessions/SESSION-<date>-<slug>.md`
-   - Remind user to run `npm run workflow:sync`
+   - Write workflow status JSON to `ai-docs/workflow/features/<feature-id>/workflow/<timestamp>-<phase>.json`
+   - Update session log in `ai-docs/workflow/features/<feature-id>/sessions/SESSION-<date>-<slug>.md`
+   - Remind user to run `npm run baw:workflow:sync`
    - Print verification message for approval gates:
      ```
-     🛑 Still inside /<command>. Reply 'resume' to continue or 'stop' to exit.
+     🛑 Still inside /baw:<command>. Reply 'resume' to continue or 'stop' to exit.
      [Explain what happens on resume]
      ```
    - Show **Next Steps** section with literal commands to run
@@ -189,13 +234,13 @@ title.toLowerCase()
 - Format conversions
 
 **Use Codex MCP for:**
-- Small single-file implementations (`/quick`)
+- Small single-file implementations (`/baw:quick`)
 - CRUD boilerplate
 - UI component tweaks
 - Syntax fixes
 
 **Use Claude (Sonnet 4.5) for:**
-- Multi-agent orchestration (scout/plan/build workflows)
+- Multi-agent orchestration (`/baw:scout` → `/baw:plan` → `/baw:build` workflows)
 - Architectural decisions
 - Complex multi-file refactoring
 - Plan verification and approval gates
@@ -205,9 +250,9 @@ title.toLowerCase()
 ## Verification & Approval Gates
 
 Commands that pause for approval:
-1. `/plan` – After plan written, before `/build`
-2. `/full` – After plan phase, before build phase
-3. `/verify_scout` – After scout, if confidence <70%
+1. `/baw:plan` – After plan written, before `/baw:build`
+2. `/baw:full` – After plan phase, before build phase
+3. `/baw:verify_scout` – After scout, if confidence <70%
 
 **Always:**
 - Print clear pause message with `🛑` emoji
@@ -219,17 +264,17 @@ Commands that pause for approval:
 
 ## Session Memory Pattern
 
-After each build/test cycle:
+After each build/baw:test cycle:
 1. Run `git diff --stat` to show files changed
-2. Write or update `ai-docs/sessions/SESSION-[date]-[slug].md` with:
+2. Write or update `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-[slug].md` with:
    - Task summary (1-2 sentences)
    - Files modified
    - Key decisions and rationale
    - Validation highlights
    - Follow-up tasks for next agent
 3. Emit workflow status JSON
-4. Prompt `npm run workflow:sync`
-5. Suggest next command (usually `/test`)
+4. Prompt `npm run baw:workflow:sync`
+5. Suggest next command (usually `/baw:test`)
 
 ---
 
@@ -247,14 +292,14 @@ Uses flat config (`eslint.config.mjs`):
 
 After implementation:
 1. Show `git diff --stat`
-2. Point to session log: `ai-docs/sessions/SESSION-*.md`
+2. Point to session log: `ai-docs/workflow/features/<feature-id>/sessions/SESSION-*.md`
 3. Suggest commit only after tests pass
 4. Use commit format:
    ```
    feat: Add feature title (spec: app-docs/specs/...)
 
-   Implementation plan: ai-docs/plans/...
-   Build report: ai-docs/builds/...
+   Implementation plan: ai-docs/workflow/features/<feature-id>/plans/<timestamp>-*/plan.md
+   Build report: ai-docs/workflow/features/<feature-id>/reports/...
 
    - Key change 1
    - Key change 2
@@ -274,26 +319,26 @@ After implementation:
 - Create new files when editing existing ones suffices
 - Batch multiple todo completions (mark done immediately)
 - Skip workflow status JSON emission
-- Forget to remind user about `npm run workflow:sync`
+- Forget to remind user about `npm run baw:workflow:sync`
 
 **DO:**
 - Check `app-docs/guides/workflow-status-format.md` before writing status JSON
 - Read `app-docs/specs/active/` for existing feature context
 - Update `app-docs/mappings/feature-to-source.md` when files change
-- Use `npm run tasks:session-start` at session start for budget awareness
+- Use `npm run baw:session:start` at session start for budget awareness
 - Delegate appropriately (Gemini for docs, Codex for boilerplate, Claude for complexity)
 
 ---
 
 ## Testing Notes
 
-When `/test` command runs:
+When `/baw:test` command runs:
 - Executes test suite (method depends on project)
-- Captures output to `ai-docs/builds/[timestamp]/test-output.txt`
+- Captures output to `ai-docs/workflow/features/<feature-id>/builds/[timestamp]/test-output.txt`
 - Analyzes results
 - Suggests next action:
-  - Pass → `/deploy_staging`
-  - Fail → Fix issues, rerun `/test`
+  - Pass → `/baw:deploy_staging`
+  - Fail → Fix issues, rerun `/baw:test`
 - Never proceed to deployment if tests fail
 
 ---

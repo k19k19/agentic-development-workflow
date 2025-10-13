@@ -7,6 +7,7 @@ const { loadKnowledgeLedgerIndex } = require('./utils/knowledge-ledger');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const WORKFLOW_DIR = path.join(REPO_ROOT, 'ai-docs/workflow');
+const WORKFLOW_FEATURES_DIR = path.join(WORKFLOW_DIR, 'features');
 const INDEX_FILE = path.join(WORKFLOW_DIR, 'status-index.json');
 
 const REQUIRED_FIELDS = ['featureId', 'featureTitle', 'phase', 'status', 'command'];
@@ -54,11 +55,23 @@ async function readJson(filePath) {
 
 async function collectFeatureLogs(warnings) {
   const features = [];
-  const featureDirs = await glob(`${WORKFLOW_DIR}/*`, { onlyDirectories: true });
 
-  for (const featureDir of featureDirs) {
-    const dirName = path.basename(featureDir);
-    const files = await glob(`${featureDir}/*.json`, { nodir: true });
+  const modernWorkflowDirs = await glob(`${WORKFLOW_FEATURES_DIR}/*/workflow`, {
+    onlyDirectories: true
+  });
+
+  const legacyWorkflowDirs = await glob(`${WORKFLOW_DIR}/*`, {
+    onlyDirectories: true,
+    ignore: [`${WORKFLOW_FEATURES_DIR}`, `${WORKFLOW_DIR}/features`]
+  });
+
+  const candidateDirs = [...modernWorkflowDirs, ...legacyWorkflowDirs];
+
+  for (const workflowDir of candidateDirs) {
+    const parentDir = path.dirname(workflowDir);
+    const featureDirName = path.basename(parentDir);
+
+    const files = await glob(`${workflowDir}/*.json`, { nodir: true });
     if (files.length === 0) {
       continue;
     }
@@ -81,8 +94,10 @@ async function collectFeatureLogs(warnings) {
         continue;
       }
 
-      if (entry.featureId !== dirName) {
-        warnings.push(`Skipped ${relativePath}: featureId '${entry.featureId}' does not match directory '${dirName}'`);
+      if (entry.featureId !== featureDirName) {
+        warnings.push(
+          `Skipped ${relativePath}: featureId '${entry.featureId}' does not match directory '${featureDirName}'`
+        );
         continue;
       }
 

@@ -72,19 +72,22 @@ function deriveTasksFromFeatures(features = []) {
     .map(feature => {
       const command = feature.nextCommand.trim();
       const firstToken = command.split(/\s+/)[0];
+      const normalizedToken = firstToken.startsWith('/baw:')
+        ? `/${firstToken.slice(5)}`
+        : firstToken;
       let size = 'medium';
       let estimatedTokens = TASK_SIZES.medium;
 
-      if (firstToken === '/quick') {
+      if (normalizedToken === '/baw:quick') {
         size = 'small';
         estimatedTokens = TASK_SIZES.small;
-      } else if (firstToken === '/scout_build') {
+      } else if (normalizedToken === '/baw:scout_build') {
         size = 'medium';
         estimatedTokens = TASK_SIZES.medium;
-      } else if (firstToken === '/full') {
+      } else if (normalizedToken === '/baw:full') {
         size = 'large';
         estimatedTokens = TASK_SIZES.large;
-      } else if (firstToken === '/build' || firstToken === '/build_w_report') {
+      } else if (normalizedToken === '/baw:build' || normalizedToken === '/baw:build_w_report') {
         size = 'large';
         estimatedTokens = TASK_SIZES.large;
       }
@@ -135,7 +138,9 @@ function printRecommendedTasks(recommended, remainingTokens) {
 
   recommended.slice(0, 3).forEach(task => {
     const estimate = formatTokens(task.estimatedTokens || TASK_SIZES[task.size] || 0);
-    const command = task.command || `/${task.size === 'small' ? 'quick' : task.size === 'medium' ? 'scout_build' : 'full'} "${task.title}"`;
+    const command =
+      task.command ||
+      `/baw:${task.size === 'small' ? 'quick' : task.size === 'medium' ? 'scout_build' : 'full'} "${task.title}"`;
     console.log(`  • ${task.title} (${task.id})`);
     console.log(`    Command: ${command}`);
     console.log(`    Estimated tokens: ${estimate}`);
@@ -232,7 +237,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     const features = Array.isArray(statusIndex.features) ? statusIndex.features : [];
     printSection('Cross-Session Workflow');
     if (features.length === 0) {
-      console.log('No workflow entries recorded. Run a slash command (e.g., /scout) and sync with `npm run workflow:sync`.');
+      console.log('No workflow entries recorded. Run a slash command (e.g., /baw:scout) and sync with `npm run baw:workflow:sync`.');
     } else {
       console.log(`Tracked features: ${features.length}`);
       features.slice(0, 3).forEach(feature => {
@@ -268,10 +273,11 @@ function printRecommendedTasks(recommended, remainingTokens) {
     printRecommendedTasks(recommended, dailyRemaining);
 
     printSection('Next Steps');
-    console.log('1. Run `npm run workflow:sync` after each command to keep the dashboard current.');
-    console.log('2. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
-    console.log('3. Reserve Claude for architecture, multi-file reasoning, and verification.');
-    console.log('4. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
+    console.log('1. Run `npm run baw:workflow:sync` after each command to keep the dashboard current.');
+    console.log('2. When `/baw:scout` surfaces gaps, revise the active plan/checklist/backlog instead of creating a new feature.');
+    console.log('3. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
+    console.log('4. Reserve Claude for architecture, multi-file reasoning, and verification.');
+    console.log('5. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
 
     console.log('\nStay focused and budget-friendly!');
   } catch (error) {

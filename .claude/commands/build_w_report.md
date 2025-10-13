@@ -5,19 +5,25 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command
 model: claude-sonnet-4-5
 ---
 
-# Build with Report
+# /baw:build_w_report
 
 ## Purpose
 Execute the approved implementation plan and provide a thorough report covering code changes, validation evidence, and follow-up work.
 
 ## Variables
 PATH_TO_PLAN: $1
-BUILD_OUTPUT_DIRECTORY: ai-docs/builds/
+FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+BUILD_OUTPUT_DIRECTORY: <feature-workspace>/builds/
+REPORT_OUTPUT_DIRECTORY: <feature-workspace>/reports/
+SESSION_DIRECTORY: <feature-workspace>/sessions/
+WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.
-2. Read and internalize the plan, noting acceptance criteria and tooling requirements.
+2. Read and internalize the plan, noting acceptance criteria and tooling requirements. Derive the feature workspace from the
+   plan path (expect `ai-docs/workflow/features/<feature-id>/plans/...`) and ensure sibling `builds/`, `reports/`, and
+   `sessions/` directories exist for new artifacts.
 3. Delegate code implementation to Codex MCP using `mcp__codex__codex`; keep Claude focused on orchestration, validation, and reporting.
 4. Implement the plan step by step, running lint/tests or other safeguards when needed.
 5. Capture validation output (commands, logs, screenshots) for inclusion in the final report.
@@ -33,14 +39,14 @@ Organize your final message into:
 
 ## Automation Trace
 - Save a workflow status JSON update (`app-docs/guides/workflow-status-format.md`).
-  - Write to `ai-docs/workflow/<feature-id>/<ISO-timestamp>-build.json`.
+  - Write to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-build.json`.
   - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, or `completed`).
   - Reference the generated build report in `outputPath` and list supporting documentation.
-  - Set `nextCommand` to the next actionable slash command for the user.
-- After writing artifacts, remind the user to run `npm run workflow:sync` so the dashboard reflects the latest state.
+  - Set `nextCommand` to the next actionable slash command for the user (e.g., `/baw:test`, `/baw:report_failure`).
+- After writing artifacts, remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the latest state.
 
 ## Session Memory
-Create or update `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
+Create or update `SESSION_DIRECTORY/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
 - Task summary (1–2 sentences)
 - Files modified (from `git diff --stat`)
 - Key decisions and rationale
@@ -50,24 +56,24 @@ Create or update `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:
 ## Next Steps
 After completing the build with report:
 
-**→ Run tests:**
+- **→ Run tests:**
 ```bash
-/test
+/baw:test
 ```
 
 **If tests pass →** Deploy to staging:
 ```bash
-/deploy_staging
+/baw:deploy_staging
 ```
 
 **If tests fail →** Fix issues and re-test:
-- Review test output: `ai-docs/builds/[timestamp]/test-output.txt`
+- Review test output: `BUILD_OUTPUT_DIRECTORY/[timestamp]/test-output.txt`
 - Make necessary fixes
-- Run `/test` again
+- Run `/baw:test` again
 
 **Review your work:**
 ```bash
-git diff --stat                    # See what changed
-cat ai-docs/sessions/SESSION-*.md  # Read detailed session summary
+git diff --stat                                            # See what changed
+cat SESSION_DIRECTORY/SESSION-*.md                         # Read detailed session summary
 cat app-docs/mappings/feature-to-source.md  # Check updated mappings
 ```
