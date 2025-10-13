@@ -9,7 +9,7 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 - **Keep automation in sync.** Build-style commands must:
   1. Write a session summary to `ai-docs/sessions/`.
   2. Emit workflow status JSON under `ai-docs/workflow/<feature>/` describing phase, status, and resume command.
-  3. Remind the user to run `npm run workflow:sync` before checking the dashboard.
+  3. Remind the user to run `npm run baw:workflow:sync` before checking the dashboard.
 - **Verification clarity.** When a command pauses (plan approval, manual checks, etc.), always print:
   - `🛑 Still inside /<command>. Reply 'resume' to continue or 'stop' to exit.`
   - Mention what will happen on resume (e.g., `resume` ➞ `/build`).
@@ -42,8 +42,8 @@ Every command ends with a **Next Steps** section containing literal commands to 
 ---
 
 ## Knowledge Management
-- `npm run manage-knowledge -- archive|restore <spec>` moves specs between `app-docs/specs/active` and `archive`.
-- `npm run workflow:sync` refreshes the aggregated feature index consumed by the dashboard and `/work` script.
+- `npm run baw:knowledge:manage -- archive|restore <spec>` moves specs between `app-docs/specs/active` and `archive`.
+- `npm run baw:workflow:sync` refreshes the aggregated feature index consumed by the dashboard and `/work` script.
 
 ---
 

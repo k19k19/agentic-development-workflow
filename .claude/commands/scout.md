@@ -29,6 +29,7 @@ USER_PROMPT: $1
 - Provide bullet summaries of the most relevant files and excerpts discovered.
 - List any documentation or specs the user should review or update.
 - Call out risks, unknowns, or follow-up questions uncovered during scouting.
+- If this run is clarifying an approved plan slice, explicitly point to the existing `plans/PLAN-*.md` file to update instead of suggesting a new feature or plan.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Automation Trace
@@ -38,7 +39,7 @@ USER_PROMPT: $1
   - Use `phase: "scout"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
   - Set `nextCommand` to the exact follow-up slash command the user should run.
   - Include any documentation paths that must be updated before resuming.
-- Remind the user to run `npm run workflow:sync` so the dashboard reflects the new scout results.
+- Remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the new scout results.
 
 ## Next Steps
 After completing scout, you typically want to:
@@ -49,6 +50,8 @@ After completing scout, you typically want to:
 ```
 
 Where `[scout-notes-path]` is the file path shown in the scout output.
+
+If the plan already exists, remind the user to append the new context to the same plan document and checklist entry.
 
 **Short circuit:**
 ```bash

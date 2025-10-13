@@ -37,7 +37,7 @@ Organize your final message into:
   - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, or `completed`).
   - Reference the generated build report in `outputPath` and list supporting documentation.
   - Set `nextCommand` to the next actionable slash command for the user.
-- After writing artifacts, remind the user to run `npm run workflow:sync` so the dashboard reflects the latest state.
+- After writing artifacts, remind the user to run `npm run baw:workflow:sync` so the dashboard reflects the latest state.
 
 ## Session Memory
 Create or update `ai-docs/sessions/SESSION-[YYYY-MM-DD]-[feature-slug].md` with:

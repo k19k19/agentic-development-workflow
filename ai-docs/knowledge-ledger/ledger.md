@@ -31,6 +31,16 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **Why:** Ensure project monitoring tools consistently reference the ledger as the single source of truth, preventing later iterations from ignoring established implementations.
 - **How:** `scripts/utils/knowledge-ledger.js` parses `ledger.md`, `scripts/workflow-status.js` embeds the parsed summary in `status-index.json`, and both `scripts/update-workflow-status.js` and `scripts/unified-dashboard.js` report ledger coverage during status checks.
 
+### KL-003 — Large Feature Workflow Governance (Adopted 2024-05-06)
+- **What:** Standardized large feature delivery around scaffolded directories, manifests, and session backlogs so complex initiatives remain within token budgets while maintaining traceability.
+- **Why:** Ad-hoc artifacts made it impossible to split plans, coordinate sessions, or monitor progress at epic scale; a structured workspace keeps automation and humans aligned.
+- **How:** `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, `ai-docs/workflow/features/_template/`, and `scripts/scaffold-feature.js` define and automate the new structure.
+
+### KL-004 — Scout-to-Plan Revision Policy (Adopted 2024-05-07)
+- **What:** Locked the `/scout` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
+- **Why:** Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.
+- **How:** Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.
+
 ## Superseded Decisions
 
 _None yet._

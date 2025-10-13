@@ -41,7 +41,7 @@ After completing the build, automatically generate a session summary in `ai-docs
 
 After writing the session file, remind the user to run:
 ```bash
-npm run workflow:sync
+npm run baw:workflow:sync
 ```
 
 This refreshes the dashboard so the new workflow entry appears immediately.

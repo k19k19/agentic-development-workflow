@@ -63,7 +63,7 @@ git diff --stat  # Review changes
 
 After wrapping up, refresh the dashboard so the ledger stays in sync:
 ```bash
-npm run tasks:session-start
+npm run baw:session:start
 ```
 
 ## Budget

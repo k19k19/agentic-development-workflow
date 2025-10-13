@@ -74,7 +74,7 @@ async function showDashboard() {
         console.log('');
       });
     if (features.length > 10) {
-      console.log(`…and ${features.length - 10} more. Use 'npm run workflow:sync' to inspect the full index.`);
+      console.log(`…and ${features.length - 10} more. Use 'npm run baw:workflow:sync' to inspect the full index.`);
       console.log('');
     }
   }
@@ -107,8 +107,8 @@ async function showDashboard() {
 
   console.log('Next actions:');
   console.log("  1. Update docs in app-docs/ if anything changed.");
-  console.log("  2. Run 'npm run workflow:sync' whenever new command output is available.");
-  console.log("  3. Re-run 'npm run work' to refresh this dashboard.");
+  console.log("  2. Run 'npm run baw:workflow:sync' whenever new command output is available.");
+  console.log("  3. Re-run 'npm run baw:work' to refresh this dashboard.");
   console.log('');
 }
 

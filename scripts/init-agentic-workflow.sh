@@ -191,10 +191,10 @@ node -e "
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
   pkg.scripts = pkg.scripts || {};
-  pkg.scripts['manage-knowledge'] = pkg.scripts['manage-knowledge'] || 'node scripts/manage-knowledge.js';
-  pkg.scripts['tasks:session-start'] = pkg.scripts['tasks:session-start'] || 'node scripts/tasks-session-start.js';
-  pkg.scripts.work = pkg.scripts.work || 'node scripts/unified-dashboard.js';
-  pkg.scripts['workflow:sync'] = pkg.scripts['workflow:sync'] || 'node scripts/update-workflow-status.js';
+  pkg.scripts['baw:knowledge:manage'] = pkg.scripts['baw:knowledge:manage'] || 'node scripts/manage-knowledge.js';
+  pkg.scripts['baw:session:start'] = pkg.scripts['baw:session:start'] || 'node scripts/tasks-session-start.js';
+  pkg.scripts['baw:work'] = pkg.scripts['baw:work'] || 'node scripts/unified-dashboard.js';
+  pkg.scripts['baw:workflow:sync'] = pkg.scripts['baw:workflow:sync'] || 'node scripts/update-workflow-status.js';
   pkg.scripts.test = pkg.scripts.test || 'jest --passWithNoTests';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
@@ -212,7 +212,7 @@ node -e "
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: manage-knowledge, tasks:session-start, work, workflow:sync, test, lint, format');
+  console.log('✓ Scripts added: baw:knowledge:manage, baw:session:start, baw:work, baw:workflow:sync, test, lint, format');
   console.log('✓ Dependencies added: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
 " || log_error "Failed to merge package.json"
 
@@ -284,7 +284,7 @@ echo ""
 # --- 7. Final Reminders ---
 log_info "✅ Step 7/7: Final reminders..."
 log_info "Run 'npm install' if dependencies were not installed automatically."
-log_info "After your first slash command, run 'npm run workflow:sync' before opening the dashboard with 'npm run work'."
+log_info "After your first slash command, run 'npm run baw:workflow:sync' before opening the dashboard with 'npm run baw:work'."
 
 # --- Clean Up Template Artifacts ---
 log_info "🧹 Cleaning up template artifacts..."
@@ -308,8 +308,8 @@ echo ""
 echo "  1. Run your first slash command (e.g., /scout or /plan) to capture context."
 echo ""
 echo "  2. Refresh automation data:"
-echo "     \$ npm run workflow:sync"
-echo "     \$ npm run work"
+echo "     \$ npm run baw:workflow:sync"
+echo "     \$ npm run baw:work"
 echo ""
 echo "  3. Need a reminder later? Type plain text and Claude will reply"
 echo "     with the best slash command to run next."

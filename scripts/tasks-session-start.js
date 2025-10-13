@@ -232,7 +232,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     const features = Array.isArray(statusIndex.features) ? statusIndex.features : [];
     printSection('Cross-Session Workflow');
     if (features.length === 0) {
-      console.log('No workflow entries recorded. Run a slash command (e.g., /scout) and sync with `npm run workflow:sync`.');
+      console.log('No workflow entries recorded. Run a slash command (e.g., /scout) and sync with `npm run baw:workflow:sync`.');
     } else {
       console.log(`Tracked features: ${features.length}`);
       features.slice(0, 3).forEach(feature => {
@@ -268,10 +268,11 @@ function printRecommendedTasks(recommended, remainingTokens) {
     printRecommendedTasks(recommended, dailyRemaining);
 
     printSection('Next Steps');
-    console.log('1. Run `npm run workflow:sync` after each command to keep the dashboard current.');
-    console.log('2. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
-    console.log('3. Reserve Claude for architecture, multi-file reasoning, and verification.');
-    console.log('4. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
+    console.log('1. Run `npm run baw:workflow:sync` after each command to keep the dashboard current.');
+    console.log('2. When `/scout` surfaces gaps, revise the active plan/checklist/backlog instead of creating a new feature.');
+    console.log('3. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
+    console.log('4. Reserve Claude for architecture, multi-file reasoning, and verification.');
+    console.log('5. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
 
     console.log('\nStay focused and budget-friendly!');
   } catch (error) {

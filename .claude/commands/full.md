@@ -69,5 +69,5 @@ git diff --stat                     # See all changes
 
 **Check token budget:**
 ```bash
-npm run tasks:session-start  # See remaining budget and next recommendations
+npm run baw:session:start  # See remaining budget and next recommendations
 ```
