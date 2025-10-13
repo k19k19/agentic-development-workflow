@@ -118,6 +118,11 @@ npm run baw:workflow:sync          # Update status-index.json from individual JS
 npm run baw:work                   # Display unified dashboard
 ```
 
+### Migrations
+```bash
+npm run baw:migrate              # Apply workflow/data migrations after template updates
+```
+
 ---
 
 ## Command Patterns

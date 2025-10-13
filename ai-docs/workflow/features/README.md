@@ -71,10 +71,11 @@ feature-slug/
 
 When migrating existing work into this structure:
 
+- First run `npm run baw:migrate` to apply automated upgrades (legacy plans, workflow JSON, dash references). The command is idempotent—rerun it anytime after template updates.
+
 1. Create the feature directory via the scaffolding script.
 2. Move legacy plans/builds/reports into the new folders, keeping filenames intact.
 3. Backfill `plans/checklist.json` with historical plan slices.
 4. Record the migration decision in the knowledge ledger.
 
 Following this process ensures all historical artifacts remain discoverable while future automation can reason about the same layout.
-

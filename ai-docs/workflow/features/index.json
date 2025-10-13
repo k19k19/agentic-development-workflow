@@ -1,3 +1,15 @@
 {
-  "features": []
+  "features": [
+    {
+      "title": "Fleet Management System",
+      "slug": "fleet-management-system",
+      "status": "draft",
+      "stage": "planning",
+      "owner": "",
+      "maxPlanTokens": 2000,
+      "tokenBudget": 0,
+      "createdAt": "2025-10-13T03:59:23.979Z",
+      "updatedAt": "2025-10-13T04:14:30.038Z"
+    }
+  ]
 }

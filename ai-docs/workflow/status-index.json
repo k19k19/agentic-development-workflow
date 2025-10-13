@@ -8,10 +8,10 @@
       "currentPhase": "plan",
       "status": "needs_validation",
       "lastCommand": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
-      "nextCommand": "/build_w_report \"ai-docs/plans/20251012-fleet-management-system/plan.md\"",
+      "nextCommand": "/build_w_report \"ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md\"",
       "updatedAt": "2025-10-12T00:00:00.000Z",
       "summary": "Comprehensive implementation plan created for greenfield fleet management platform with MVP scoped to 8 weeks covering real-time GPS tracking, driver/vehicle management, geofencing, and basic reporting",
-      "outputPath": "ai-docs/plans/20251012-fleet-management-system/plan.md",
+      "outputPath": "ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md",
       "documentation": [
         "ai-docs/workflow/fleet-management-research/scout-results.md"
       ],
@@ -22,9 +22,9 @@
           "status": "needs_validation",
           "timestamp": "2025-10-12T00:00:00.000Z",
           "command": "/plan \"fleet-management-system\" \"\" \"ai-docs/workflow/fleet-management-research/scout-results.md\"",
-          "nextCommand": "/build_w_report \"ai-docs/plans/20251012-fleet-management-system/plan.md\"",
+          "nextCommand": "/build_w_report \"ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md\"",
           "summary": "Comprehensive implementation plan created for greenfield fleet management platform with MVP scoped to 8 weeks covering real-time GPS tracking, driver/vehicle management, geofencing, and basic reporting",
-          "outputPath": "ai-docs/plans/20251012-fleet-management-system/plan.md"
+          "outputPath": "ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md"
         }
       ],
       "sourceFiles": [

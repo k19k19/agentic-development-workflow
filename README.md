@@ -36,6 +36,7 @@ Every command outputs:
 ## Automation Scripts (npm)
 - `npm run baw:knowledge:manage -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
 - `npm run baw:session:start` → Summarize cross-session context, token usage, and right-sized next tasks.
+- `npm run baw:migrate` → Apply workflow data migrations after pulling template updates (idempotent / safe to re-run).
 - `npm run baw:workflow:sync` → Aggregate the latest scout/plan/build/report status files for the dashboard.
 - `npm run baw:work` → Launch the feature workflow dashboard fed by `status-index.json`.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.
@@ -71,5 +72,6 @@ After the script runs:
 - Required scripts and dependencies are added to `package.json` and `.gitignore`.
 - The workflow status index is seeded so dashboard commands work immediately.
 - The installer prints the next command to keep the automation loop aligned.
+- When updating to a newer template version later, pull the changes and run `npm run baw:migrate` to upgrade existing workflow artifacts in-place.
 
 Stay inside the slash-command loop, and the system keeps itself up to date.

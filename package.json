@@ -6,6 +6,7 @@
   "scripts": {
     "baw:knowledge:manage": "node scripts/manage-knowledge.js",
     "baw:feature:scaffold": "node scripts/scaffold-feature.js",
+    "baw:migrate": "node scripts/migrate-workflow.js",
     "baw:work": "node scripts/unified-dashboard.js",
     "baw:session:start": "node scripts/tasks-session-start.js",
     "baw:workflow:sync": "node scripts/update-workflow-status.js",

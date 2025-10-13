@@ -1,0 +1,28 @@
+{
+  "migrations": {
+    "20251013-plan-workspace": {
+      "status": "completed",
+      "startedAt": "2025-10-13T04:14:30.026Z",
+      "completedAt": "2025-10-13T04:14:30.110Z",
+      "summary": "Migrated 1 plan.",
+      "details": {
+        "migratedPlans": [
+          {
+            "from": "ai-docs/plans/20251012-fleet-management-system/plan.md",
+            "to": "ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md"
+          }
+        ],
+        "createdFeatures": [],
+        "updatedFiles": [
+          "ai-docs/workflow/status-index.json",
+          "ai-docs/workflow/fleet-management-system/2025-10-12T22:30:00.000Z-scout.json",
+          "ai-docs/workflow/fleet-management-system/2025-10-12T00:00:00.000Z-plan.json",
+          "ai-docs/workflow/features/fleet-management-system/plans/checklist.json",
+          "ai-docs/workflow/fleet-management-system/scout-implementation-breakdown.md",
+          "ai-docs/plans/20251012-fleet-management-system/plan.md",
+          "ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md"
+        ]
+      }
+    }
+  }
+}

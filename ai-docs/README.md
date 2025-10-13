@@ -24,3 +24,13 @@ Long-running initiatives live in `workflow/features/<feature-slug>/`. Each direc
 Use `npm run baw:feature:scaffold -- --title "<Feature Title>"` to generate the structure and register the feature in `workflow/features/index.json`.
 
 When additional details surface after the initial `/scout`, append them to the existing plan under `plans/PLAN-*.md`, update the matching row in `plans/checklist.json`, and capture any open questions in `sessions/session-backlog.json`. Avoid creating duplicate plan slices or new feature directories just to hold clarifications.
+
+## Migrations
+
+Template releases sometimes introduce new workflow layouts (e.g., moving legacy `ai-docs/plans/` content into feature directories). After pulling template updates, run:
+
+```bash
+npm run baw:migrate
+```
+
+The migration runner detects outdated artifacts, applies scripts incrementally, and rewrites references in `ai-docs/workflow/` so dashboards and slash commands continue working without manual cleanup. It is safe to re-run; completed migrations are skipped automatically.

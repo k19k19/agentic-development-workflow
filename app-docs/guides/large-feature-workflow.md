@@ -95,6 +95,6 @@ Keeping the ledger current ensures every contributor can reason about the system
 ## Next Steps
 
 1. Adopt the directory structure immediately for all new features (use the scaffolding script below).
-2. Migrate existing features into the structure as they are touched; capture migration notes in `handoff/` and the ledger.
-3. Prioritize dashboard enhancements once at least one feature has active intake, plans, and sessions recorded under the new layout.
-
+2. After pulling template updates, run `npm run baw:migrate` so legacy artifacts stay in sync with the current layout.
+3. Migrate existing features into the structure as they are touched; capture migration notes in `handoff/` and the ledger.
+4. Prioritize dashboard enhancements once at least one feature has active intake, plans, and sessions recorded under the new layout.

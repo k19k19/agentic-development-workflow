@@ -1,0 +1,25 @@
+{
+  "title": "Fleet Management System",
+  "slug": "fleet-management-system",
+  "description": "",
+  "owner": "",
+  "status": "draft",
+  "stage": "planning",
+  "maxPlanTokens": 2000,
+  "tokenBudget": {
+    "planning": 0,
+    "build": 0,
+    "reporting": 0
+  },
+  "linkedLedgerEntries": [],
+  "relatedFeatures": [],
+  "createdAt": "2025-10-13T03:59:23.979Z",
+  "updatedAt": "2025-10-13T04:18:18.756636Z",
+  "commands": {
+    "scout": true,
+    "plan": true,
+    "build": true,
+    "report": true,
+    "deploy": false
+  }
+}

@@ -51,10 +51,12 @@ Where to find this decision in the codebase:
 - `ai-docs/workflow/features/_template/` – Canonical scaffolding template copied per feature.
 - `ai-docs/workflow/features/index.json` – Registry of scaffolded features.
 - `scripts/scaffold-feature.js` – CLI script that generates feature workspaces and updates the registry.
+- `scripts/migrate-workflow.js` / `scripts/migrations/` – Automated migrations that keep legacy artifacts aligned with the current layout.
 
 ### Commands
 ```bash
 npm run baw:feature:scaffold -- --title "<Feature Title>"
+npm run baw:migrate
 ```
 
 ### Configuration

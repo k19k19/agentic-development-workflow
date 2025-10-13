@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-The fleet management plan (`ai-docs/plans/20251012-fleet-management-system/plan.md`) is indeed **too comprehensive for a single `/build` command**. This is a **greenfield multi-service architecture** requiring:
+The fleet management plan (`ai-docs/workflow/features/fleet-management-system/plans/PLAN-20251012-0000.md`) is indeed **too comprehensive for a single `/build` command**. This is a **greenfield multi-service architecture** requiring:
 
 - **50+ files** across multiple packages
 - **8-12 week development timeline**

@@ -273,6 +273,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log('3. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
     console.log('4. Reserve Claude for architecture, multi-file reasoning, and verification.');
     console.log('5. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
+    console.log('6. After pulling template updates, run `npm run baw:migrate` to keep workflow files aligned.');
 
     console.log('\nStay focused and budget-friendly!');
   } catch (error) {
