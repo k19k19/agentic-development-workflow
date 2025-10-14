@@ -5,9 +5,9 @@
 - **Linked Artifacts:**
   - `README.md`
   - `CLAUDE.md`
-  - `.claude/commands/product_charter.md`
-  - `.claude/commands/dev_dependency_plan.md`
-  - `.claude/commands/workflow_radar.md`
+  - `.claude/commands/baw_product_charter.md`
+  - `.claude/commands/baw_dev_dependency_plan.md`
+  - `.claude/commands/baw_workflow_radar.md`
   - `app-docs/guides/end-to-end-command-workflow.md`
   - `app-docs/guides/workflow-status-format.md`
 

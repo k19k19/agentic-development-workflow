@@ -3,8 +3,8 @@
 Use this runbook when you want to make Codex the default implementation agent across the workflow. Follow the steps in order so slash commands, automation, and documentation all point at Codex without breaking existing guardrails.
 
 ## 1. Wire Codex into every implementation command
-- Ensure each command front matter whitelists the Codex MCP tool. `/baw_dev_quick_build` shows the required entry: `allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command"]`. Mirror that list in other implementation commands before shipping them. 【F:.claude/commands/dev_quick_build.md†L1-L27】
-- Keep the instructions explicit that Codex should execute the task. Reuse the `/baw_dev_quick_build` phrasing "Use Codex MCP directly to implement the task" so the orchestrator consistently delegates hands-on work to Codex. 【F:.claude/commands/dev_quick_build.md†L16-L33】
+- Ensure each command front matter whitelists the Codex MCP tool. `/baw_dev_quick_build` shows the required entry: `allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command"]`. Mirror that list in other implementation commands before shipping them. 【F:.claude/commands/baw_dev_quick_build.md†L1-L27】
+- Keep the instructions explicit that Codex should execute the task. Reuse the `/baw_dev_quick_build` phrasing "Use Codex MCP directly to implement the task" so the orchestrator consistently delegates hands-on work to Codex. 【F:.claude/commands/baw_dev_quick_build.md†L16-L33】
 
 ## 2. Reorient onboarding docs toward Codex
 - Confirm that the high-level repo guidance frames Codex as the default implementer. `CLAUDE.md` already positions `/baw_dev_quick_build` as “Direct implementation via Codex MCP,” calls out the Codex delegation strategy, and lists common Codex-friendly scenarios. Update those sections if your Codex deployment name or responsibilities change. 【F:CLAUDE.md†L9-L198】
