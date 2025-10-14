@@ -84,7 +84,9 @@ async function showDashboard() {
     console.log(`  • No decisions adopted yet (source: ${ledger.source})`);
   } else {
     console.log(`  • Adopted decisions: ${ledger.adopted.length}`);
-    const latestDecisions = ledger.adopted.slice(0, 3);
+    const latestDecisions = [...ledger.adopted]
+      .sort((a, b) => new Date(b.adoptedOn) - new Date(a.adoptedOn))
+      .slice(0, 3);
     latestDecisions.forEach(decision => {
       console.log(`    - ${decision.id} (${decision.adoptedOn}): ${decision.title} — ${decision.what}`);
     });
