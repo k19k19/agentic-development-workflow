@@ -22,6 +22,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Derive or confirm the feature (product) slug; create `PRODUCT_INTAKE_DIRECTORY` inside the workspace if it does not exist.
 - Use Gemini MCP to propose personas, their goals, and success metrics tailored to the supplied context.
 - Summarize the core product capabilities, constraints, and open questions that must be answered before planning.
+- Draft a first-pass man-hour range (optimistic, most likely, buffer) by sizing the charter capabilities using the estimation heuristics in `app-docs/guides/product-charter-effort-estimates.md`.
 - Save the resulting charter to `PRODUCT_INTAKE_DIRECTORY/charter.md` (append when the charter already exists).
 - Identify missing research or stakeholder decisions the team must capture in `ai-docs/` or `app-docs/`.
 
@@ -33,7 +34,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 5. Recommend follow-up commands for feature cataloging or research gaps.
 
 ## Report
-- Provide structured sections for vision, personas, success metrics, and unresolved questions.
+- Provide structured sections for vision, personas, success metrics, unresolved questions, and an "Initial Man-Hour Estimate" table capturing the sizing assumptions.
 - Link to any documentation that should be created or updated.
 - End with a checklist of immediate follow-ups (e.g., `/baw_product_features`, `/baw_product_helper`).
 
