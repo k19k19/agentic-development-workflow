@@ -48,9 +48,52 @@ function dedupeStrings(values = []) {
   return Array.from(new Set(values.filter(Boolean)));
 }
 
+const TIMESTAMP_PLACEHOLDER_PATTERNS = [
+  /\$\(\s*date\s+-u\s+\+\s*\\"%Y-%m-%dT%H:%M:%SZ\\"\s*\)/g,
+  /\$\(\s*date\s+-u\s+\+\s*"%Y-%m-%dT%H:%M:%SZ"\s*\)/g
+];
+
+async function inferTimestampFromFile(filePath) {
+  const fileName = path.basename(filePath, '.json');
+  const match = fileName.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z/);
+  if (match) {
+    return match[0];
+  }
+  const stat = await fs.stat(filePath);
+  return stat.mtime.toISOString();
+}
+
+function replaceTimestampPlaceholders(text, timestamp) {
+  return TIMESTAMP_PLACEHOLDER_PATTERNS.reduce(
+    (result, pattern) => result.replace(pattern, timestamp),
+    text
+  );
+}
+
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, 'utf8');
-  return JSON.parse(raw);
+
+  try {
+    return JSON.parse(raw);
+  } catch (error) {
+    if (!raw.includes('$(date -u')) {
+      throw error;
+    }
+
+    const timestamp = await inferTimestampFromFile(filePath);
+    const sanitized = replaceTimestampPlaceholders(raw, timestamp);
+
+    if (sanitized === raw) {
+      throw error;
+    }
+
+    try {
+      return JSON.parse(sanitized);
+    } catch (sanitizedError) {
+      sanitizedError.message += ' (after normalizing timestamp placeholders)';
+      throw sanitizedError;
+    }
+  }
 }
 
 async function collectFeatureLogs(warnings) {
