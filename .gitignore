@@ -9,18 +9,9 @@ yarn-error.log*
 .env.local
 .env.*.local
 
-# AI Artifacts (ephemeral, not committed)
-ai-docs/baw:dev_discovery/
-ai-docs/plans/
-ai-docs/builds/
-ai-docs/sessions/
-ai-docs/failures/
-ai-docs/logs/
-
-# But keep directory structure
-!ai-docs/.gitkeep
-!ai-docs/**/.gitkeep
-!ai-docs/README.md
+# Evolving Agentic Workspace (EAW)
+# The workspace is for local collaboration with the agent and should not be committed.
+workspace/
 
 # OS files
 .DS_Store
