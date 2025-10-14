@@ -2,7 +2,7 @@
 id: KL-003
 title: "Large Feature Workflow Governance"
 status: adopted
-date: 2024-05-06
+date: 2025-10-06
 replaces: null
 links:
   - path: app-docs/guides/large-feature-workflow.md

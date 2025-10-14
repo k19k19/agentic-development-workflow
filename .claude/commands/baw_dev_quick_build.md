@@ -1,7 +1,7 @@
 ---
 description: Direct implementation for small tasks using Codex MCP
 argument-hint: [task]
-allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command"]
+allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 

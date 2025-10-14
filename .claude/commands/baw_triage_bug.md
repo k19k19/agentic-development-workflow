@@ -22,7 +22,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Highly focused analysis to pinpoint bug location.
 - Load the relevant bug report from `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` (mirror from `BUG_REPORTS_DIRECTORY` when necessary).
 - Propose fix strategy.
-- Skip broad scout, jump directly to `/baw_dev_plan` or `/baw_dev_build`.
+- Skip broad discovery, jump directly to `/baw_dev_plan` or `/baw_dev_build`.
 
 ## Workflow
 1. Read bug report from `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` (fallback to `BUG_REPORTS_DIRECTORY/BUG_REPORT_[BUG_ID].md`).

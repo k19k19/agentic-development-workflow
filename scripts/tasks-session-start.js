@@ -213,7 +213,8 @@ function printRecommendedTasks(recommended, remainingTokens) {
         console.log('Great balance! Continue leaning on Gemini/Codex for straightforward tasks to maximize Claude availability.');
       }
     } else {
-      console.log('No token usage recorded yet. Default to Gemini MCP for document reads and Codex MCP for quick fixes.');
+      console.log('No token usage recorded yet. After each workflow, log tokens with: npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "..."].');
+      console.log('Default to Gemini MCP for document reads and Codex MCP for quick fixes until logs accumulate.');
     }
 
     const crossSessionPrompt = await loadCrossSessionPrompt();

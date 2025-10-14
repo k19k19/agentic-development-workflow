@@ -9,7 +9,7 @@ model: claude-sonnet-4-5
 
 ## Purpose
 Execute the complete engineering workflow with approval gates for large, complex features.
-First scout the codebase for files needed to complete the task.
+First run discovery on the codebase for files needed to complete the task.
 Then plan the task based on the files found.
 Then build the task based on the plan with human approval before implementation.
 
@@ -21,14 +21,14 @@ MODE: $3 (default: standard)
 ## Instructions
 - Execute each workflow step in order, pausing only for explicit approval gates as defined in the `Workflow` section.
 - Accepted MODE values:
-  - `standard` (default) — run the full workflow with `rg` (ripgrep) search scout and detailed plan.
+  - `standard` (default) — run the full workflow with an `rg` (ripgrep) discovery search and detailed plan.
   - `budget` — minimize paid model usage (concise ~350-word plan).
 - If an unexpected result is returned, stop immediately and notify the user.
 - Place every SlashCommand argument in double quotes and convert nested double quotes to single quotes.
 - Only modify the `USER_PROMPT` when MODE is `budget` (append ` [BUDGET MODE]` before passing it downstream).
 - **Tool Delegation Strategy**:
-  - **Scout Phase**: Delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate optimal `rg` search keywords and file globs.
- - **Build Phase**: Delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate, review, and manage approvals.
+  - **Discovery Phase**: Delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate optimal `rg` search keywords and file globs.
+  - **Build Phase**: Delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate, review, and manage approvals.
 - Track the feature workspace slug throughout the run so each downstream command writes to the same
   `ai-docs/workflow/features/<feature-id>/` directory.
 

@@ -228,11 +228,16 @@ title.toLowerCase()
 - Run `npm run baw:knowledge:audit` when wrapping an initiative to confirm every adopted decision has What/Why/How coverage and tagged metadata.
 
 ### Token Budget Tracking
-`scripts/utils/token-usage-analyzer.js` tracks usage by:
+`scripts/utils/token-usage-analyzer.js` reads manual entries from `ai-docs/workflow/token-usage.jsonl` and updates:
 - Daily limit: 200K tokens (Claude $20 plan)
 - Weekly rolling window
 - Per-model breakdown (Gemini/Codex vs Claude)
 - Efficiency warnings at 70% (🟠) and 90% (🔴)
+
+Log new entries with:
+```
+npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "context"]
+```
 
 ---
 

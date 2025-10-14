@@ -40,6 +40,41 @@ describe('token-budget-calculator', () => {
     });
   });
 
+  describe('getTokensUsedToday', () => {
+    const todayIso = new Date().toISOString();
+
+    test('defaults to zero when no task data', () => {
+      expect(calculator.getTokensUsedToday()).toBe(0);
+    });
+
+    test('resets when lastReset is before today', () => {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      expect(
+        calculator.getTokensUsedToday({
+          tokenBudget: { used: 5000, lastReset: yesterday.toISOString() }
+        })
+      ).toBe(0);
+    });
+
+    test('returns stored usage when lastReset is today', () => {
+      expect(
+        calculator.getTokensUsedToday({
+          tokenBudget: { used: 12345, lastReset: todayIso }
+        })
+      ).toBe(12345);
+    });
+
+    test('supports manual override', () => {
+      expect(
+        calculator.getTokensUsedToday(
+          { tokenBudget: { used: 0, lastReset: todayIso } },
+          { manualUsage: 8000 }
+        )
+      ).toBe(8000);
+    });
+  });
+
   describe('getWeeklyTokenLimit', () => {
     test('falls back to daily limit * 7', () => {
       expect(calculator.getWeeklyTokenLimit({})).toBe(calculator.DEFAULT_CONFIG.dailyTokenLimit * 7);
@@ -107,6 +142,35 @@ describe('token-budget-calculator', () => {
       [1000000, '1,000,000'],
     ])('formats %d → %s', (input, expected) => {
       expect(calculator.formatTokens(input)).toBe(expected);
+    });
+  });
+
+  describe('normalizeTokens', () => {
+    test.each([
+      [0, 0],
+      [12345, 12345],
+      [12345.9, 12345],
+      ['5000', 5000],
+      [null, 0],
+      [undefined, 0],
+      [-50, 0],
+      ['not-a-number', 0]
+    ])('normalizes %p → %d', (input, expected) => {
+      expect(calculator.normalizeTokens(input)).toBe(expected);
+    });
+  });
+
+  describe('calculateBudgetSummary', () => {
+    test('supports manual usage override', () => {
+      const summary = calculator.calculateBudgetSummary(null, { manualUsage: 40000 });
+      expect(summary.used).toBe(40000);
+      expect(summary.remaining).toBe(calculator.DEFAULT_CONFIG.dailyTokenLimit - 40000);
+    });
+
+    test('clamps negative manual usage to zero', () => {
+      const summary = calculator.calculateBudgetSummary(null, { manualUsage: -100 });
+      expect(summary.used).toBe(0);
+      expect(summary.remaining).toBe(calculator.DEFAULT_CONFIG.dailyTokenLimit);
     });
   });
 });

@@ -104,10 +104,8 @@ Answer: [Based on existing entries in this file]
 
 **Added**: 2025-10-10
 **Files**:
-  - `scripts/detect-project-scale.js`
   - `scripts/run-tests.js`
   - `scripts/update-mappings.js`
   - `scripts/generate-session-summary.js`
 
 ---
-

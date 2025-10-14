@@ -63,29 +63,49 @@ function getContextWindowLimit(config = {}) {
 }
 
 /**
- * Get tokens used today from task data
+ * Coerce any potential numeric input into a non-negative integer token count.
+ *
+ * @param {*} value - Potential numeric value
+ * @returns {number} Normalized token count
+ */
+function normalizeTokens(value) {
+  if (value === undefined || value === null) return 0;
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed < 0) return 0;
+  return Math.floor(parsed);
+}
+
+/**
+ * Get tokens used today from task data (with manual override support)
  *
  * @param {object} taskData - Task data from tasks.json
+ * @param {object} options - Additional options
+ * @param {number} options.manualUsage - Manual override for tokens used today
  * @returns {number} Tokens used today
  */
-function getTokensUsedToday(taskData) {
+function getTokensUsedToday(taskData, options = {}) {
+  if (typeof options.manualUsage === 'number') {
+    return normalizeTokens(options.manualUsage);
+  }
+
   if (!taskData || !taskData.tokenBudget) {
     return 0;
   }
 
-  const { used, lastReset } = taskData.tokenBudget;
+  const used = normalizeTokens(taskData.tokenBudget.used);
+  const lastResetRaw = taskData.tokenBudget.lastReset;
 
   // Check if we need to reset (new day)
-  const lastResetDate = new Date(lastReset);
+  const lastResetDate = new Date(lastResetRaw);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  if (lastResetDate < today) {
+  if (Number.isNaN(lastResetDate.getTime()) || lastResetDate < today) {
     // Should have been reset, return 0
     return 0;
   }
 
-  return used || 0;
+  return used;
 }
 
 /**
@@ -258,7 +278,7 @@ function formatTokens(tokens) {
  */
 function calculateBudgetSummary(taskData, config = {}) {
   const limit = getDailyTokenLimit(config);
-  const used = getTokensUsedToday(taskData);
+  const used = getTokensUsedToday(taskData, { manualUsage: config.manualUsage });
   const remaining = getRemainingBudget(limit, used);
   const usagePercent = getUsagePercent(used, limit);
   const warningLevel = getUsageWarningLevel(usagePercent, config);
@@ -295,5 +315,6 @@ module.exports = {
   formatTokens,
   calculateBudgetSummary,
   TASK_SIZES,
+  normalizeTokens,
   DEFAULT_CONFIG
 };

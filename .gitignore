@@ -27,6 +27,7 @@ Thumbs.db
 # Logs
 *.log
 logs/
+ai-docs/workflow/token-usage.jsonl
 
 # Build outputs (if applicable)
 dist/

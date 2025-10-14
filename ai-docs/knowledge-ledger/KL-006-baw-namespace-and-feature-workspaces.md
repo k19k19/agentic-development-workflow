@@ -1,7 +1,7 @@
 # KL-006 — BAW Namespace & Feature Workspace Unification
 
 - **Status:** Adopted
-- **Adopted on:** 2024-05-12
+- **Adopted on:** 2025-10-12
 - **Linked Artifacts:**
   - `.claude/commands/`
   - `CLAUDE.md`

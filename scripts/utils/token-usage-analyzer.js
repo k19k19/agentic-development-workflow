@@ -1,7 +1,8 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { normalizeTokens } = require('./token-budget-calculator');
 
-const METRICS_FILE = path.join(__dirname, '../../ai-docs/logs/workflow-metrics.jsonl');
+const TOKEN_USAGE_FILE = path.join(__dirname, '../../ai-docs/workflow/token-usage.jsonl');
 
 function toDate(value) {
   if (!value) return null;
@@ -9,7 +10,7 @@ function toDate(value) {
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
-async function loadEntries(metricsFile = METRICS_FILE) {
+async function loadEntries(metricsFile = TOKEN_USAGE_FILE) {
   try {
     const raw = await fs.readFile(metricsFile, 'utf8');
     return raw
@@ -32,29 +33,62 @@ async function loadEntries(metricsFile = METRICS_FILE) {
   }
 }
 
+function normalizeEntry(entry) {
+  const timestamp = toDate(entry.timestamp);
+  if (!timestamp) return null;
+
+  const tokens = entry.tokens || {};
+  const summary = {
+    timestamp,
+    total: normalizeTokens(tokens.total),
+    byModel: {}
+  };
+
+  const byModelSource = tokens.byModel || entry.byModel;
+  if (byModelSource && typeof byModelSource === 'object') {
+    Object.entries(byModelSource).forEach(([model, usage]) => {
+      const normalized = normalizeTokens(usage?.total ?? usage);
+      if (normalized > 0) {
+        summary.byModel[model] = (summary.byModel[model] || 0) + normalized;
+      }
+    });
+  }
+
+  if (summary.total === 0) {
+    summary.total = Object.values(summary.byModel).reduce((sum, value) => sum + value, 0);
+  }
+
+  return summary;
+}
+
 function summarizeEntries(entries) {
   return entries.reduce(
     (acc, entry) => {
-      const timestamp = toDate(entry.timestamp);
+      const normalized = normalizeEntry(entry);
+      if (!normalized) {
+        return acc;
+      }
+
+      const { timestamp, total, byModel } = normalized;
+
       if (timestamp && (!acc.lastTimestamp || timestamp > acc.lastTimestamp)) {
         acc.lastTimestamp = timestamp;
       }
 
-      const tokens = entry.tokens || {};
-      const total = Number(tokens.total) || 0;
       acc.totalTokens += total;
       acc.count += 1;
 
-      if (tokens.byModel && typeof tokens.byModel === 'object') {
-        Object.entries(tokens.byModel).forEach(([model, usage]) => {
-          const modelTotal = Number(usage?.total ?? usage) || 0;
-          acc.byModel[model] = (acc.byModel[model] || 0) + modelTotal;
-        });
+      Object.entries(byModel).forEach(([model, value]) => {
+        acc.byModel[model] = (acc.byModel[model] || 0) + value;
+      });
+
+      if (total === 0) {
+        acc.zeroCount = (acc.zeroCount || 0) + 1;
       }
 
       return acc;
     },
-    { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null }
+    { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null, zeroCount: 0 }
   );
 }
 
@@ -79,13 +113,13 @@ function startOfWeekWindow(now) {
 }
 
 async function getUsageSummary(options = {}) {
-  const { metricsFile = METRICS_FILE, now = new Date() } = options;
+  const { metricsFile = TOKEN_USAGE_FILE, now = new Date() } = options;
   const entries = await loadEntries(metricsFile);
   if (entries.length === 0) {
     return {
-      daily: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null },
-      weekly: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null },
-      total: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null }
+      daily: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null, zeroCount: 0 },
+      weekly: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null, zeroCount: 0 },
+      total: { totalTokens: 0, count: 0, byModel: {}, lastTimestamp: null, zeroCount: 0 }
     };
   }
 
@@ -110,7 +144,8 @@ module.exports = {
   getUsageSummary,
   loadEntries,
   summarizeEntries,
+  normalizeEntry,
   startOfToday,
   startOfWeekWindow,
-  METRICS_FILE
+  TOKEN_USAGE_FILE
 };

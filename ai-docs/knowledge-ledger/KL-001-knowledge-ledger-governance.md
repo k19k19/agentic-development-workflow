@@ -2,7 +2,7 @@
 id: KL-001
 title: "Knowledge Ledger Governance"
 status: adopted
-date: 2024-05-03
+date: 2025-10-03
 replaces: null
 links:
   - path: ai-docs/knowledge-ledger/ledger.md

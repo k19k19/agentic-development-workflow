@@ -11,6 +11,7 @@
     "baw:feature:scaffold": "node scripts/scaffold-feature.js",
     "baw:feature:structure": "node scripts/feature-structure.js",
     "baw:knowledge:audit": "node scripts/knowledge-ledger-audit.js",
+    "baw:token:log": "node scripts/utils/token-usage-log.js",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -1,5 +1,5 @@
 # KL-007 — Intake Alignment & Command Traceability
-- **Adopted:** 2024-05-14
+- **Adopted:** 2025-10-14
 - **Status:** Adopted
 - **Supersedes:** _None_
 - **Related:** KL-003, KL-004, KL-006

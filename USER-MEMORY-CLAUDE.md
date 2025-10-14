@@ -264,7 +264,7 @@ git diff --stat
 
 ## 🚀 Token Optimization Rules
 
-1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /baw_dev_discovery_build, Large  /baw_dev_full_pipeline).
+1.  **Token Budget Detection**: Estimate project scale manually—Small (<10 files) go direct, Medium (10-50 files) run `/baw_dev_discovery_build`, Large tasks use `/baw_dev_full_pipeline`.
 2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
 3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
 4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **discovery phase** and the **feature-to-source.md mapping file** to find the minimal required context.
@@ -275,15 +275,12 @@ git diff --stat
 
 ### Track Token Usage
 
-All workflows log to: `ai-docs/logs/workflow-metrics.jsonl`
+Detailed workflow logging is retired. Use the session dashboard (`npm run baw:session:start`) and feature workspace summaries to monitor budgets.
 
-```bash
-# Check efficiency weekly
-cat ai-docs/logs/workflow-metrics.jsonl | jq '.efficiency' | tail -10
-
-# Target: >90% average efficiency
-# If lower, review tool delegation strategy
-```
+- Record estimated tokens in each session note when the spend matters.
+- Log actual token spend after each workflow with `npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "context"]`.
+- Watch the dashboard’s daily/weekly limits and adjust delegation if warnings appear.
+- Archive notable savings patterns in `app-docs/guides/` so the next run stays lean.
 
 ### Learn from Each Workflow
 
@@ -397,7 +394,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### When Joining Existing Project
 
 ```
-1. Run: node scripts/detect-project-scale.js
+1. Review: `ai-docs/workflow/status-index.json` for active features and scale cues
 2. Read: app-docs/guides/ (existing patterns)
 3. Read: app-docs/mappings/feature-to-source.md (when available)
 4. Start with small bug fix (learn codebase)
@@ -505,12 +502,12 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### Token Budget Exceeded
 
 ```
-1. Check: ai-docs/logs/workflow-metrics.jsonl
+1. Run: npm run baw:session:start
 2. Identify: Which phase used most tokens?
 3. Optimize:
-   - Scout: Reduce scale (4 → 2 agents)
+   - Discovery: Reduce scale (4 → 2 agents)
    - Plan: Simplify scope
-   - Build: More Codex/Gemini, less Claude
+   - Build: Shift more work to Codex/Gemini, less Claude
 4. Retry with adjusted approach
 ```
 
@@ -524,7 +521,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 5. Re-run: Only that task, not entire build
 ```
 
-### Scout Found No Files
+### Discovery Run Found No Files
 
 ```
 1. Lower scale: /baw_dev_discovery "[task]" "2"
@@ -573,11 +570,8 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 **Every 3 months, review:**
 
 1. **Token efficiency trends**
-   ```bash
-   cat ai-docs/logs/workflow-metrics.jsonl | \
-     jq '.efficiency' | \
-     awk '{sum+=$1; count++} END {print sum/count}'
-   ```
+   - Export daily totals from recent session summaries.
+   - Calculate average efficiency manually (target >90%) and note any outliers.
 
 2. **Most effective tools**
    - Which tool has highest success rate?

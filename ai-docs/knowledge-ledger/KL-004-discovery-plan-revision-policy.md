@@ -1,7 +1,7 @@
 # KL-004 — Discovery-to-Plan Revision Policy
 
 - **Status:** Adopted
-- **Adopted on:** 2024-05-07
+- **Adopted on:** 2025-10-07
 - **Linked Artifacts:**
   - `CLAUDE.md`
   - `app-docs/guides/large-feature-workflow.md`

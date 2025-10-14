@@ -2,7 +2,7 @@
 id: KL-002
 title: "Workflow Status Ledger Integration"
 status: adopted
-date: 2024-05-04
+date: 2025-10-04
 replaces: null
 links:
   - path: scripts/workflow-status.js

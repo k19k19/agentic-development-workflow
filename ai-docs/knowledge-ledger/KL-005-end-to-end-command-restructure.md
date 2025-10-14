@@ -1,7 +1,7 @@
 # KL-005 — Persona-Aligned Command Restructure
 
 - **Status:** Adopted
-- **Adopted on:** 2024-05-10
+- **Adopted on:** 2025-10-10
 - **Linked Artifacts:**
   - `README.md`
   - `CLAUDE.md`

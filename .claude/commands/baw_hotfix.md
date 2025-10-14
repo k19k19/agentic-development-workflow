@@ -8,7 +8,7 @@ model: claude-sonnet-4-5
 # /baw_hotfix
 
 ## Purpose
-Triage and fix production bugs with focused analysis. Creates bug report and jumps directly to fix with minimal scouting.
+Triage and fix production bugs with focused analysis. Creates bug report and jumps directly to fix with minimal discovery.
 
 ## Variables
 BUG_ID: $1
@@ -23,7 +23,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Create internal bug report: `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` and mirror a copy under
   `BUG_REPORTS_DIRECTORY` if the organization tracks bugs centrally.
 - Trigger `/baw_triage_bug` for focused root cause analysis.
-- Skip broad scout phase - use targeted search only.
+- Skip broad discovery phase - use targeted search only.
 - Jump directly to `/baw_dev_plan` or `/baw_dev_build` based on complexity.
 - When it's time to patch code, delegate execution to Codex MCP via `mcp__codex__codex` and keep Claude focused on coordination and reviews.
 - Update bug tracking system when complete and capture the status in `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-hotfix.json` with
@@ -47,4 +47,4 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Provide estimated complexity (Low/Medium/High).
 
 ## Budget
-~30K tokens (targeted analysis, no broad scout)
+~30K tokens (targeted analysis, no broad discovery)

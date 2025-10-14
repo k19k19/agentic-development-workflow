@@ -31,8 +31,8 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Report
 - Confirm restart with failure context.
 - Display key lessons incorporated.
-- Show focus areas for re-scout.
-- Begin scout phase with enhanced context and log `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-restart.json` noting the corrective focus.
+- Show focus areas for renewed discovery.
+- Begin discovery phase with enhanced context and log `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-restart.json` noting the corrective focus.
 
 ## Budget
 Restarts full cycle (varies by project size)

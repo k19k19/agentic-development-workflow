@@ -29,7 +29,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
   - Ensure the workspace contains `plans/`, `sessions/`, `artifacts/`, and `workflow/` directories. Never write plans to the legacy `ai-docs/plans/` path.
 - **Read the Spec:** Pull any seed specification in `app-docs/specs/` or the feature workspace intake files before drafting the plan.
 - If any of `USER_PROMPT`, `DOCUMENT_URLS`, or `RELEVANT_FILES_COLLECTION` is missing, stop and ask the user to provide it.
-- Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the scout phase.
+- Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the discovery phase.
 - Use the Task tool in parallel to scrape each URL in `DOCUMENT_URLS` with Firecrawl (fallback to Webfetch when Firecrawl is unavailable).
   - Save each document to `DOCUMENTATION_OUTPUT_DIRECTORY/<name-of-document>` and report the saved paths.
 - Think deeply about the optimal implementation strategy using the gathered context.
