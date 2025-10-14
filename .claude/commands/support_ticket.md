@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:support_ticket
+# /baw_support_ticket
 
 ## Purpose
 Transform customer or support feedback into prioritized actions for product, developer, or provider teams.
@@ -30,7 +30,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 2. Cluster feedback into categories (bug, data fix, enhancement, education).
 3. Prioritize actions with owners, due dates, and verification steps.
 4. Identify documentation or training updates to prevent recurrence.
-5. Recommend follow-up commands (e.g., `/baw:triage_bug`, `/baw:workflow_radar`, `/baw:product_wishlist`).
+5. Recommend follow-up commands (e.g., `/baw_triage_bug`, `/baw_workflow_radar`, `/baw_product_wishlist`).
 
 ## Report
 - Provide a summarized queue with priority, impact, and recommended owner and save it to `SUPPORT_INTAKE_DIRECTORY/<ISO-timestamp>-support-review.md`.
@@ -45,6 +45,6 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Include the saved intake summary under `outputPath`/`documentation` and remind the user to run `npm run baw:workflow:sync`.
 
 ## Next Steps
-- `/baw:triage_bug "<bug-title>"`
-- `/baw:workflow_radar "<initiative>"`
-- `/baw:product_wishlist "<product>"`
+- `/baw_triage_bug "<bug-title>"`
+- `/baw_workflow_radar "<initiative>"`
+- `/baw_product_wishlist "<product>"`

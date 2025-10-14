@@ -15,19 +15,19 @@ This playbook codifies the operating model for features that span multiple promp
 | Phase | Artifacts | Commands |
 | --- | --- | --- |
 | **Intake** | `feature-manifest.json`, `intake/requirements.md` | `npm run baw:feature:scaffold -- --title "Fleet Dispatch" --token 20000 --owner ops`
-| **Discovery** | `intake/requirements.md`, `intake/tasks/` | `/baw:dev_discovery` with follow-ups captured in `intake/`
-| **Planning** | `plans/<timestamp>-*/plan.md`, `plans/checklist.json` | `/baw:dev_plan` per manageable slice (`maxPlanTokens` in manifest)
-| **Build / Test** | `builds/<timestamp>-*/`, `reports/<timestamp>-*/report.md` | `/baw:dev_build`, `/baw:dev_build_report`, `/baw:dev_test`
-| **Deploy / Verify** | `handoff/deploy.md`, `reports/uat.md` | `/baw:dev_deploy_staging`, `/baw:dev_finalize`, `/baw:dev_release`, plus human UAT notes
-| **Closeout** | `sessions/session-backlog.json`, `handoff/summary.md`, `workflow/*.json` | `/baw:workflow_radar` summaries and ledger updates
+| **Discovery** | `intake/requirements.md`, `intake/tasks/` | `/baw_dev_discovery` with follow-ups captured in `intake/`
+| **Planning** | `plans/<timestamp>-*/plan.md`, `plans/checklist.json` | `/baw_dev_plan` per manageable slice (`maxPlanTokens` in manifest)
+| **Build / Test** | `builds/<timestamp>-*/`, `reports/<timestamp>-*/report.md` | `/baw_dev_build`, `/baw_dev_build_report`, `/baw_dev_test`
+| **Deploy / Verify** | `handoff/deploy.md`, `reports/uat.md` | `/baw_dev_deploy_staging`, `/baw_dev_finalize`, `/baw_dev_release`, plus human UAT notes
+| **Closeout** | `sessions/session-backlog.json`, `handoff/summary.md`, `workflow/*.json` | `/baw_workflow_radar` summaries and ledger updates
 
 Each iteration through the table is scoped to a plan slice that fits within the token budget recorded in the manifest.
 
 ## Breaking Down Work to Fit Token Budgets
 
-- The manifest stores the **maximum plan token allotment** (`maxPlanTokens`). Use it as a hard stop; if `/baw:dev_plan` would exceed the limit, split the scope and produce two plans.
+- The manifest stores the **maximum plan token allotment** (`maxPlanTokens`). Use it as a hard stop; if `/baw_dev_plan` would exceed the limit, split the scope and produce two plans.
 - Plans are sequenced through `plans/checklist.json`. Items cannot be marked `complete` until their build artifacts exist.
-- When `/baw:dev_discovery` exposes missing implementation details, update the active `plans/<timestamp>-*/plan.md` file and the matching checklist entry instead of opening a new plan slice. Flag the need for clarification in `sessions/session-backlog.json` so the next session keeps refining the same slice until it is actionable.
+- When `/baw_dev_discovery` exposes missing implementation details, update the active `plans/<timestamp>-*/plan.md` file and the matching checklist entry instead of opening a new plan slice. Flag the need for clarification in `sessions/session-backlog.json` so the next session keeps refining the same slice until it is actionable.
 - Session notes must capture the remaining plan backlog so the next session can resume without re-issuing the original high-level prompt.
 - The knowledge ledger tracks any deliberate cuts or deferrals so scope changes are explicit.
 
@@ -35,8 +35,8 @@ Each iteration through the table is scoped to a plan slice that fits within the 
 
 Relying on a single `build-w-report` command for massive features is fragile. Instead:
 
-1. Run `/baw:dev_build` for each plan slice, committing after a focused set of changes.
-2. Generate reports with `/baw:dev_build_report` scoped to the same slice (or use `reports/` for manually written summaries).
+1. Run `/baw_dev_build` for each plan slice, committing after a focused set of changes.
+2. Generate reports with `/baw_dev_build_report` scoped to the same slice (or use `reports/` for manually written summaries).
 3. Invoke `npm run baw:workflow:sync` after every build/report pair so the dashboard reflects the new state.
 4. When the slice spans multiple days, record what remains in `sessions/session-backlog.json` and open a follow-up plan entry before ending the session.
 

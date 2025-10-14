@@ -204,7 +204,7 @@ async function writeChecklist(featureDir, timestamps) {
     items: [],
     metadata: {
       lastUpdated: timestamps.updatedAt,
-      notes: 'Populate with plan slices using the scaffolding script or manually via /baw:dev_plan.',
+      notes: 'Populate with plan slices using the scaffolding script or manually via /baw_dev_plan.',
     },
   };
   await fs.writeFile(checklistPath, `${JSON.stringify(content, null, 2)}\n`);
@@ -290,7 +290,7 @@ async function main() {
     console.log(`   Profile: ${config.profile}${config.includes.length ? ` (plus ${config.includes.length} additional section${config.includes.length === 1 ? '' : 's'})` : ''}`);
     console.log('Next steps:');
     console.log('  1. Fill in intake/requirements.md with the problem statement.');
-    console.log('  2. Draft the first plan slice in plans/checklist.json and run /baw:dev_plan.');
+    console.log('  2. Draft the first plan slice in plans/checklist.json and run /baw_dev_plan.');
     console.log('  3. Record the decision in the knowledge ledger if this is a new initiative.');
     console.log(
       '  4. Use npm run baw:feature:structure -- --feature <slug> --ensure <section> to pull in extra directories when the task grows.'

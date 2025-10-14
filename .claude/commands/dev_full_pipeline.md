@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__codex__codex", "Read", "Wri
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_full_pipeline
+# /baw_dev_full_pipeline
 
 ## Purpose
 Execute the complete engineering workflow with approval gates for large, complex features.
@@ -33,10 +33,10 @@ MODE: $3 (default: standard)
   `ai-docs/workflow/features/<feature-id>/` directory.
 
 ## Workflow
-1. Run SlashCommand(`/baw:dev_discovery "[USER_PROMPT]"`) -> `relevant_files_collection_path`.
-2. If MODE is `budget`, run SlashCommand(`/baw:dev_plan "[USER_PROMPT] [BUDGET MODE]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"`); otherwise run `/baw:dev_plan "[USER_PROMPT]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"` to obtain `path_to_plan`.
-3. When the plan is ready, announce the pause clearly: `🛑 Still inside /baw:dev_full_pipeline (plan ready). Reply 'resume' to run /baw:dev_build_report or 'stop' to exit.` Then wait for user approval.
-4. Run SlashCommand(`/baw:dev_build_report "[path_to_plan]"`) -> `build_report` and ensure that command delegates its code changes to Codex MCP.
+1. Run SlashCommand(`/baw_dev_discovery "[USER_PROMPT]"`) -> `relevant_files_collection_path`.
+2. If MODE is `budget`, run SlashCommand(`/baw_dev_plan "[USER_PROMPT] [BUDGET MODE]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"`); otherwise run `/baw_dev_plan "[USER_PROMPT]" "[DOCUMENTATION_URLS]" "[relevant_files_collection_path]"` to obtain `path_to_plan`.
+3. When the plan is ready, announce the pause clearly: `🛑 Still inside /baw_dev_full_pipeline (plan ready). Reply 'resume' to run /baw_dev_build_report or 'stop' to exit.` Then wait for user approval.
+4. Run SlashCommand(`/baw_dev_build_report "[path_to_plan]"`) -> `build_report` and ensure that command delegates its code changes to Codex MCP.
 5. Report your work based on the `Report` section defined in the downstream commands.
 
 ## Next Steps
@@ -50,23 +50,23 @@ git diff --stat                                                      # See all c
 
 **→ Run tests:**
 ```bash
-/baw:dev_test
+/baw_dev_test
 ```
 
 **If tests pass → Deploy:**
 ```bash
-/baw:dev_deploy_staging
+/baw_dev_deploy_staging
 ```
 
 **Then validate:**
 ```bash
-/baw:uat
+/baw_uat
 ```
 
 **If all good → Finalize:**
 ```bash
-/baw:dev_finalize "[feature-id]"
-/baw:dev_release  # Deploy to production
+/baw_dev_finalize "[feature-id]"
+/baw_dev_release  # Deploy to production
 ```
 
 **Check token budget:**

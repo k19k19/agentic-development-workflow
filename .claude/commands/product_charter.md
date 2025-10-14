@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:product_charter
+# /baw_product_charter
 
 ## Purpose
 Establish a product north star that clarifies what the product does, who it serves, and how success will be measured before any implementation work begins.
@@ -35,7 +35,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Report
 - Provide structured sections for vision, personas, success metrics, and unresolved questions.
 - Link to any documentation that should be created or updated.
-- End with a checklist of immediate follow-ups (e.g., `/baw:product_features`, `/baw:product_helper`).
+- End with a checklist of immediate follow-ups (e.g., `/baw_product_features`, `/baw_product_helper`).
 
 ## Automation Trace
 - Emit `phase: "product-charter"` in the workflow status JSON saved to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-product-charter.json`.
@@ -45,5 +45,5 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Next Steps
 Typical follow-on commands:
-- `/baw:product_features "<product-title>"`
-- `/baw:product_helper "<product-title>" "<question>"`
+- `/baw_product_features "<product-title>"`
+- `/baw_product_helper "<product-title>" "<question>"`

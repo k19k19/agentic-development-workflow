@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:product_features
+# /baw_product_features
 
 ## Purpose
 Translate the product charter into a dependency-aware feature catalog that aligns business problems with measurable outcomes.
@@ -35,7 +35,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Output a structured table of features with columns for persona, problem, outcome, dependencies, and readiness and save it to
   `PRODUCT_INTAKE_DIRECTORY/features/<ISO-timestamp>-feature-catalog.md`.
 - Highlight features that require discovery tasks or additional specs.
-- Close with actionable next commands (e.g., `/baw:dev_dependency_plan`, `/baw:product_wishlist`).
+- Close with actionable next commands (e.g., `/baw_dev_dependency_plan`, `/baw_product_wishlist`).
 - Reference the saved file path for future sessions.
 
 ## Automation Trace
@@ -45,5 +45,5 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Remind the user to run `npm run baw:workflow:sync`.
 
 ## Next Steps
-- `/baw:product_wishlist "<product-title>"`
-- `/baw:dev_dependency_plan "<feature-or-initiative>" "<catalog-path>"`
+- `/baw_product_wishlist "<product-title>"`
+- `/baw_dev_dependency_plan "<feature-or-initiative>" "<catalog-path>"`

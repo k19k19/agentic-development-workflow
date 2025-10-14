@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:workflow_radar
+# /baw_workflow_radar
 
 ## Purpose
 Provide a management-grade view of open tasks, missing documentation, data fixes, and bug queues across the entire initiative.
@@ -40,10 +40,10 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "ops-coordination"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-workflow-radar.json`.
 - Use `status` values `needs_docs`, `in_progress`, or `completed` depending on clarity.
-- Set `nextCommand` for each persona (e.g., `/baw:dev_execution_prep`, `/baw:product_helper`, `/baw:support_ticket`).
+- Set `nextCommand` for each persona (e.g., `/baw_dev_execution_prep`, `/baw_product_helper`, `/baw_support_ticket`).
 - Attach the radar report path and remind the user to rerun `npm run baw:workflow:sync` and `npm run baw:work` after updates.
 
 ## Next Steps
-- `/baw:dev_execution_prep "<task>"`
-- `/baw:support_ticket "<queue>"`
-- `/baw:product_helper "<topic>"`
+- `/baw_dev_execution_prep "<task>"`
+- `/baw_support_ticket "<queue>"`
+- `/baw_product_helper "<topic>"`

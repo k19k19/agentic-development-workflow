@@ -5,10 +5,10 @@ allowed-tools: ["Write", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:pause_feature
+# /baw_pause_feature
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered during `/baw:dev_plan` if complexity exceeds threshold. Pauses feature and suggests decomposition.
+**AI-INTERNAL COMMAND** - Automatically triggered during `/baw_dev_plan` if complexity exceeds threshold. Pauses feature and suggests decomposition.
 
 ## Variables
 FEATURE_ID: $1
@@ -21,7 +21,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Commit current work.
 - Mark feature as "Paused" in session log located under `SESSIONS_DIRECTORY`.
 - Suggest breaking down into smaller subtasks.
-- Switch context via `/baw:next`.
+- Switch context via `/baw_next`.
 
 ## Workflow
 1. Commit current analysis work.

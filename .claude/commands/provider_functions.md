@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:provider_functions
+# /baw_provider_functions
 
 ## Purpose
 Describe the functional interface and operational capabilities required by providers or administrators to manage the product effectively.
@@ -40,9 +40,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "provider-functions"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-provider-functions.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked`.
-- Set `nextCommand` to `/baw:dev_execution_prep`, `/baw:workflow_radar`, or `/baw:support_ticket`.
+- Set `nextCommand` to `/baw_dev_execution_prep`, `/baw_workflow_radar`, or `/baw_support_ticket`.
 - Attach the saved provider doc path under `outputPath` and remind the user to run `npm run baw:workflow:sync` after docs are updated.
 
 ## Next Steps
-- `/baw:dev_execution_prep "<provider-feature>"`
-- `/baw:support_ticket "<support-area>"`
+- `/baw_dev_execution_prep "<provider-feature>"`
+- `/baw_support_ticket "<support-area>"`

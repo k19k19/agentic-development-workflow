@@ -5,7 +5,7 @@ allowed-tools: ["mcp__chrome-devtools__*", "run_shell_command", "Read"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:uat
+# /baw_uat
 
 ## Purpose
 Run user acceptance tests on staging environment using Chrome DevTools MCP for E2E testing.
@@ -35,29 +35,29 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Display UAT results summary.
 - Show critical user flows tested.
 - List any failures with screenshots (reference workspace paths).
-- Suggest next step: `/baw:dev_release` if passing, or fix issues.
+- Suggest next step: `/baw_dev_release` if passing, or fix issues.
 
 ## Next Steps
 
 **✅ If all UAT tests pass:**
 ```bash
-/baw:dev_finalize "[feature-id]"
+/baw_dev_finalize "[feature-id]"
 ```
 
 Then prepare for production:
 ```bash
-/baw:dev_release
+/baw_dev_release
 ```
 
 **❌ If UAT tests fail:**
 1. Document the failures
 2. Fix the issues
-3. Re-deploy to staging: `/baw:dev_deploy_staging`
-4. Re-test: `/baw:uat`
+3. Re-deploy to staging: `/baw_dev_deploy_staging`
+4. Re-test: `/baw_uat`
 
 **🔴 If major issues found:**
 ```bash
-/baw:report_failure "[feature-id]"  # Escalate for review
+/baw_report_failure "[feature-id]"  # Escalate for review
 ```
 
 ## Budget

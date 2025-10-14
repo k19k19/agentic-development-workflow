@@ -5,13 +5,13 @@ allowed-tools: ["run_shell_command", "Read", "Write"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_release
+# /baw_dev_release
 
 ## Purpose
 Deploy to production environment after all tests pass.
 
 ## Feature Workspace
-- Identify the feature being promoted (usually from the latest `/baw:dev_finalize` or `/baw:dev_deploy_plan`).
+- Identify the feature being promoted (usually from the latest `/baw_dev_finalize` or `/baw_dev_deploy_plan`).
 - Ensure the workspace `ai-docs/workflow/features/<feature-id>/` exists and contains the deployment plan.
 - Log production deployment artifacts to `reports/deployments/` and automation traces to `workflow/`.
 
@@ -34,7 +34,7 @@ Deploy to production environment after all tests pass.
 - Show production URL.
 - Display health check results.
 - Log deployment timestamp and version and record the workspace path for traceability.
-- Suggest running `/baw:next` to select next feature.
+- Suggest running `/baw_next` to select next feature.
 
 ## Automation Trace
 - Save status JSON with `phase: "release"` to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-release.json`.

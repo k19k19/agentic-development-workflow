@@ -5,7 +5,7 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Grep", "Glob", "run_shell
 model: claude-sonnet-4-5
 ---
 
-# /baw:hotfix
+# /baw_hotfix
 
 ## Purpose
 Triage and fix production bugs with focused analysis. Creates bug report and jumps directly to fix with minimal scouting.
@@ -22,9 +22,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Derive or confirm the feature workspace slug (reuse the affected feature when known; otherwise slugify `BUG_ID`).
 - Create internal bug report: `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` and mirror a copy under
   `BUG_REPORTS_DIRECTORY` if the organization tracks bugs centrally.
-- Trigger `/baw:triage_bug` for focused root cause analysis.
+- Trigger `/baw_triage_bug` for focused root cause analysis.
 - Skip broad scout phase - use targeted search only.
-- Jump directly to `/baw:dev_plan` or `/baw:dev_build` based on complexity.
+- Jump directly to `/baw_dev_plan` or `/baw_dev_build` based on complexity.
 - When it's time to patch code, delegate execution to Codex MCP via `mcp__codex__codex` and keep Claude focused on coordination and reviews.
 - Update bug tracking system when complete and capture the status in `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-hotfix.json` with
   `phase: "hotfix"`.
@@ -33,10 +33,10 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 1. Validate `BUG_ID` is provided.
 2. Look for external bug report (if integrated with issue tracker).
 3. Create internal bug report document.
-4. Run SlashCommand(`/baw:triage_bug "[BUG_ID]"`) for analysis.
+4. Run SlashCommand(`/baw_triage_bug "[BUG_ID]"`) for analysis.
 5. Based on complexity:
-   - Simple: Jump to `/baw:dev_build` directly
-   - Complex: Run `/baw:dev_plan` first
+   - Simple: Jump to `/baw_dev_build` directly
+   - Complex: Run `/baw_dev_plan` first
 6. Update bug status when fix is complete.
 
 ## Report

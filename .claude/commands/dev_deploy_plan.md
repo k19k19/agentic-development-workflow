@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_deploy_plan
+# /baw_dev_deploy_plan
 
 ## Purpose
 Coordinate release steps across environments, owners, and rollback procedures so production launches are safe and repeatable.
@@ -41,10 +41,10 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Emit status JSON with `phase: "deployment"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-deployment-plan.json`.
 - Use `status` values `pending`, `in_progress`, `needs_validation`, `blocked`, or `completed`.
 - Populate `outputPath` with the saved deployment plan and surface any supporting docs under `documentation`.
-- Set `nextCommand` to `/baw:dev_deploy_staging`, `/baw:dev_release`, or `/baw:workflow_radar` as appropriate.
+- Set `nextCommand` to `/baw_dev_deploy_staging`, `/baw_dev_release`, or `/baw_workflow_radar` as appropriate.
 - Remind the user to run `npm run baw:workflow:sync` after updates.
 
 ## Next Steps
-- `/baw:dev_deploy_staging "<release-name>"`
-- `/baw:dev_release "<release-name>"`
-- `/baw:workflow_radar "<initiative>"`
+- `/baw_dev_deploy_staging "<release-name>"`
+- `/baw_dev_release "<release-name>"`
+- `/baw_workflow_radar "<initiative>"`

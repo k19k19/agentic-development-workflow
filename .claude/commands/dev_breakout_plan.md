@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_breakout_plan
+# /baw_dev_breakout_plan
 
 ## Purpose
 Design a sequence of buildable increments that deliver value quickly while respecting dependency constraints.
@@ -36,15 +36,15 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Report
 - Present breakout summaries in a table or ordered list.
 - Include acceptance criteria, dependencies, and risk mitigation for each breakout.
-- End with `/baw:dev_execution_prep` guidance for the highest-priority breakout.
+- End with `/baw_dev_execution_prep` guidance for the highest-priority breakout.
 
 ## Automation Trace
 - Save workflow status with `phase: "breakout-plan"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-breakout-plan.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked`.
 - Record the saved breakout files under `outputPath` and any documentation gaps under `documentation`.
-- Set `nextCommand` to `/baw:dev_execution_prep` (or `/baw:dev_discovery` if discovery gaps remain).
+- Set `nextCommand` to `/baw_dev_execution_prep` (or `/baw_dev_discovery` if discovery gaps remain).
 - Remind the user to run `npm run baw:workflow:sync`.
 
 ## Next Steps
-- `/baw:dev_execution_prep "<breakout-title>" "<spec-references>"`
-- `/baw:dev_discovery "<breakout-title>"`
+- `/baw_dev_execution_prep "<breakout-title>" "<spec-references>"`
+- `/baw_dev_discovery "<breakout-title>"`

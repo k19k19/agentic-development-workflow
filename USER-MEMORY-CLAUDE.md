@@ -42,9 +42,9 @@ Step 1: Identify scope
   - Logic/architecture? → Claude
 
 Step 2: Choose workflow by project scale
-  - Small (<10 files): Direct implementation or `/baw:dev_quick_build "<task>"`
-  - Medium (10-50 files): `/baw:dev_discovery_build "<task>" "" "budget"` (upgrade to `standard` only if architecture changes)
-  - Large (>50 files): `/baw:dev_full_pipeline "<task>" "<docs>" "budget"`; rerun with `standard` after review if more depth is required
+  - Small (<10 files): Direct implementation or `/baw_dev_quick_build "<task>"`
+  - Medium (10-50 files): `/baw_dev_discovery_build "<task>" "" "budget"` (upgrade to `standard` only if architecture changes)
+  - Large (>50 files): `/baw_dev_full_pipeline "<task>" "<docs>" "budget"`; rerun with `standard` after review if more depth is required
 
 Step 3: Execute with minimal context
   - Read ONLY affected files
@@ -102,20 +102,20 @@ Claude: [uses Codex MCP directly]
 
 **Medium Projects** (10-50 files, 5K-20K LOC):
 ```bash
-/baw:dev_discovery_build "Add user authentication" "" "budget"  # drop "budget" for full plan
+/baw_dev_discovery_build "Add user authentication" "" "budget"  # drop "budget" for full plan
 # Discovery (10K) → Build + Report (40K) = ~50K total
 ```
 
 **Large Projects** (>50 files, >20K LOC):
 ```bash
-/baw:dev_full_pipeline "Implement OAuth2" "https://oauth.net/2/" "budget"  # rerun with "standard" if more detail needed
+/baw_dev_full_pipeline "Implement OAuth2" "https://oauth.net/2/" "budget"  # rerun with "standard" if more detail needed
 # Discovery (10K) → Plan (30K) → Build (50K) → Report (5K) = ~95K total
 ```
 
 
 
 ### Budget Mode Defaults
-- Start every multi-agent run with `/baw:dev_discovery_build "<task>" "<docs>" "budget"` unless the user explicitly asks for a full plan.
+- Start every multi-agent run with `/baw_dev_discovery_build "<task>" "<docs>" "budget"` unless the user explicitly asks for a full plan.
 - Expect discovery scale 2 and a ~350-word plan; escalate to `standard` only when the lean summary is insufficient.
 - Keep manual repository searches focused—surface at most three strong candidates before escalating to deeper investigation.
 - Reference `app-docs/guides/budget-mode.md` inside each repo for the detailed checklist.
@@ -192,11 +192,11 @@ Claude: [uses Codex MCP directly]
 
 **Before implementation:**
 - Write spec in `app-docs/specs/[feature].md`
-- Run `/baw:dev_plan` which reads spec automatically
+- Run `/baw_dev_plan` which reads spec automatically
 - Get user approval
 
 **After implementation:**
-- `/baw:dev_build_report` phase auto-updates:
+- `/baw_dev_build_report` phase auto-updates:
   - `app-docs/mappings/feature-to-source.md` (create if missing)
   - `README.md` (if needed)
   - Architecture docs (if structural changes)
@@ -264,7 +264,7 @@ git diff --stat
 
 ## 🚀 Token Optimization Rules
 
-1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /baw:dev_discovery_build, Large  /baw:dev_full_pipeline).
+1.  **Token Budget Detection**: Run a project scale check on every new task to determine the appropriate workflow (Small  Direct, Medium  /baw_dev_discovery_build, Large  /baw_dev_full_pipeline).
 2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
 3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
 4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **discovery phase** and the **feature-to-source.md mapping file** to find the minimal required context.
@@ -401,7 +401,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 2. Read: app-docs/guides/ (existing patterns)
 3. Read: app-docs/mappings/feature-to-source.md (when available)
 4. Start with small bug fix (learn codebase)
-5. Then try medium feature (use /baw:dev_discovery_build with empty doc list)
+5. Then try medium feature (use /baw_dev_discovery_build with empty doc list)
 6. Add new patterns to app-docs/guides/
 ```
 
@@ -527,9 +527,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### Scout Found No Files
 
 ```
-1. Lower scale: /baw:dev_discovery "[task]" "2"
+1. Lower scale: /baw_dev_discovery "[task]" "2"
 2. Or manual: List files yourself
-3. Skip to plan: /baw:dev_plan "[task]" "" "[manual-files]"
+3. Skip to plan: /baw_dev_plan "[task]" "" "[manual-files]"
 4. Learn: Add patterns to app-docs/guides/
 ```
 

@@ -21,46 +21,51 @@ The workflow is built around self-documenting slash commands that enforce automa
 ### Slash Command System
 All engineering work flows through commands in `.claude/commands/*.md`. They are organized around three persona tracks:
 
+All custom commands are published with the `baw_` prefix (e.g., `/baw_dev_quick_build`) so they stay grouped in Claude Code. Treat any legacy `/dev_*` alias as equivalent.
+
+**Navigator:**
+- `/baw_agent [--persona <track>] "<request>"` – Recommend the right slash command from natural-language input (fallback CLI: `npm run baw:agent -- "<request>"`).
+
 **Product + Strategy:**
-- `/baw:product_charter [product]` – Define personas, value proposition, and metrics.
-- `/baw:product_features [product]` – Catalog core features with dependencies and readiness signals.
-- `/baw:product_wishlist [product]` – Capture stretch ideas and activation triggers.
-- `/baw:product_helper [topic]` – Run targeted research to close discovery gaps.
+- `/baw_product_charter [product]` – Define personas, value proposition, and metrics.
+- `/baw_product_features [product]` – Catalog core features with dependencies and readiness signals.
+- `/baw_product_wishlist [product]` – Capture stretch ideas and activation triggers.
+- `/baw_product_helper [topic]` – Run targeted research to close discovery gaps.
 
 **Developer Delivery:**
-- `/baw:dev_dependency_plan [initiative]` – Sequence milestones based on dependencies.
-- `/baw:dev_breakout_plan [phase]` – Shape sprint-sized breakout increments.
-- `/baw:dev_execution_prep [task]` – Gather specs, acceptance criteria, and owners for implementation.
-- `/baw:dev_test_matrix [release]` – Define verification strategy across environments.
-- `/baw:dev_deploy_plan [release]` – Produce deployment/rollback runbooks.
-- `/baw:dev_quick_build [task]`, `/baw:dev_discovery_build [task]`, `/baw:dev_full_pipeline [task] [docs] [mode]` – Implementation accelerators using Codex MCP.
+- `/baw_dev_dependency_plan [initiative]` – Sequence milestones based on dependencies.
+- `/baw_dev_breakout_plan [phase]` – Shape sprint-sized breakout increments.
+- `/baw_dev_execution_prep [task]` – Gather specs, acceptance criteria, and owners for implementation.
+- `/baw_dev_test_matrix [release]` – Define verification strategy across environments.
+- `/baw_dev_deploy_plan [release]` – Produce deployment/rollback runbooks.
+- `/baw_dev_quick_build [task]`, `/baw_dev_discovery_build [task]`, `/baw_dev_full_pipeline [task] [docs] [mode]` – Implementation accelerators using Codex MCP.
 
 **Operations + Support:**
-- `/baw:workflow_radar [initiative]` – Visualize blockers and missing documentation by persona.
-- `/baw:provider_functions [product]` – Map provider/admin workflows and operational requirements.
-- `/baw:support_ticket [queue]` – Convert support feedback into prioritized actions.
-- `/baw:dev_verify_discovery`, `/baw:pause_feature`, `/baw:restart_feature`, `/baw:report_failure`, `/baw:hotfix`, `/baw:triage_bug`, `/baw:next` – Guardrails, recovery, and triage utilities.
+- `/baw_workflow_radar [initiative]` – Visualize blockers and missing documentation by persona.
+- `/baw_provider_functions [product]` – Map provider/admin workflows and operational requirements.
+- `/baw_support_ticket [queue]` – Convert support feedback into prioritized actions.
+- `/baw_dev_verify_discovery`, `/baw_pause_feature`, `/baw_restart_feature`, `/baw_report_failure`, `/baw_hotfix`, `/baw_triage_bug`, `/baw_next` – Guardrails, recovery, and triage utilities.
 
 All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits. Claude orchestrates the workflow, reviews Codex output, and handles approvals/communication.
 
 **Workflow Phases:**
-- Discovery: `/baw:product_charter`, `/baw:product_features`, `/baw:product_wishlist`, `/baw:product_helper`
-- Planning: `/baw:dev_feature_start`, `/baw:dev_discovery`, `/baw:dev_plan`, `/baw:dev_dependency_plan`, `/baw:dev_breakout_plan`, `/baw:dev_execution_prep`
-- Implementation: `/baw:dev_build`, `/baw:dev_build_report`, `/baw:dev_quick_build`, `/baw:dev_discovery_build`
-- Verification: `/baw:dev_test_matrix`, `/baw:dev_test`, `/baw:uat`, `/baw:report_failure`
-- Deployment: `/baw:dev_deploy_plan`, `/baw:dev_deploy_staging`, `/baw:dev_finalize`, `/baw:dev_release`
-- Operations: `/baw:workflow_radar`, `/baw:provider_functions`, `/baw:support_ticket`, `/baw:triage_bug`, `/baw:hotfix`
+- Discovery: `/baw_product_charter`, `/baw_product_features`, `/baw_product_wishlist`, `/baw_product_helper`
+- Planning: `/baw_dev_feature_start`, `/baw_dev_discovery`, `/baw_dev_plan`, `/baw_dev_dependency_plan`, `/baw_dev_breakout_plan`, `/baw_dev_execution_prep`
+- Implementation: `/baw_dev_build`, `/baw_dev_build_report`, `/baw_dev_quick_build`, `/baw_dev_discovery_build`
+- Verification: `/baw_dev_test_matrix`, `/baw_dev_test`, `/baw_uat`, `/baw_report_failure`
+- Deployment: `/baw_dev_deploy_plan`, `/baw_dev_deploy_staging`, `/baw_dev_finalize`, `/baw_dev_release`
+- Operations: `/baw_workflow_radar`, `/baw_provider_functions`, `/baw_support_ticket`, `/baw_triage_bug`, `/baw_hotfix`
 
 ### Discovery-to-Plan Feedback Loop
 
-- When a `/baw:dev_discovery` result is too thin to execute an approved plan slice, **re-run `/baw:dev_discovery` against the same feature workspace** instead of creating a new feature. Reference the active plan under `ai-docs/workflow/features/<feature-id>/plans/` and append new findings in-place.
+- When a `/baw_dev_discovery` result is too thin to execute an approved plan slice, **re-run `/baw_dev_discovery` against the same feature workspace** instead of creating a new feature. Reference the active plan under `ai-docs/workflow/features/<feature-id>/plans/` and append new findings in-place.
 - Promote all clarified requirements into the existing `plans/checklist.json` entry inside the feature workspace by updating its notes, acceptance criteria, or dependencies. Never spawn a second plan slice just to hold the extra data.
 - Use the feature workspace session backlog to flag "Plan needs revision" so subsequent prompts continue refining the same artifact until it is executable.
-- Only call `/baw:dev_plan` again if the scope materially changes and the old plan entry is superseded—record the supersession inside `plans/checklist.json`.
+- Only call `/baw_dev_plan` again if the scope materially changes and the old plan entry is superseded—record the supersession inside `plans/checklist.json`.
 
 **Discovery vs Execution Prep**
-- `/baw:dev_discovery` performs discovery—gather code/document context and risks. Its outputs live in `reports/discovery/` and update the matching plan slice.
-- `/baw:dev_execution_prep` is the actionizer—turn a planned slice into an executable checklist with owners, validation hooks, and missing assets. Store those dossiers in `intake/tasks/` and keep them synced with the plan checklist entry.
+- `/baw_dev_discovery` performs discovery—gather code/document context and risks. Its outputs live in `reports/discovery/` and update the matching plan slice.
+- `/baw_dev_execution_prep` is the actionizer—turn a planned slice into an executable checklist with owners, validation hooks, and missing assets. Store those dossiers in `intake/tasks/` and keep them synced with the plan checklist entry.
 
 ### Workflow Status System
 Every command writes structured JSON to `ai-docs/workflow/features/<feature-id>/workflow/<timestamp>-<phase>.json` containing:
@@ -106,22 +111,22 @@ ai-docs/                   AI-generated artifacts
           product/        Charter, feature catalog, wishlist, research
           personas/       Provider/consumer/support playbooks
           support/        Ticket analysis, hotfix triage notes
-          tasks/          `/baw:dev_execution_prep` checklists
+          tasks/          `/baw_dev_execution_prep` checklists
         plans/
           checklist.json
-          dependency/     `/baw:dev_dependency_plan`
-          breakouts/      `/baw:dev_breakout_plan`
-          deployment/     `/baw:dev_deploy_plan`
+          dependency/     `/baw_dev_dependency_plan`
+          breakouts/      `/baw_dev_breakout_plan`
+          deployment/     `/baw_dev_deploy_plan`
         builds/            Build logs, compiled assets, automation output
         reports/
           discovery/      Verification verdicts
-          tests/          `/baw:dev_test` outputs
-          test-matrices/  `/baw:dev_test_matrix`
-          uat/            `/baw:uat` evidence
-          deployments/    `/baw:dev_deploy_staging` & `/baw:dev_release` logs
-          review/         `/baw:dev_wait_for_review` critiques
-          failures/       `/baw:report_failure` analyses
-          ops/            `/baw:workflow_radar` dashboards
+          tests/          `/baw_dev_test` outputs
+          test-matrices/  `/baw_dev_test_matrix`
+          uat/            `/baw_uat` evidence
+          deployments/    `/baw_dev_deploy_staging` & `/baw_dev_release` logs
+          review/         `/baw_dev_wait_for_review` critiques
+          failures/       `/baw_report_failure` analyses
+          ops/            `/baw_workflow_radar` dashboards
         sessions/          Session hand-offs and backlog JSON
         workflow/          Per-command status JSON history
         handoff/           Launch checklists and release notes
@@ -161,10 +166,10 @@ npm run baw:work                   # Display unified dashboard
 ## Command Patterns
 
 ### When User Provides Plain Request
-1. Map request to appropriate slash command based on scope (offer `npm run baw:agent -- "<request>"` if the user wants an automated suggestion before you propose a command):
-   - Single file/simple change → `/baw:dev_quick_build "[task]"`
-   - Medium task (10-50 files) → `/baw:dev_discovery_build "[task]"`
-   - Large feature (>50 files) → `/baw:dev_full_pipeline "[task]" "" "budget"`
+1. Run `/baw_agent "<request>"` to surface the recommended slash command (use `npm run baw:agent -- "<request>"` only when you are outside the Claude CLI).
+   - Single file/simple change → `/baw_dev_quick_build "[task]"`
+   - Medium task (10-50 files) → `/baw_dev_discovery_build "[task]"`
+   - Large feature (>50 files) → `/baw_dev_full_pipeline "[task]" "" "budget"`
 2. Ask if you should execute the command
 3. Only proceed after user confirmation
 4. When a command enters an implementation phase, immediately delegate edits to Codex MCP and keep Claude focused on oversight and reporting.
@@ -178,7 +183,7 @@ npm run baw:work                   # Display unified dashboard
    - Remind user to run `npm run baw:workflow:sync`
    - Print verification message for approval gates:
      ```
-     🛑 Still inside /baw:<command>. Reply 'resume' to continue or 'stop' to exit.
+     🛑 Still inside /baw_<command>. Reply 'resume' to continue or 'stop' to exit.
      [Explain what happens on resume]
      ```
    - Show **Next Steps** section with literal commands to run
@@ -239,13 +244,13 @@ title.toLowerCase()
 - Format conversions
 
 **Use Codex MCP for:**
-- Small single-file implementations (`/baw:dev_quick_build`)
+- Small single-file implementations (`/baw_dev_quick_build`)
 - CRUD boilerplate
 - UI component tweaks
 - Syntax fixes
 
 **Use Claude (Sonnet 4.5) for:**
-- Multi-agent orchestration (`/baw:dev_discovery` → `/baw:dev_plan` → `/baw:dev_build` workflows)
+- Multi-agent orchestration (`/baw_dev_discovery` → `/baw_dev_plan` → `/baw_dev_build` workflows)
 - Architectural decisions
 - Complex multi-file refactoring
 - Plan verification and approval gates
@@ -255,9 +260,9 @@ title.toLowerCase()
 ## Verification & Approval Gates
 
 Commands that pause for approval:
-1. `/baw:dev_plan` – After plan written, before `/baw:dev_build`
-2. `/baw:dev_full_pipeline` – After plan phase, before build phase
-3. `/baw:dev_verify_discovery` – After discovery, if confidence <70%
+1. `/baw_dev_plan` – After plan written, before `/baw_dev_build`
+2. `/baw_dev_full_pipeline` – After plan phase, before build phase
+3. `/baw_dev_verify_discovery` – After discovery, if confidence <70%
 
 **Always:**
 - Print clear pause message with `🛑` emoji
@@ -269,7 +274,7 @@ Commands that pause for approval:
 
 ## Session Memory Pattern
 
-After each build/baw:dev_test cycle:
+After each build/baw_dev_test cycle:
 1. Run `git diff --stat` to show files changed
 2. Write or update `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-[slug].md` with:
    - Task summary (1-2 sentences)
@@ -279,7 +284,7 @@ After each build/baw:dev_test cycle:
    - Follow-up tasks for next agent
 3. Emit workflow status JSON
 4. Prompt `npm run baw:workflow:sync`
-5. Suggest next command (usually `/baw:dev_test`)
+5. Suggest next command (usually `/baw_dev_test`)
 
 ---
 
@@ -337,13 +342,13 @@ After implementation:
 
 ## Testing Notes
 
-When `/baw:dev_test` command runs:
+When `/baw_dev_test` command runs:
 - Executes test suite (method depends on project)
 - Captures output to `ai-docs/workflow/features/<feature-id>/builds/[timestamp]/test-output.txt`
 - Analyzes results
 - Suggests next action:
-  - Pass → `/baw:dev_deploy_staging`
-  - Fail → Fix issues, rerun `/baw:dev_test`
+  - Pass → `/baw_dev_deploy_staging`
+  - Fail → Fix issues, rerun `/baw_dev_test`
 - Never proceed to deployment if tests fail
 
 ---

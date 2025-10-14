@@ -5,7 +5,7 @@ allowed-tools: ["Read", "Write", "Edit", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_finalize
+# /baw_dev_finalize
 
 ## Purpose
 Generate final documentation, update feature trackers, and prepare for production release.
@@ -41,23 +41,23 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - List documentation files updated (include workspace-relative paths).
 - Show feature-to-source mappings added.
 - Confirm feature marked as ready for release with a pointer to the workflow log entry.
-- Suggest running `/baw:dev_release` to deploy to production.
+- Suggest running `/baw_dev_release` to deploy to production.
 
 ## Next Steps
 
 **→ Deploy to production:**
 ```bash
-/baw:dev_release
+/baw_dev_release
 ```
 
 **→ Work on next feature:**
 ```bash
-/baw:next  # Auto-select from roadmap
+/baw_next  # Auto-select from roadmap
 ```
 
 Or start a specific feature:
 ```bash
-/baw:dev_full_pipeline "[new-task]" "[docs]" "budget"
+/baw_dev_full_pipeline "[new-task]" "[docs]" "budget"
 ```
 
 **Review what was done:**

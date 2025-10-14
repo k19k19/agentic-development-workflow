@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_dependency_plan
+# /baw_dev_dependency_plan
 
 ## Purpose
 Convert the feature catalog into a delivery roadmap that sequences buildable increments based on dependencies, risk, and value.
@@ -29,7 +29,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 2. Identify foundational capabilities, shared services, and sequencing constraints.
 3. Organize the plan into dependency-ordered phases with entry/exit criteria.
 4. Map each phase to candidate breakout plans or tasks.
-5. Recommend the follow-up `/baw:dev_breakout_plan` command for the first milestone.
+5. Recommend the follow-up `/baw_dev_breakout_plan` command for the first milestone.
 
 ## Report
 - Provide a dependency diagram or ordered list of phases and save it to `DEPENDENCY_PLAN_DIRECTORY/<ISO-timestamp>-dependency-plan.md`.
@@ -40,9 +40,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "dependency-plan"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-dependency-plan.json`.
 - Set `status` to `completed`, `needs_docs`, or `blocked` accordingly.
-- Point `nextCommand` toward `/baw:dev_breakout_plan` or `/baw:dev_execution_prep` and include the saved plan in `outputPath`.
+- Point `nextCommand` toward `/baw_dev_breakout_plan` or `/baw_dev_execution_prep` and include the saved plan in `outputPath`.
 - Remind the user to run `npm run baw:workflow:sync` after documentation changes.
 
 ## Next Steps
-- `/baw:dev_breakout_plan "<initiative-or-phase>" "<plan-docs>"`
-- `/baw:dev_execution_prep "<initiative-or-phase>" "<breakout-reference>"`
+- `/baw_dev_breakout_plan "<initiative-or-phase>" "<plan-docs>"`
+- `/baw_dev_execution_prep "<initiative-or-phase>" "<breakout-reference>"`

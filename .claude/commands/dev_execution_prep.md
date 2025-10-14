@@ -5,18 +5,18 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_execution_prep
+# /baw_dev_execution_prep
 
 ## Purpose
 Ensure each actionable task has the documentation, specifications, and data sources needed for implementation and testing.
-Use it to convert `/baw:dev_discovery` research into a delivery-ready brief that owners can execute without re-scanning the repo.
+Use it to convert `/baw_dev_discovery` research into a delivery-ready brief that owners can execute without re-scanning the repo.
 
 ## Variables
 TASK_TITLE: $1  
 CONTEXT_DOCS: $2
 
 ## Instructions
-- Treat `/baw:dev_execution_prep` as the structured follow-up to `/baw:dev_discovery`: reuse the same feature workspace and transform raw
+- Treat `/baw_dev_execution_prep` as the structured follow-up to `/baw_dev_discovery`: reuse the same feature workspace and transform raw
   discoveries into actionable checklists with owners and validation hooks.
 - Gather requirements from product specs, breakout plans, and relevant code references.
 - Identify missing documentation, data sources, or stakeholder sign-offs. Log each gap in the feature workspace backlog so the
@@ -31,7 +31,7 @@ CONTEXT_DOCS: $2
 2. Outline success criteria, dependencies, and validations.
 3. List required documentation updates and data fixtures.
 4. Map implementation steps to supporting files and owners.
-5. Suggest next commands such as `/baw:dev_build`, `/baw:dev_test`, or `/baw:dev_breakout_plan` adjustments.
+5. Suggest next commands such as `/baw_dev_build`, `/baw_dev_test`, or `/baw_dev_breakout_plan` adjustments.
 
 ## Report
 - Provide a ready-to-execute checklist with owners, documents, and validation steps.
@@ -41,10 +41,10 @@ CONTEXT_DOCS: $2
 ## Automation Trace
 - Emit status JSON with `phase: "execution-prep"` and save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-dev-execution-prep.json`.
 - Use `status` values `completed`, `needs_docs`, `needs_validation`, or `blocked`.
-- Set `nextCommand` based on readiness (e.g., `/baw:dev_build`, `/baw:dev_test`, or `/baw:product_helper`).
+- Set `nextCommand` based on readiness (e.g., `/baw_dev_build`, `/baw_dev_test`, or `/baw_product_helper`).
 - Remind the user to run `npm run baw:workflow:sync` after updates.
 
 ## Next Steps
-- `/baw:dev_discovery "<task-title>"`
-- `/baw:dev_build "<task-title>"`
-- `/baw:dev_test "<task-title>"`
+- `/baw_dev_discovery "<task-title>"`
+- `/baw_dev_build "<task-title>"`
+- `/baw_dev_test "<task-title>"`

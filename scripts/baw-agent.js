@@ -2,10 +2,12 @@
 
 /**
  * Lightweight conversational router that maps natural language requests
- * to the closest `/baw:` command. It keeps the command catalogue in one place
+ * to the closest `/baw_` command. It keeps the command catalogue in one place
  * so humans can type plain language without leaving the workflow.
  *
- * Usage:
+ * Use the `/baw_agent` slash command inside Claude Code.
+ *
+ * CLI fallback usage:
  *   npm run baw:agent -- "I need a test plan for billing"
  *   npm run baw:agent -- --persona dev "ship password reset fix"
  *   npm run baw:agent -- --list
@@ -16,87 +18,87 @@ const { exit } = require('process');
 const ROUTES = [
   {
     id: 'product_charter',
-    template: '/baw:product_charter "{subject}"',
+    template: '/baw_product_charter "{subject}"',
     persona: 'product',
     description: 'Define personas, value proposition, and success metrics.',
     keywords: ['charter', 'persona', 'vision', 'positioning', 'value prop', 'market fit'],
-    followUps: ['/baw:product_features "{subject}"', '/baw:product_helper "{subject} discovery gap"']
+    followUps: ['/baw_product_features "{subject}"', '/baw_product_helper "{subject} discovery gap"']
   },
   {
     id: 'product_features',
-    template: '/baw:product_features "{subject}"',
+    template: '/baw_product_features "{subject}"',
     persona: 'product',
     description: 'Break a product vision into a feature catalogue with dependencies.',
     keywords: ['feature map', 'roadmap', 'dependency graph', 'catalogue', 'feature list', 'epic plan'],
-    followUps: ['/baw:product_wishlist "{subject}"', '/baw:product_helper "{subject} research"']
+    followUps: ['/baw_product_wishlist "{subject}"', '/baw_product_helper "{subject} research"']
   },
   {
     id: 'product_helper',
-    template: '/baw:product_helper "{subject}"',
+    template: '/baw_product_helper "{subject}"',
     persona: 'product',
     description: 'Run focused research to close discovery gaps.',
     keywords: ['research', 'market', 'analysis', 'competitive', 'regulation', 'compliance', 'sizing'],
-    followUps: ['/baw:product_features "{subject}"']
+    followUps: ['/baw_product_features "{subject}"']
   },
   {
     id: 'dev_dependency_plan',
-    template: '/baw:dev_dependency_plan "{subject}"',
+    template: '/baw_dev_dependency_plan "{subject}"',
     persona: 'dev',
     description: 'Sequence milestones and dependencies before committing to build work.',
     keywords: ['dependency', 'roadmap', 'phase plan', 'milestone', 'breakdown', 'sequence', 'epic'],
-    followUps: ['/baw:dev_breakout_plan "{subject}"']
+    followUps: ['/baw_dev_breakout_plan "{subject}"']
   },
   {
     id: 'dev_execution_prep',
-    template: '/baw:dev_execution_prep "{subject}"',
+    template: '/baw_dev_execution_prep "{subject}"',
     persona: 'dev',
     description: 'Create an execution checklist with owners, validation, and missing assets.',
     keywords: ['execution prep', 'acceptance', 'checklist', 'handoff', 'ready to build', 'owners'],
-    followUps: ['/baw:dev_build "{subject}"']
+    followUps: ['/baw_dev_build "{subject}"']
   },
   {
     id: 'dev_quick_build',
-    template: '/baw:dev_quick_build "{subject}"',
+    template: '/baw_dev_quick_build "{subject}"',
     persona: 'dev',
     description: 'Handle lightweight bug fixes or single-file changes.',
     keywords: ['bug', 'hotfix', 'typo', 'quick fix', 'small change', 'regression', 'patch'],
-    followUps: ['/baw:dev_test']
+    followUps: ['/baw_dev_test']
   },
   {
     id: 'dev_discovery_build',
-    template: '/baw:dev_discovery_build "{subject}"',
+    template: '/baw_dev_discovery_build "{subject}"',
     persona: 'dev',
     description: 'Combine discovery with an implementation pass for medium tasks.',
     keywords: ['implement', 'build feature', 'new feature', 'medium scope', 'code and research'],
-    followUps: ['/baw:dev_test']
+    followUps: ['/baw_dev_test']
   },
   {
     id: 'dev_full_pipeline',
-    template: '/baw:dev_full_pipeline "{subject}" "" "budget"',
+    template: '/baw_dev_full_pipeline "{subject}" "" "budget"',
     persona: 'dev',
     description: 'Run discovery → plan → build flow for large initiatives with budget guardrails.',
     keywords: ['large feature', 'major rewrite', 'full pipeline', 'multi sprint', 'end to end'],
-    followUps: ['/baw:dev_test', '/baw:dev_deploy_plan "{subject}"']
+    followUps: ['/baw_dev_test', '/baw_dev_deploy_plan "{subject}"']
   },
   {
     id: 'dev_test',
-    template: '/baw:dev_test',
+    template: '/baw_dev_test',
     persona: 'dev',
     description: 'Execute automated tests after a build or before deployment.',
     keywords: ['test', 'qa', 'verification', 'unit tests', 'integration'],
-    followUps: ['/baw:uat "{subject}"', '/baw:dev_deploy_staging "{subject}"']
+    followUps: ['/baw_uat "{subject}"', '/baw_dev_deploy_staging "{subject}"']
   },
   {
     id: 'dev_deploy_plan',
-    template: '/baw:dev_deploy_plan "{subject}"',
+    template: '/baw_dev_deploy_plan "{subject}"',
     persona: 'dev',
     description: 'Produce deployment and rollback runbooks.',
     keywords: ['deploy', 'release', 'launch', 'rollback', 'cutover', 'deployment plan'],
-    followUps: ['/baw:dev_deploy_staging "{subject}"', '/baw:dev_release "{subject}"']
+    followUps: ['/baw_dev_deploy_staging "{subject}"', '/baw_dev_release "{subject}"']
   },
   {
     id: 'workflow_radar',
-    template: '/baw:workflow_radar "{subject}"',
+    template: '/baw_workflow_radar "{subject}"',
     persona: 'ops',
     description: 'Summarize outstanding work, blockers, and missing docs by persona.',
     keywords: ['status', 'dashboard', 'overview', 'where are we', 'blockers', 'radar'],
@@ -104,19 +106,19 @@ const ROUTES = [
   },
   {
     id: 'provider_functions',
-    template: '/baw:provider_functions "{subject}"',
+    template: '/baw_provider_functions "{subject}"',
     persona: 'ops',
     description: 'Map provider/admin workflows and operational requirements.',
     keywords: ['operations', 'provider', 'admin workflow', 'ops process', 'handoff'],
-    followUps: ['/baw:dev_execution_prep "{subject}"']
+    followUps: ['/baw_dev_execution_prep "{subject}"']
   },
   {
     id: 'support_ticket',
-    template: '/baw:support_ticket "{subject}"',
+    template: '/baw_support_ticket "{subject}"',
     persona: 'support',
     description: 'Convert customer issues into actionable follow-ups.',
     keywords: ['support', 'ticket', 'customer', 'escalation', 'cs', 'incident'],
-    followUps: ['/baw:dev_quick_build "{subject}"', '/baw:triage_bug "{subject}"']
+    followUps: ['/baw_dev_quick_build "{subject}"', '/baw_triage_bug "{subject}"']
   }
 ];
 

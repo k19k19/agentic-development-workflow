@@ -5,10 +5,10 @@ allowed-tools: ["Read", "Write", "mcp__gemini-cli__ask-gemini"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_verify_discovery
+# /baw_dev_verify_discovery
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered after `/baw:dev_discovery` completes. Verifies discovery results for completeness and quality.
+**AI-INTERNAL COMMAND** - Automatically triggered after `/baw_dev_discovery` completes. Verifies discovery results for completeness and quality.
 
 ## Variables
 DISCOVERY_RESULTS_PATH: $1
@@ -16,7 +16,7 @@ FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
-- **You don't run this manually** - Claude runs it automatically after `/baw:dev_discovery`.
+- **You don't run this manually** - Claude runs it automatically after `/baw_dev_discovery`.
 - Analyze discovery results for completeness.
 - Calculate confidence score (0-100%).
 - Identify unanswered questions.

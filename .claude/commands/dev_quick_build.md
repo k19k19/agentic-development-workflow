@@ -5,10 +5,10 @@ allowed-tools: ["mcp__codex__codex", "Read", "Write", "Edit", "run_shell_command
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_quick_build
+# /baw_dev_quick_build
 
 ## Purpose
-Direct implementation for small, well-understood tasks using Codex MCP. Bypasses discovery/`/baw:dev_plan` phases for maximum speed and minimal token usage (~5K tokens).
+Direct implementation for small, well-understood tasks using Codex MCP. Bypasses discovery/`/baw_dev_plan` phases for maximum speed and minimal token usage (~5K tokens).
 
 ## Variables
 TASK: $1
@@ -43,21 +43,21 @@ TASK: $1
 
 **✅ If implementation successful:**
 ```bash
-/baw:dev_deploy_staging
+/baw_dev_deploy_staging
 ```
 
 **Test first (if critical):**
 ```bash
-/baw:dev_test
-# If tests pass → /baw:dev_deploy_staging
+/baw_dev_test
+# If tests pass → /baw_dev_deploy_staging
 ```
 
 **If task was too complex for quick mode:**
 - Use proper workflow instead:
 ```bash
-/baw:dev_discovery_build "[task]"  # For medium tasks
+/baw_dev_discovery_build "[task]"  # For medium tasks
 # or
-/baw:dev_full_pipeline "[task]" "" "budget"  # For large tasks
+/baw_dev_full_pipeline "[task]" "" "budget"  # For large tasks
 ```
 
 ## Budget

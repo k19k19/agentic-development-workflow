@@ -15,7 +15,7 @@ Here is what the main EAW-README.md for this new template might look like. It in
 
 
 ## Why This Design is a Better Replacement
-Drastically Lower Cognitive Load: Instead of dozens of /baw:... commands and a complex directory structure, the user only needs to remember /agent. The system is conversational and context-aware, guiding the user through sub-commands (plan, code, test).
+Drastically Lower Cognitive Load: Instead of dozens of /baw_... commands and a complex directory structure, the user only needs to remember /agent. The system is conversational and context-aware, guiding the user through sub-commands (plan, code, test).
 Flexible and Adaptive: It gracefully handles both a 5-minute bug fix and a 3-month epic. The "progressive disclosure" of directories (plan/, discovery/) prevents the user from being overwhelmed by empty folders and unnecessary structure.
 Organic Knowledge Capture: The Knowledge Base is built as a natural byproduct of completing work, not as a separate, formal process. Asking "What did we learn?" at the end of a task is a simple yet powerful mechanism for retaining context. This is more user-friendly than the formal KL- system.
 Cleaner Project Root: All agentic activity is namespaced under a single workspace/ directory (which can be git-ignored) and a hidden .agent/ configuration directory. This keeps the project's primary file tree clean and focused on the source code itself.

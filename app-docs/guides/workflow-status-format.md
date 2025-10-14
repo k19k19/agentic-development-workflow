@@ -35,8 +35,8 @@ Each status JSON file must include the following fields:
   "featureTitle": "Add Auth Guard",
   "phase": "plan",
   "status": "needs_validation",
-  "command": "/baw:dev_plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
-  "nextCommand": "/baw:dev_plan \"Add Auth Guard\" --resume",
+  "command": "/baw_dev_plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
+  "nextCommand": "/baw_dev_plan \"Add Auth Guard\" --resume",
   "summary": "Plan drafted and waiting for validation feedback.",
   "outputPath": "ai-docs/workflow/features/add-auth-guard/plans/20250112-add-auth-guard/plan.md",
   "documentation": [

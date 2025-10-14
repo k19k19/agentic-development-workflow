@@ -5,7 +5,7 @@ allowed-tools: ["Read", "Write", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:dev_feature_start
+# /baw_dev_feature_start
 
 ## Purpose
 Initialize a clean, hermetic environment for a new feature. Load feature specifications and set up session logging.
@@ -22,7 +22,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - If `FEATURE_ID` is missing, stop and ask the user to provide it.
 - Look for a spec file matching `SPECS_DIRECTORY/[FEATURE_ID].md` or `SPECS_DIRECTORY/*-[FEATURE_ID].md`.
 - If found, read and summarize the feature requirements, then copy or link them into `INTAKE_DIRECTORY/requirements.md`.
-- Create the feature workspace at `FEATURE_WORKSPACE_ROOT/<feature-id>/` using `npm run baw:feature:scaffold` when needed.
+- Create the feature workspace at `FEATURE_WORKSPACE_ROOT/<feature-id>/` using `npm run baw_feature:scaffold` when needed.
 - Initialize a session log file (`SESSIONS_DIRECTORY/SESSION-[date]-kickoff.md`) with timestamp and loaded context.
 - Clear any stale context to ensure a fresh start.
 
@@ -33,11 +33,11 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 4. Create session directory structure inside the feature workspace.
 5. Initialize session log with timestamp and capture initial context.
 6. Write `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-start.json` (`phase: "start"`, `status: "completed"`).
-7. Report successful initialization and suggest next steps (`/baw:dev_discovery` followed by `/baw:dev_plan`).
+7. Report successful initialization and suggest next steps (`/baw_dev_discovery` followed by `/baw_dev_plan`).
 
 ## Report
 - Confirm environment initialized for `FEATURE_ID`.
 - Display path to loaded spec (if found).
 - Show session log location inside the feature workspace.
-- Suggest running `/baw:dev_discovery` to discover relevant files.
+- Suggest running `/baw_dev_discovery` to discover relevant files.
 - Remind the user to run `npm run baw:workflow:sync` so dashboards pick up the new feature.

@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__gemini-cli__web-search", "R
 model: claude-sonnet-4-5
 ---
 
-# /baw:product_helper
+# /baw_product_helper
 
 ## Purpose
 Perform targeted research that unblocks product, feature, or wishlist decisions while capturing references for future work.
@@ -39,9 +39,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Save status JSON with `phase: "product-research"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-product-research.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked` based on research sufficiency.
-- Set `nextCommand` to the most relevant follow-up (e.g., `/baw:product_features`, `/baw:dev_dependency_plan`).
+- Set `nextCommand` to the most relevant follow-up (e.g., `/baw_product_features`, `/baw_dev_dependency_plan`).
 - Include research doc paths under `outputPath`/`documentation` and remind the user to run `npm run baw:workflow:sync` once docs are updated.
 
 ## Next Steps
-- `/baw:product_features "<product-title>"`
-- `/baw:dev_dependency_plan "<initiative>" "<context-docs>"`
+- `/baw_product_features "<product-title>"`
+- `/baw_dev_dependency_plan "<initiative>" "<context-docs>"`

@@ -5,7 +5,7 @@ allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "
 model: claude-sonnet-4-5
 ---
 
-# /baw:product_wishlist
+# /baw_product_wishlist
 
 ## Purpose
 Record aspirational features, experiments, and deferred scope so the core delivery plan stays focused while keeping a backlog of future ideas.
@@ -39,9 +39,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ## Automation Trace
 - Emit status JSON with `phase: "wishlist"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-wishlist.json`.
 - Use `status` values `completed`, `needs_docs`, or `blocked`.
-- Set `nextCommand` toward `/baw:product_helper`, `/baw:workflow_radar`, or other relevant follow-ups.
+- Set `nextCommand` toward `/baw_product_helper`, `/baw_workflow_radar`, or other relevant follow-ups.
 - Remind the user to run `npm run baw:workflow:sync`.
 
 ## Next Steps
-- `/baw:product_helper "<product-title>" "<research-question>"`
-- `/baw:workflow_radar "<initiative>"`
+- `/baw_product_helper "<product-title>" "<research-question>"`
+- `/baw_workflow_radar "<initiative>"`

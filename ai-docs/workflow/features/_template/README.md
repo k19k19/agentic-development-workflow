@@ -12,7 +12,7 @@ Describe the outcome this feature delivers.
 
 ## Current Scope
 
-List the planned plan slices or modules. Reference the latest `/baw:dev_plan` entry in `plans/` and align backlog work to the
+List the planned plan slices or modules. Reference the latest `/baw_dev_plan` entry in `plans/` and align backlog work to the
 matching checklist row.
 
 ## Active Session Notes

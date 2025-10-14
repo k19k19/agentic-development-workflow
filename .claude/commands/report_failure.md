@@ -5,10 +5,10 @@ allowed-tools: ["Read", "Write", "run_shell_command"]
 model: claude-sonnet-4-5
 ---
 
-# /baw:report_failure
+# /baw_report_failure
 
 ## Purpose
-**AI-INTERNAL COMMAND** - Automatically triggered by test failure in `/baw:dev_test` phase. Analyzes root cause and enters learning loop.
+**AI-INTERNAL COMMAND** - Automatically triggered by test failure in `/baw_dev_test` phase. Analyzes root cause and enters learning loop.
 
 ## Variables
 FEATURE_ID: $1
@@ -21,7 +21,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 - Analyze test failure root cause.
 - Generate structured `FAILURES_DIRECTORY/<ISO-timestamp>-failure-report.md` (append if continuing same failure thread).
 - Document lessons learned.
-- Automatically trigger `/baw:restart_feature`.
+- Automatically trigger `/baw_restart_feature`.
 
 ## Workflow
 1. Read test failure output.
@@ -31,7 +31,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
    - What was missed?
 3. Generate structured failure report.
 4. Document lessons learned.
-5. Trigger `/baw:restart_feature` to re-enter workflow with context.
+5. Trigger `/baw_restart_feature` to re-enter workflow with context.
 
 ## Report
 - Display failure summary (tests failed count).
@@ -45,7 +45,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
   - Save to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-report-failure.json`.
   - Use `phase: "report"` and set `status` to `failed` or `blocked` based on severity.
   - Include the generated failure report path and any documentation requiring updates.
-  - Set `nextCommand` to `/baw:restart_feature <feature-id>` or other recovery command the user must run.
+  - Set `nextCommand` to `/baw_restart_feature <feature-id>` or other recovery command the user must run.
 - Prompt the user to run `npm run baw:workflow:sync` so the dashboard shows the failure context.
 
 ## Budget

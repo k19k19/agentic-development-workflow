@@ -40,7 +40,7 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **Tags:** workflow, governance, features
 
 ### KL-004 — Discovery-to-Plan Revision Policy (Adopted 2024-05-07)
-- **What:** Locked the `/baw:dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
+- **What:** Locked the `/baw_dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
 - **Why:** Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.
 - **How:** Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.
 - **Tags:** workflow, discovery, planning
@@ -52,7 +52,7 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **Tags:** commands, personas, workflow
 
 ### KL-006 — BAW Namespace & Feature Workspace Unification (Adopted 2024-05-12)
-- **What:** Namespaced all workflow commands with `baw:` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.
+- **What:** Namespaced all workflow commands with `baw_` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.
 - **Why:** A unified namespace and directory layout eliminate drift between discovery, plan, and build artifacts while keeping dashboards and hand-offs consistent.
 - **How:** Updated `.claude/commands/`, `CLAUDE.md`, repository guides, and workflow scripts (`scripts/workflow-status.js`, installers, dashboards) to read/write the new structure and provide scaffolding updates (including `intake/tasks/`).
 - **Tags:** workflow, namespace, traceability

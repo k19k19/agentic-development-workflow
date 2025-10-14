@@ -5,7 +5,7 @@
 - **Related:** KL-003, KL-004, KL-006
 
 ## Problem
-Even after namespacing commands under `/baw:` and routing outputs into feature workspaces, discovery artifacts
+Even after namespacing commands under `/baw_` and routing outputs into feature workspaces, discovery artifacts
 (product strategy, persona notes, support triage) and follow-up command docs still drifted. Some commands
 referenced legacy folders (`ai-docs/plans/`), while product/support outputs lacked a consistent home. As the
 command surface expanded, teams struggled to trace how research flowed into plans, builds, and operations.
@@ -28,7 +28,7 @@ Unify command guidance and the feature template so every discovery and execution
   `intake/personas/` and `intake/support/`.
 - Developer-focused commands reference dedicated `plans/dependency`, `plans/breakouts`, `plans/deployment`, and
   report directories, eliminating references to deprecated top-level folders.
-- Operations tooling (`/baw:workflow_radar`, `/baw:dev_deploy_staging`, `/baw:dev_release`) logs outputs in
+- Operations tooling (`/baw_workflow_radar`, `/baw_dev_deploy_staging`, `/baw_dev_release`) logs outputs in
   `reports/ops` and `reports/deployments`, ensuring the dashboard can trace readiness and release history.
 - Command docs explicitly remind agents to reuse the existing workspace slug, preventing accidental feature
   duplication.

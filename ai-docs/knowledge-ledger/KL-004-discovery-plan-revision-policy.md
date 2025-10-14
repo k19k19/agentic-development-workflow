@@ -10,11 +10,11 @@
 
 ## Problem
 
-Early runs of `/baw:dev_discovery` routinely discovered new requirements after an initial plan slice had already been created. Agents reacted by scaffolding duplicate features or creating parallel plan files, fragmenting the backlog and breaking traceability between discovery, planning, and implementation.
+Early runs of `/baw_dev_discovery` routinely discovered new requirements after an initial plan slice had already been created. Agents reacted by scaffolding duplicate features or creating parallel plan files, fragmenting the backlog and breaking traceability between discovery, planning, and implementation.
 
 ## Decision
 
-All `/baw:dev_discovery` refinements must update the existing feature workspace:
+All `/baw_dev_discovery` refinements must update the existing feature workspace:
 
 1. Append clarifications and research directly to the in-flight `plans/<timestamp>-*/plan.md` file.
 2. Update the corresponding row in `plans/checklist.json` with the new context or acceptance criteria.
@@ -27,6 +27,6 @@ Keeping the discovery→plan loop scoped to a single plan slice preserves contex
 
 ## Implementation
 
-- Added a "Discovery-to-Plan Feedback Loop" section to `CLAUDE.md` so agents treat `/baw:dev_discovery` revisions as updates, not new features.
+- Added a "Discovery-to-Plan Feedback Loop" section to `CLAUDE.md` so agents treat `/baw_dev_discovery` revisions as updates, not new features.
 - Documented the revision workflow in the Large Feature Delivery Playbook and feature directory README so humans and automation share the same expectations.
 - Updated the feature template's `plans/README.md` with explicit instructions for recording revisions in-place.

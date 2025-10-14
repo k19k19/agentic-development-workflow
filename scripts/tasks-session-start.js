@@ -72,22 +72,24 @@ function deriveTasksFromFeatures(features = []) {
     .map(feature => {
       const command = feature.nextCommand.trim();
       const firstToken = command.split(/\s+/)[0];
-      const normalizedToken = firstToken.startsWith('/baw:')
-        ? `/${firstToken.slice(5)}`
-        : firstToken;
+      const normalizedToken = firstToken.startsWith('/baw_')
+        ? firstToken
+        : firstToken.startsWith('/dev_')
+          ? `/baw_${firstToken.slice(5)}`
+          : firstToken;
       let size = 'medium';
       let estimatedTokens = TASK_SIZES.medium;
 
-      if (normalizedToken === '/baw:dev_quick_build') {
+      if (normalizedToken === '/baw_dev_quick_build') {
         size = 'small';
         estimatedTokens = TASK_SIZES.small;
-      } else if (normalizedToken === '/baw:dev_discovery_build') {
+      } else if (normalizedToken === '/baw_dev_discovery_build') {
         size = 'medium';
         estimatedTokens = TASK_SIZES.medium;
-      } else if (normalizedToken === '/baw:dev_full_pipeline') {
+      } else if (normalizedToken === '/baw_dev_full_pipeline') {
         size = 'large';
         estimatedTokens = TASK_SIZES.large;
-      } else if (normalizedToken === '/baw:dev_build' || normalizedToken === '/baw:dev_build_report') {
+      } else if (normalizedToken === '/baw_dev_build' || normalizedToken === '/baw_dev_build_report') {
         size = 'large';
         estimatedTokens = TASK_SIZES.large;
       }
@@ -140,7 +142,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     const estimate = formatTokens(task.estimatedTokens || TASK_SIZES[task.size] || 0);
     const command =
       task.command ||
-      `/baw:${
+      `/baw_${
         task.size === 'small'
           ? 'dev_quick_build'
           : task.size === 'medium'
@@ -243,7 +245,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     const features = Array.isArray(statusIndex.features) ? statusIndex.features : [];
     printSection('Cross-Session Workflow');
     if (features.length === 0) {
-      console.log('No workflow entries recorded. Run a slash command (e.g., /baw:dev_discovery) and sync with `npm run baw:workflow:sync`.');
+      console.log('No workflow entries recorded. Run a slash command (e.g., /baw_dev_discovery) and sync with `npm run baw:workflow:sync`.');
     } else {
       console.log(`Tracked features: ${features.length}`);
       features.slice(0, 3).forEach(feature => {
@@ -280,7 +282,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
 
     printSection('Next Steps');
     console.log('1. Run `npm run baw:workflow:sync` after each command to keep the dashboard current.');
-    console.log('2. When `/baw:dev_discovery` surfaces gaps, revise the active plan/checklist/backlog instead of creating a new feature.');
+    console.log('2. When `/baw_dev_discovery` surfaces gaps, revise the active plan/checklist/backlog instead of creating a new feature.');
     console.log('3. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
     console.log('4. Reserve Claude for architecture, multi-file reasoning, and verification.');
     console.log('5. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
