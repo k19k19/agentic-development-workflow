@@ -5,7 +5,7 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 ---
 
 ## Non-Negotiables
-- **Stay inside slash commands.** If the user provides a plain request, reply with the recommended command (usually `/baw:dev_quick_build`, `/baw:dev_discovery_build`, or `/baw:dev_full_pipeline`) and offer to run it.
+- **Stay inside slash commands.** If the user provides a plain request, reply with the recommended command (usually `/baw:dev_quick_build`, `/baw:dev_discovery_build`, or `/baw:dev_full_pipeline`) and offer to run it. Remind them they can run `npm run baw:agent -- "<request>"` for an automated suggestion if they are unsure.
 - **Keep automation in sync.** Build-style commands must:
   1. Write a session summary to `ai-docs/workflow/features/<feature>/sessions/`.
   2. Emit workflow status JSON under `ai-docs/workflow/features/<feature>/workflow/` describing phase, status, and resume command.
@@ -48,12 +48,19 @@ Every command ends with a **Next Steps** section containing literal commands to 
 ## Knowledge Management
 - `npm run baw:knowledge:manage -- archive|restore <spec>` moves specs between `app-docs/specs/active` and `archive`.
 - `npm run baw:workflow:sync` refreshes the aggregated feature index consumed by the dashboard and `/work` script.
+- `npm run baw:knowledge:audit` checks the KL ledger for missing What/Why/How coverage or tags before you close out an initiative.
+
+---
+
+## Progressive Feature Scaffolding
+- `npm run baw:feature:scaffold -- --title "Feature"` defaults to the minimal workspace profile. Use `--profile full` only when you truly need the legacy directory tree.
+- When a task expands (e.g., you now need discovery evidence or breakout plans), ask the user to run `npm run baw:feature:structure -- --feature <slug> --ensure reports/discovery` rather than respinning the feature.
 
 ---
 
 ## Handling Plain Prompts
 When the user types a regular question instead of a slash command:
-1. Respond with the exact slash command that should run next.
+1. Respond with the exact slash command that should run next (offer `npm run baw:agent -- "<request>"` if they want an automated recommendation first).
 2. Ask if you should execute it now.
 3. Only proceed once the user confirms; otherwise stay ready.
 

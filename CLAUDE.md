@@ -161,7 +161,7 @@ npm run baw:work                   # Display unified dashboard
 ## Command Patterns
 
 ### When User Provides Plain Request
-1. Map request to appropriate slash command based on scope:
+1. Map request to appropriate slash command based on scope (offer `npm run baw:agent -- "<request>"` if the user wants an automated suggestion before you propose a command):
    - Single file/simple change → `/baw:dev_quick_build "[task]"`
    - Medium task (10-50 files) → `/baw:dev_discovery_build "[task]"`
    - Large feature (>50 files) → `/baw:dev_full_pipeline "[task]" "" "budget"`
@@ -205,6 +205,10 @@ title.toLowerCase()
   .trim()
 ```
 
+### Progressive Feature Scaffolding
+- `npm run baw:feature:scaffold -- --title "Feature"` now defaults to the minimal workspace profile; add `--profile full` when you explicitly need the legacy tree.
+- When a command requires additional folders (e.g., discovery evidence or breakout plans), have the user run `npm run baw:feature:structure -- --feature <slug> --ensure reports/discovery` (or the relevant section) instead of recreating the feature.
+
 ### Workflow Status Validation
 `scripts/workflow-status.js` enforces required fields:
 - `featureId`, `featureTitle`, `phase`, `status`, `command` (all strings)
@@ -216,6 +220,7 @@ title.toLowerCase()
 - Adopted decisions (active patterns)
 - Superseded decisions (historical context)
 - Auto-integrated into status index
+- Run `npm run baw:knowledge:audit` when wrapping an initiative to confirm every adopted decision has What/Why/How coverage and tagged metadata.
 
 ### Token Budget Tracking
 `scripts/utils/token-usage-analyzer.js` tracks usage by:

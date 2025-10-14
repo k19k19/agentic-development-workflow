@@ -17,11 +17,19 @@
 const fs = require('fs/promises');
 const path = require('path');
 const { existsSync } = require('fs');
+const {
+  REPO_ROOT,
+  FEATURES_ROOT,
+  MINIMAL_FILES,
+  OPTIONAL_SECTIONS,
+  ensureTemplateExists,
+  copyFromTemplate,
+  ensureOptionalSection,
+  copyTemplateTree
+} = require('./utils/feature-template');
 
-const REPO_ROOT = path.join(__dirname, '..');
-const FEATURES_ROOT = path.join(REPO_ROOT, 'ai-docs', 'workflow', 'features');
-const TEMPLATE_ROOT = path.join(FEATURES_ROOT, '_template');
 const INDEX_FILE = path.join(FEATURES_ROOT, 'index.json');
+const VALID_PROFILES = new Set(['minimal', 'full']);
 
 function printUsage(message) {
   if (message) {
@@ -36,6 +44,8 @@ function printUsage(message) {
   console.log('  --stage <stage> (default: intake)');
   console.log('  --maxPlanTokens <number> (default: 2000)');
   console.log('  --token <number> (estimated total token budget)');
+  console.log('  --profile <minimal|full>  (default: minimal)');
+  console.log('  --include <path>          Additional sections to copy from the template (repeatable)');
   process.exit(1);
 }
 
@@ -50,6 +60,8 @@ function parseArgs() {
     stage: 'intake',
     maxPlanTokens: 2000,
     token: 0,
+    profile: 'minimal',
+    includes: []
   };
 
   for (let i = 0; i < args.length; i += 1) {
@@ -80,6 +92,23 @@ function parseArgs() {
         config.token = parsed;
       }
       i += 1;
+    } else if (key === 'profile') {
+      const value = args[i + 1];
+      if (!value || value.startsWith('--')) {
+        printUsage('Missing value for --profile');
+      }
+      if (!VALID_PROFILES.has(value)) {
+        printUsage(`Invalid profile "${value}". Expected one of: ${Array.from(VALID_PROFILES).join(', ')}`);
+      }
+      config.profile = value;
+      i += 1;
+    } else if (key === 'include') {
+      const value = args[i + 1];
+      if (!value || value.startsWith('--')) {
+        printUsage('Missing value for --include');
+      }
+      config.includes.push(value);
+      i += 1;
     } else {
       printUsage(`Unknown option: --${key}`);
     }
@@ -101,26 +130,36 @@ function slugify(input) {
     .replace(/-+/g, '-');
 }
 
-async function ensureTemplateExists() {
-  const stats = await fs.stat(TEMPLATE_ROOT).catch(() => null);
-  if (!stats || !stats.isDirectory()) {
-    throw new Error('Template directory is missing. Expected at ai-docs/workflow/features/_template');
+function normalizeInclude(value = '') {
+  return value.replace(/^\/+/, '').replace(/\/+$/, '');
+}
+
+async function applyIncludes(featureDir, includes = []) {
+  const seen = new Set();
+  for (const raw of includes) {
+    const normalized = normalizeInclude(raw);
+    if (!normalized || seen.has(normalized)) {
+      continue;
+    }
+    seen.add(normalized);
+    try {
+      if (OPTIONAL_SECTIONS[normalized]) {
+        await ensureOptionalSection(featureDir, normalized);
+      } else {
+        await copyFromTemplate(normalized, featureDir);
+      }
+    } catch (error) {
+      throw new Error(`Failed to include "${normalized}": ${error.message}`);
+    }
   }
 }
 
-async function copyRecursive(src, dest) {
-  await fs.mkdir(dest, { recursive: true });
-  const entries = await fs.readdir(src, { withFileTypes: true });
-  for (const entry of entries) {
-    const srcPath = path.join(src, entry.name);
-    const destPath = path.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      await copyRecursive(srcPath, destPath);
-    } else {
-      const content = await fs.readFile(srcPath);
-      await fs.writeFile(destPath, content);
-    }
+async function copyMinimalProfile(featureDir, includes) {
+  await fs.mkdir(featureDir, { recursive: true });
+  for (const relativePath of MINIMAL_FILES) {
+    await copyFromTemplate(relativePath, featureDir);
   }
+  await applyIncludes(featureDir, includes);
 }
 
 async function writeManifest(featureDir, config, timestamps) {
@@ -235,7 +274,12 @@ async function main() {
       updatedAt: new Date().toISOString(),
     };
 
-    await copyRecursive(TEMPLATE_ROOT, featureDir);
+    if (config.profile === 'full') {
+      await copyTemplateTree(featureDir);
+    } else {
+      await copyMinimalProfile(featureDir, config.includes);
+    }
+
     await writeManifest(featureDir, config, timestamps);
     await writeReadme(featureDir, config);
     await writeChecklist(featureDir, timestamps);
@@ -243,11 +287,14 @@ async function main() {
     await updateIndex(config, timestamps);
 
     console.log(`✔ Created feature workspace at ${path.relative(REPO_ROOT, featureDir)}`);
+    console.log(`   Profile: ${config.profile}${config.includes.length ? ` (plus ${config.includes.length} additional section${config.includes.length === 1 ? '' : 's'})` : ''}`);
     console.log('Next steps:');
     console.log('  1. Fill in intake/requirements.md with the problem statement.');
     console.log('  2. Draft the first plan slice in plans/checklist.json and run /baw:dev_plan.');
     console.log('  3. Record the decision in the knowledge ledger if this is a new initiative.');
-    console.log('  4. When /baw:dev_discovery uncovers missing context, update the same plan/checklist/backlog entries instead of scaffolding another feature.');
+    console.log(
+      '  4. Use npm run baw:feature:structure -- --feature <slug> --ensure <section> to pull in extra directories when the task grows.'
+    );
   } catch (error) {
     console.error(`Failed to scaffold feature: ${error.message}`);
     process.exit(1);

@@ -15,6 +15,13 @@ function normalizeWhitespace(value = '') {
     .trim();
 }
 
+function parseTagsText(value = '') {
+  return value
+    .split(/[,;]+/g)
+    .map(token => token.trim().toLowerCase())
+    .filter(Boolean);
+}
+
 function finalizeEntry({ entry, section, adopted, superseded, warnings }) {
   if (!entry) {
     return;
@@ -27,13 +34,17 @@ function finalizeEntry({ entry, section, adopted, superseded, warnings }) {
     adoptedOn: entry.adoptedOn,
     what: normalizeWhitespace(entry.what),
     why: normalizeWhitespace(entry.why),
-    how: normalizeWhitespace(entry.how)
+    how: normalizeWhitespace(entry.how),
+    tags: Array.from(new Set((entry.tags || []).map(tag => tag.toLowerCase()))).sort()
   };
 
   if (section === 'adopted') {
     const missing = ['what', 'why', 'how'].filter(key => !normalized[key]);
     if (missing.length > 0) {
       warnings.push(`Knowledge ledger entry ${entry.id} is missing: ${missing.join(', ')}`);
+    }
+    if (!normalized.tags.length) {
+      warnings.push(`Knowledge ledger entry ${entry.id} is missing tags to aid discovery.`);
     }
   }
 
@@ -91,7 +102,8 @@ function parseKnowledgeLedger(markdownContent) {
         adoptedOn: headerMatch[3],
         what: '',
         why: '',
-        how: ''
+        how: '',
+        tags: []
       };
       activeField = null;
       return;
@@ -109,6 +121,9 @@ function parseKnowledgeLedger(markdownContent) {
       if (['what', 'why', 'how'].includes(key)) {
         entry[key] = value;
         activeField = key;
+      } else if (key === 'tags') {
+        entry.tags = parseTagsText(value);
+        activeField = 'tags';
       } else {
         warnings.push(
           `Knowledge ledger entry ${entry.id} has an unrecognized field '${rawKey}' on line ${index + 1}`
@@ -119,7 +134,11 @@ function parseKnowledgeLedger(markdownContent) {
     }
 
     if (activeField && trimmed.length > 0) {
-      entry[activeField] = `${entry[activeField]} ${trimmed}`.trim();
+      if (activeField === 'tags') {
+        entry.tags = Array.from(new Set([...entry.tags, ...parseTagsText(trimmed)]));
+      } else {
+        entry[activeField] = `${entry[activeField]} ${trimmed}`.trim();
+      }
       return;
     }
 
@@ -131,7 +150,7 @@ function parseKnowledgeLedger(markdownContent) {
   commitEntry();
 
   return {
-    version: '1.0',
+    version: '1.1',
     adopted,
     superseded,
     warnings
@@ -149,7 +168,7 @@ async function loadKnowledgeLedgerIndex() {
   } catch (error) {
     if (error.code === 'ENOENT') {
       return {
-        version: '1.0',
+        version: '1.1',
         adopted: [],
         superseded: [],
         warnings: [`Knowledge ledger not found at ${path.relative(REPO_ROOT, LEDGER_PATH)}`],

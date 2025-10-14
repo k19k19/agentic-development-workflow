@@ -1,6 +1,6 @@
 # Budget Agentic Workflow
 
-Zero-doc onboarding: every command explains itself, prints required follow-ups, and reminds you to stay inside the workflow. Run the dashboard, follow the prompt, and keep shipping.
+Zero-doc onboarding: every command explains itself, prints required follow-ups, and reminds you to stay inside the workflow. Run the dashboard, follow the prompt, and keep shipping. Unsure which command to start with? `npm run baw:agent -- "describe your task"` suggests the right `/baw:` entry point.
 
 ---
 
@@ -54,10 +54,14 @@ Every command outputs:
 ---
 
 ## Automation Scripts (npm)
+- `npm run baw:agent -- "<request>"` → Map plain-language requests to the closest `/baw:` command before you leave the workflow loop.
 - `npm run baw:knowledge:manage -- <cmd>` → Move specs between `active/`, `archive/`, and `reference/`.
 - `npm run baw:session:start` → Summarize cross-session context, token usage, and right-sized next tasks.
 - `npm run baw:workflow:sync` → Aggregate the latest discovery/baw:dev_plan/baw:dev_build/report status files for the dashboard.
 - `npm run baw:work` → Launch the feature workflow dashboard fed by `status-index.json`.
+- `npm run baw:feature:scaffold -- --title "Feature"` → Create a new workspace (defaults to the minimal profile; add `--profile full` for the legacy tree).
+- `npm run baw:feature:structure -- --feature <slug> --list` → Inspect optional directories; add them progressively with `--ensure reports/discovery`.
+- `npm run baw:knowledge:audit` → Check the KL ledger for missing fields or tags before closing out an initiative.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.
 
 Scripts never copy documentation into consumer projects—only runtime assets (`.claude/`, `scripts/`) plus empty scaffolding (`app-docs/` and `ai-docs/`).
@@ -86,14 +90,14 @@ Scripts never copy documentation into consumer projects—only runtime assets (`
    cd /path/to/your/project
    bash /tmp/budget-agentic-workflow/scripts/init-agentic-workflow.sh
    ```
-   - The script merges automation assets and configuration without touching your project’s README or other non-template docs.
-   - If you have custom `.gitignore`, `package.json`, or config files, the script merges in the required entries instead of overwriting them.
+    - The script merges automation assets and configuration without touching your project’s README or other non-template docs.
+    - If you have custom `.gitignore`, `package.json`, or config files, the script merges in the required entries instead of overwriting them.
 
 After the script runs:
 - `.claude/` and `scripts/` are copied in (existing files are respected).
 - `app-docs/` and `ai-docs/` directories are scaffolded if missing.
 - Required scripts and dependencies are added to `package.json` and `.gitignore`.
 - The workflow status index is seeded so dashboard commands work immediately.
-- The installer prints the next command to keep the automation loop aligned.
+- The installer prints the next command to keep the automation loop aligned. When you spin up a feature, start with the minimal profile (`npm run baw:feature:scaffold -- --title "XYZ"`), then pull in extra directories only when needed via `npm run baw:feature:structure`.
 
 Stay inside the slash-command loop, and the system keeps itself up to date.

@@ -11,6 +11,11 @@ This directory holds the governance records that anchor every implementation dec
 
 Keeping this loop tight ensures later versions build on prior knowledge instead of quietly discarding it.
 
+### Metadata requirements
+- Every adopted entry must answer **What/Why/How** in `ledger.md`.
+- Add a `Tags` line (comma-separated) so automation can cluster related decisions. Choose concise, meaningful tokens such as `workflow`, `governance`, or `billing`.
+- Run `npm run baw:knowledge:audit` before closing an initiative to confirm new entries include complete metadata.
+
 ## Workflow integration
 
 Running `npm run baw:workflow:sync` now ingests `ledger.md` and surfaces adopted decisions alongside the feature dashboard. The
