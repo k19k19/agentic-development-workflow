@@ -13,6 +13,7 @@
     "baw:knowledge:audit": "node scripts/knowledge-ledger-audit.js",
     "baw:token:log": "node scripts/utils/token-usage-log.js",
     "baw:workflow:sync": "node scripts/update-workflow-status.js",
+    "baw:maintenance:legacy-scan": "node scripts/maintenance/legacy-scan.js",
     "baw:work": "node scripts/unified-dashboard.js",
     "test": "jest",
     "lint": "eslint .",

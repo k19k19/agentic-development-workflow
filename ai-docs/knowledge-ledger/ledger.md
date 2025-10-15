@@ -63,6 +63,12 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **How:** Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.
 - **Tags:** intake, traceability, workflow
 
+### KL-008 — Code Hygiene Enforcement (Adopted 2025-10-16)
+- **What:** Locked in a zero-legacy hygiene standard by pairing a knowledge-ledger mandate with an automated scanner that flags dormant code paths and stale documentation.
+- **Why:** Leftover implementations and outdated references made subsequent work brittle and eroded trust in the docs; embedding the rule in governance keeps every feature surgically tidy.
+- **How:** `ai-docs/knowledge-ledger/KL-008-code-hygiene-enforcement.md` anchors the policy, `ai-docs/knowledge-ledger/legacy-scan.config.json` curates markers and allowlists, and `scripts/maintenance/legacy-scan.js` (via `npm run baw:maintenance:legacy-scan`) blocks drift during local and CI checks.
+- **Tags:** hygiene, maintenance, workflow
+
 ## Superseded Decisions
 
 _None yet._

@@ -1,6 +1,117 @@
 {
   "version": "1.1",
-  "generatedAt": null,
+  "generatedAt": "2025-10-15T00:04:38.316Z",
   "features": [],
+  "knowledgeLedger": {
+    "version": "1.1",
+    "source": "ai-docs/knowledge-ledger/ledger.md",
+    "adopted": [
+      {
+        "id": "KL-001",
+        "title": "Knowledge Ledger Governance",
+        "adoptedOn": "2025-10-03",
+        "what": "Established a constitution-style knowledge ledger with a canonical index and individual `KL-` decision files.",
+        "why": "Prevent future iterations from discarding hard-earned context by requiring every adopted implementation to document its rationale and approach.",
+        "how": "`ai-docs/knowledge-ledger/README.md` defines the governance loop, `ai-docs/knowledge-ledger/ledger.md` tracks adopted decisions, and `ai-docs/knowledge-ledger/KL-001-knowledge-ledger-governance.md` captures the full decision record.",
+        "tags": [
+          "documentation",
+          "governance",
+          "knowledge"
+        ]
+      },
+      {
+        "id": "KL-002",
+        "title": "Workflow Status Ledger Integration",
+        "adoptedOn": "2025-10-04",
+        "what": "Linked the knowledge ledger to the workflow status index so the dashboard and status sync commands surface adopted decisions alongside feature progress.",
+        "why": "Ensure project monitoring tools consistently reference the ledger as the single source of truth, preventing later iterations from ignoring established implementations.",
+        "how": "`scripts/utils/knowledge-ledger.js` parses `ledger.md`, `scripts/workflow-status.js` embeds the parsed summary in `status-index.json`, and both `scripts/update-workflow-status.js` and `scripts/unified-dashboard.js` report ledger coverage during status checks.",
+        "tags": [
+          "automation",
+          "knowledge",
+          "reporting"
+        ]
+      },
+      {
+        "id": "KL-003",
+        "title": "Large Feature Workflow Governance",
+        "adoptedOn": "2025-10-06",
+        "what": "Standardized large feature delivery around scaffolded directories, manifests, and session backlogs so complex initiatives remain within token budgets while maintaining traceability.",
+        "why": "Ad-hoc artifacts made it impossible to split plans, coordinate sessions, or monitor progress at epic scale; a structured workspace keeps automation and humans aligned.",
+        "how": "`app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, `ai-docs/workflow/features/_template/`, and `scripts/scaffold-feature.js` define and automate the new structure.",
+        "tags": [
+          "features",
+          "governance",
+          "workflow"
+        ]
+      },
+      {
+        "id": "KL-004",
+        "title": "Discovery-to-Plan Revision Policy",
+        "adoptedOn": "2025-10-07",
+        "what": "Locked the `/baw_dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.",
+        "why": "Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.",
+        "how": "Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.",
+        "tags": [
+          "discovery",
+          "planning",
+          "workflow"
+        ]
+      },
+      {
+        "id": "KL-005",
+        "title": "Persona-Aligned Command Restructure",
+        "adoptedOn": "2025-10-10",
+        "what": "Reorganized slash commands into product, developer, and operations tracks with new prompts for discovery, planning, deployment, and support.",
+        "why": "Large initiatives require clarity across personas; dedicated commands keep specs, plans, and support artifacts aligned from ideation through operations.",
+        "how": "New command templates in `.claude/commands/`, updated workflow documentation (`README.md`, `CLAUDE.md`, `app-docs/guides/end-to-end-command-workflow.md`), and expanded workflow status guidance capture the structure.",
+        "tags": [
+          "commands",
+          "personas",
+          "workflow"
+        ]
+      },
+      {
+        "id": "KL-006",
+        "title": "BAW Namespace & Feature Workspace Unification",
+        "adoptedOn": "2025-10-12",
+        "what": "Namespaced all workflow commands with `baw_` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.",
+        "why": "A unified namespace and directory layout eliminate drift between discovery, plan, and build artifacts while keeping dashboards and hand-offs consistent.",
+        "how": "Updated `.claude/commands/`, `CLAUDE.md`, repository guides, and workflow scripts (`scripts/workflow-status.js`, installers, dashboards) to read/write the new structure and provide scaffolding updates (including `intake/tasks/`).",
+        "tags": [
+          "namespace",
+          "traceability",
+          "workflow"
+        ]
+      },
+      {
+        "id": "KL-007",
+        "title": "Intake Alignment & Command Traceability",
+        "adoptedOn": "2025-10-14",
+        "what": "Expanded the feature template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each feature workspace.",
+        "why": "Prevent artifact drift and make it obvious how research flows into plans, builds, tests, deployments, and operations without revisiting legacy folders.",
+        "how": "Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.",
+        "tags": [
+          "intake",
+          "traceability",
+          "workflow"
+        ]
+      },
+      {
+        "id": "KL-008",
+        "title": "Code Hygiene Enforcement",
+        "adoptedOn": "2025-10-16",
+        "what": "Locked in a zero-legacy hygiene standard by pairing a knowledge-ledger mandate with an automated scanner that flags dormant code paths and stale documentation.",
+        "why": "Leftover implementations and outdated references made subsequent work brittle and eroded trust in the docs; embedding the rule in governance keeps every feature surgically tidy.",
+        "how": "`ai-docs/knowledge-ledger/KL-008-code-hygiene-enforcement.md` anchors the policy, `ai-docs/knowledge-ledger/legacy-scan.config.json` curates markers and allowlists, and `scripts/maintenance/legacy-scan.js` (via `npm run baw:maintenance:legacy-scan`) blocks drift during local and CI checks.",
+        "tags": [
+          "hygiene",
+          "maintenance",
+          "workflow"
+        ]
+      }
+    ],
+    "superseded": []
+  },
   "warnings": []
 }

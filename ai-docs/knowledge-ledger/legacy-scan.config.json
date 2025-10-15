@@ -1,0 +1,17 @@
+{
+  "legacyMarkers": ["@legacy", "LEGACY_TODO", "LEGACY-IMPL", "LEGACY_FIXME"],
+  "forbiddenFragments": ["ai-docs/plans/", "ai-docs/builds/", "ai-docs/sessions/"],
+  "allowedFiles": [
+    "ai-docs/knowledge-ledger/KL-006-baw-namespace-and-feature-workspaces.md",
+    "ai-docs/knowledge-ledger/KL-007-intake-alignment-and-command-traceability.md",
+    "ai-docs/knowledge-ledger/KL-008-code-hygiene-enforcement.md",
+    "ai-docs/knowledge-ledger/legacy-scan.config.json",
+    "scripts/maintenance/legacy-scan.js"
+  ],
+  "ignoreGlobs": [
+    "**/node_modules/**",
+    "**/.git/**",
+    "**/.idea/**",
+    "**/.vscode/**"
+  ]
+}
