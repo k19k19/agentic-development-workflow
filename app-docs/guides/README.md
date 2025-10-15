@@ -10,3 +10,4 @@ Place your own playbooks here (architecture decisions, onboarding notes, etc.). 
 - `codex-slash-command-compatibility.md` – Compatibility tips for slash commands.
 - `workflow-status-format.md` – Schema for workflow status data.
 - `product-charter-effort-estimates.md` – Steps to convert charter insights into man-hour ranges customers can evaluate.
+- `feature-folder-organization.md` – Guidance on structuring feature slices and managing reusable shared modules.
