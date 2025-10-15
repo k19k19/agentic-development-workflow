@@ -1,7 +1,271 @@
 {
   "version": "1.1",
-  "generatedAt": "2025-10-15T00:04:38.316Z",
-  "features": [],
+  "generatedAt": "2025-10-15T10:05:51.190Z",
+  "features": [
+    {
+      "featureId": "simple-accounting-software-for-dev-startup",
+      "title": "Simple Accounting Software for Dev Startup",
+      "currentPhase": "dependency-plan",
+      "status": "completed",
+      "lastCommand": "/baw_dev_dependency_plan",
+      "nextCommand": "/baw_dev_breakout_plan",
+      "updatedAt": "2025-10-15T00:00:03.000Z",
+      "summary": "5-phase roadmap created spanning 16-20 weeks with Early Access (Week 12) and Full MVP (Week 20) releases",
+      "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
+      "documentation": [
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/research/2025-10-15T00-00-00-philippines-compliance.md",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+      ],
+      "notes": {
+        "totalPhases": 5,
+        "totalWeeks": "16-20",
+        "totalFeatures": 26,
+        "phases": [
+          {
+            "phase": 1,
+            "name": "Foundation & Infrastructure",
+            "duration": "4 weeks (Weeks 1-4)",
+            "features": 6,
+            "effort": "130-150 hours",
+            "keyFeatures": [
+              "INF-001",
+              "INF-002",
+              "INF-003",
+              "INF-004",
+              "INF-005",
+              "INF-008"
+            ]
+          },
+          {
+            "phase": 2,
+            "name": "Core Services & API Layer",
+            "duration": "4 weeks (Weeks 5-8)",
+            "features": 6,
+            "effort": "120-140 hours",
+            "keyFeatures": [
+              "INF-007",
+              "SB-001",
+              "ESS-001",
+              "ET-001",
+              "ET-002",
+              "INF-006"
+            ]
+          },
+          {
+            "phase": 3,
+            "name": "Financial Operations & Integrations",
+            "duration": "4 weeks (Weeks 9-12)",
+            "features": 5,
+            "effort": "140-160 hours",
+            "keyFeatures": [
+              "PM-001",
+              "SB-002",
+              "ET-003",
+              "SB-003",
+              "ET-005"
+            ],
+            "milestone": "Early Access Program (EAP) Release"
+          },
+          {
+            "phase": 4,
+            "name": "Payroll & Employee Services",
+            "duration": "4 weeks (Weeks 13-16)",
+            "features": 6,
+            "effort": "120-140 hours",
+            "keyFeatures": [
+              "PM-002",
+              "PH-001",
+              "PM-003",
+              "ESS-002",
+              "ESS-003",
+              "FD-001"
+            ]
+          },
+          {
+            "phase": 5,
+            "name": "Philippines Compliance & Reporting",
+            "duration": "4 weeks (Weeks 17-20)",
+            "features": 5,
+            "effort": "110-130 hours",
+            "keyFeatures": [
+              "PH-003",
+              "PM-005",
+              "ESS-004",
+              "FD-002",
+              "FD-003"
+            ],
+            "milestone": "Full MVP Release"
+          }
+        ],
+        "criticalPath": [
+          "INF-003 (Cloud)",
+          "INF-007 (API Layer)",
+          "PM-001 (Payroll Integration)",
+          "PM-002 (Run Payroll)",
+          "PH-001 (13th Month Pay)",
+          "PH-003 (Govt Reports)"
+        ],
+        "highRiskFeatures": [
+          {
+            "id": "INF-007",
+            "name": "API Integration Layer",
+            "risk": "OAuth2 complexity, credential management",
+            "mitigation": "Prototype in Week 3-4"
+          },
+          {
+            "id": "PM-001",
+            "name": "Payroll Provider Integration",
+            "risk": "API immaturity, documentation gaps",
+            "mitigation": "Prototype in Week 7-8, select provider by Week 2"
+          },
+          {
+            "id": "PH-003",
+            "name": "Government Contribution Reports",
+            "risk": "Report format compliance",
+            "mitigation": "Validate with accountant in Week 16-17"
+          }
+        ],
+        "parallelizationOpportunities": {
+          "phase1": "INF-001, INF-002, INF-003 can build simultaneously",
+          "phase2": "SB-001, ESS-001, ET-001 can build simultaneously",
+          "phase3": "PM-001 + SB-002 + ET-003 can build simultaneously",
+          "phase4": "PM-002 (critical path) + ESS-003 can overlap",
+          "phase5": "PH-003 + PM-005 can build simultaneously"
+        },
+        "releases": {
+          "earlyAccess": {
+            "week": 12,
+            "features": 14,
+            "capabilities": [
+              "Invoicing",
+              "Expense Management",
+              "Customer Management",
+              "Employee Self-Service"
+            ]
+          },
+          "fullMVP": {
+            "week": 20,
+            "features": 26,
+            "capabilities": [
+              "Full Payroll",
+              "Philippines Compliance",
+              "Financial Reporting",
+              "All EAP features"
+            ]
+          }
+        },
+        "criticalDecisions": [
+          {
+            "decision": "Cloud provider selection (AWS vs GCP)",
+            "deadline": "End of Week 1",
+            "owner": "Tech Lead"
+          },
+          {
+            "decision": "Payroll provider selection (Salarium vs Sprout vs PayrollHero)",
+            "deadline": "End of Week 2",
+            "owner": "Tech Lead + Office Manager"
+          },
+          {
+            "decision": "BIR E-Invoicing API availability",
+            "deadline": "End of Week 8",
+            "owner": "Compliance Specialist"
+          },
+          {
+            "decision": "Government portal API availability (SSS/PhilHealth/Pag-IBIG)",
+            "deadline": "End of Week 12",
+            "owner": "Tech Lead"
+          }
+        ]
+      },
+      "history": [
+        {
+          "phase": "dependency-plan",
+          "status": "completed",
+          "timestamp": "2025-10-15T00:00:03.000Z",
+          "command": "/baw_dev_dependency_plan",
+          "nextCommand": "/baw_dev_breakout_plan",
+          "summary": "5-phase roadmap created spanning 16-20 weeks with Early Access (Week 12) and Full MVP (Week 20) releases",
+          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md"
+        },
+        {
+          "phase": "product-research",
+          "status": "completed",
+          "timestamp": "2025-10-15T00:00:02.000Z",
+          "command": "/baw_product_helper",
+          "nextCommand": "/baw_product_helper",
+          "summary": "Philippines compliance research completed; identified 8 feature changes and 3 new requirements, adding ~90 hours to MVP",
+          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/research/2025-10-15T00-00-00-philippines-compliance.md"
+        },
+        {
+          "phase": "feature-catalog",
+          "status": "needs_docs",
+          "timestamp": "2025-10-15T00:00:01.000Z",
+          "command": "/baw_product_features",
+          "nextCommand": "/baw_product_helper",
+          "summary": "Feature catalog created with 34 features (23 Must-Have, 9 Should-Have, 2 Could-Have) across 5 capabilities",
+          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md"
+        },
+        {
+          "phase": "product-charter",
+          "status": "completed",
+          "timestamp": "2025-10-15T00:00:00.000Z",
+          "command": "/baw_product_charter",
+          "nextCommand": "/baw_product_features",
+          "summary": "Product charter established with personas, success metrics, and 334-557 hour estimate",
+          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+        }
+      ],
+      "sourceFiles": [
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-03-dependency-plan.json",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-02-product-research.json",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-01-feature-catalog.json",
+        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-00-product-charter.json"
+      ]
+    },
+    {
+      "featureId": "dev-management-platform",
+      "title": "Development Management Platform",
+      "currentPhase": "product-charter",
+      "status": "completed",
+      "lastCommand": "/baw_product_charter",
+      "nextCommand": "/baw_product_features \"dev-management-platform\"",
+      "updatedAt": "2025-10-15T00:00:00.000Z",
+      "summary": "Product charter completed with personas, success metrics, 7 core capabilities, and initial man-hour estimate (444-714 hours)",
+      "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md",
+      "documentation": [
+        "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md",
+        "app-docs/guides/product-charter-effort-estimates.md",
+        "ai-docs/workflow/features/dev-management-platform/intake/product/research/2025-10-15T00-00-00Z-billing-models-software-agencies.md"
+      ],
+      "notes": null,
+      "history": [
+        {
+          "phase": "product-charter",
+          "status": "completed",
+          "timestamp": "2025-10-15T00:00:00.000Z",
+          "command": "/baw_product_charter",
+          "nextCommand": "/baw_product_features \"dev-management-platform\"",
+          "summary": "Product charter completed with personas, success metrics, 7 core capabilities, and initial man-hour estimate (444-714 hours)",
+          "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md"
+        },
+        {
+          "phase": "product-research",
+          "status": "completed",
+          "timestamp": "2025-10-15T00:00:00.000Z",
+          "command": "/baw_product_helper",
+          "nextCommand": "/baw_product_features \"dev-management-platform\" \"\"",
+          "summary": "Research completed on billing models for 2-10 developer software agencies serving SMB clients",
+          "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/research/2025-10-15T00-00-00Z-billing-models-software-agencies.md"
+        }
+      ],
+      "sourceFiles": [
+        "ai-docs/workflow/features/dev-management-platform/workflow/2025-10-15T00:00:00.000Z-product-charter.json",
+        "ai-docs/workflow/features/dev-management-platform/workflow/2025-10-15T00-00-00Z-product-research.json"
+      ]
+    }
+  ],
   "knowledgeLedger": {
     "version": "1.1",
     "source": "ai-docs/knowledge-ledger/ledger.md",

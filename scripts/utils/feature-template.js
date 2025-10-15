@@ -21,6 +21,7 @@ const MINIMAL_FILES = [
   'plans/README.md',
   'plans/checklist.json',
   'reports/README.md',
+  'workflow/README.md',
   'builds/README.md',
   'handoff/README.md',
   'artifacts/README.md'

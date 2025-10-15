@@ -1,0 +1,38 @@
+{
+  "featureId": "simple-accounting-software-for-dev-startup",
+  "featureTitle": "Simple Accounting Software for Dev Startup",
+  "phase": "product-charter",
+  "status": "completed",
+  "command": "/baw_product_charter",
+  "nextCommand": "/baw_product_features",
+  "summary": "Product charter established with personas, success metrics, and 334-557 hour estimate",
+  "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md",
+  "documentation": [
+    "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+  ],
+  "timestamp": "2025-10-15T00:00:00.000Z",
+  "notes": {
+    "personas": ["Founder/CEO (Alex)", "Office Manager (Brenda)", "Developer (Charlie)"],
+    "coreCapabilities": [
+      "Financial Dashboard",
+      "Basic Financial Reports",
+      "Payroll Management",
+      "Expense Tracking",
+      "Sales & Billing",
+      "Employee Self-Service Portal"
+    ],
+    "openQuestions": [
+      "Payroll integration partner selection",
+      "Tax compliance depth (in-house vs. delegated)",
+      "Pricing model",
+      "Data migration requirements",
+      "Mobile app necessity",
+      "Bank integration scope"
+    ],
+    "estimatedHours": {
+      "optimistic": 334,
+      "mostLikely": 445,
+      "withBuffer": 557
+    }
+  }
+}

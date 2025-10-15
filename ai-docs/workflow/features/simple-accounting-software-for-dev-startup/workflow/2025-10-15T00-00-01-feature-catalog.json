@@ -1,0 +1,56 @@
+{
+  "featureId": "simple-accounting-software-for-dev-startup",
+  "featureTitle": "Simple Accounting Software for Dev Startup",
+  "phase": "feature-catalog",
+  "status": "needs_docs",
+  "command": "/baw_product_features",
+  "nextCommand": "/baw_product_helper",
+  "summary": "Feature catalog created with 34 features (23 Must-Have, 9 Should-Have, 2 Could-Have) across 5 capabilities",
+  "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md",
+  "documentation": [
+    "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md",
+    "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+  ],
+  "timestamp": "2025-10-15T00:00:01.000Z",
+  "notes": {
+    "totalFeatures": 34,
+    "mustHave": 23,
+    "shouldHave": 9,
+    "couldHave": 2,
+    "capabilities": [
+      "Financial Dashboard (5 features)",
+      "Payroll Management (5 features)",
+      "Expense Tracking (6 features)",
+      "Sales & Billing (6 features)",
+      "Employee Self-Service Portal (5 features)",
+      "Technical Infrastructure (8 requirements)"
+    ],
+    "criticalPathFeatures": [
+      "INF-001: User Authentication & Authorization",
+      "INF-002: Secure Database",
+      "INF-003: Cloud Hosting",
+      "INF-007: 3rd Party API Integration Layer",
+      "PM-001: Payroll Provider Integration",
+      "SB-001: Customer & Project Management",
+      "ET-001: Manual Expense Entry",
+      "SB-002: Invoice Creation & Sending"
+    ],
+    "blockedFeatures": 18,
+    "readyFeatures": 11,
+    "needsResearch": 9,
+    "needsSpec": 5,
+    "immediateResearchNeeds": [
+      "Payroll integration partner selection (Gusto, Rippling, ADP)",
+      "Database & hosting architecture (PostgreSQL vs MongoDB, AWS vs GCP)",
+      "API integration framework design",
+      "Data backup & retention policy"
+    ],
+    "specificationGaps": [
+      "INF-001: Role definitions and permissions matrix",
+      "INF-005: Audit logging events and retention policy",
+      "INF-007: API error handling and retry logic",
+      "FD-004: Runway projection algorithm",
+      "FD-005: Report builder UI/UX design"
+    ]
+  }
+}
