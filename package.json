@@ -16,6 +16,7 @@
     "baw:workflow:sync": "node scripts/update-workflow-status.js",
     "baw:maintenance:legacy-scan": "node scripts/maintenance/legacy-scan.js",
     "baw:work": "node scripts/unified-dashboard.js",
+    "baw:smoke": "bash scripts/smoke-test.sh",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
