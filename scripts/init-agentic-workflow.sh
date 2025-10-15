@@ -210,10 +210,12 @@ node -e "
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
   pkg.scripts = pkg.scripts || {};
+  pkg.scripts['baw:agent'] = pkg.scripts['baw:agent'] || 'node scripts/baw-agent.js';
   pkg.scripts['baw:knowledge:manage'] = pkg.scripts['baw:knowledge:manage'] || 'node scripts/manage-knowledge.js';
   pkg.scripts['baw:session:start'] = pkg.scripts['baw:session:start'] || 'node scripts/tasks-session-start.js';
   pkg.scripts['baw:work'] = pkg.scripts['baw:work'] || 'node scripts/unified-dashboard.js';
   pkg.scripts['baw:workflow:sync'] = pkg.scripts['baw:workflow:sync'] || 'node scripts/update-workflow-status.js';
+  pkg.scripts['baw:smoke'] = pkg.scripts['baw:smoke'] || 'bash scripts/smoke-test.sh';
   pkg.scripts.test = pkg.scripts.test || 'jest --passWithNoTests';
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
@@ -231,7 +233,7 @@ node -e "
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
   fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: baw:knowledge:manage, baw:session:start, baw:work, baw:workflow:sync, test, lint, format');
+  console.log('✓ Scripts added: baw:agent, baw:knowledge:manage, baw:session:start, baw:work, baw:workflow:sync, baw:smoke, test, lint, format');
   console.log('✓ Dependencies added: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
 " || log_error "Failed to merge package.json"
 

@@ -68,6 +68,7 @@ Every command outputs:
 - `npm run baw:feature:scaffold -- --title "Feature"` → Create a new workspace (defaults to the minimal profile; add `--profile full` for the legacy tree).
 - `npm run baw:feature:structure -- --feature <slug> --list` → Inspect optional directories; add them progressively with `--ensure reports/discovery`.
 - `npm run baw:knowledge:audit` → Check the KL ledger for missing fields or tags before closing out an initiative.
+- `npm run baw:smoke -- [options]` → Provision a throwaway project and exercise the installer, router, dashboard sync, and Jest smoke run.
 - `npm run lint` / `npm run lint:fix` / `npm run format` — enforce ESLint + Prettier conventions.
 
 Scripts never copy documentation into consumer projects—only runtime assets (`.claude/`, `scripts/`) plus empty scaffolding (`app-docs/` and `ai-docs/`).
@@ -107,3 +108,19 @@ After the script runs:
 - The installer prints the next command to keep the automation loop aligned. When you spin up a feature, start with the minimal profile (`npm run baw:feature:scaffold -- --title "XYZ"`), then pull in extra directories only when needed via `npm run baw:feature:structure`.
 
 Stay inside the slash-command loop, and the system keeps itself up to date.
+
+### Reusable end-to-end smoke test
+
+Need a fast sanity check after updating the template? Run the bundled smoke test:
+
+```bash
+npm run baw:smoke -- --keep
+```
+
+- Creates a temporary Node.js project (or use `--workspace /path/to/dir` to reuse your own sandbox).
+- Runs `scripts/init-agentic-workflow.sh` against it so you can confirm install steps still succeed.
+- Exercises the router (`npm run baw:agent`), workflow sync, dashboard, and the Jest stub that ships with the template.
+- Captures logs under `<workspace>/logs/` for quick inspection. Omit `--keep` to clean up automatically when finished.
+- If package installs are blocked (for example, in an offline environment), the script still runs the router and reports which steps were skipped.
+
+Use this after modifying installer scripts or upgrading dependencies to ensure the template still boots end to end without consuming extra tokens.
