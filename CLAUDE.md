@@ -228,16 +228,24 @@ title.toLowerCase()
 - Run `npm run baw:knowledge:audit` when wrapping an initiative to confirm every adopted decision has What/Why/How coverage and tagged metadata.
 
 ### Token Budget Tracking
-`scripts/utils/token-usage-analyzer.js` reads manual entries from `ai-docs/workflow/token-usage.jsonl` and updates:
-- Daily limit: 200K tokens (Claude $20 plan)
-- Weekly rolling window
-- Per-model breakdown (Gemini/Codex vs Claude)
-- Efficiency warnings at 70% (🟠) and 90% (🔴)
+`scripts/utils/token-usage-analyzer.js` reads entries from `ai-docs/workflow/token-usage.jsonl` and updates:
+  - Daily limit: 200K tokens (Claude $20 plan)
+  - Weekly rolling window
+  - Per-model breakdown (Gemini/Codex vs Claude)
+  - Efficiency warnings at 70% (🟠) and 90% (🔴)
 
-Log new entries with:
-```
-npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "context"]
-```
+Add usage to the ledger in one of two ways:
+
+1. **Automatic import (preferred):** Drop session summaries that include a `Token usage:` block into the feature workspace and run:
+   ```
+   npm run baw:token:auto -- --path ai-docs/workflow/features/<feature-id>
+   ```
+   The importer scans `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logs the total, and skips files that were already ingested.
+
+2. **Manual entry:**
+   ```
+   npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "context"]
+   ```
 
 ---
 
@@ -287,9 +295,11 @@ After each build/baw_dev_test cycle:
    - Key decisions and rationale
    - Validation highlights
    - Follow-up tasks for next agent
+   - Token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`)
 3. Emit workflow status JSON
 4. Prompt `npm run baw:workflow:sync`
-5. Suggest next command (usually `/baw_dev_test`)
+5. Run `npm run baw:token:auto -- --path ai-docs/workflow/features/<feature-id>` so the session summary's token block is captured
+6. Suggest next command (usually `/baw_dev_test`)
 
 ---
 

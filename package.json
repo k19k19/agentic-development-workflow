@@ -12,6 +12,7 @@
     "baw:feature:structure": "node scripts/feature-structure.js",
     "baw:knowledge:audit": "node scripts/knowledge-ledger-audit.js",
     "baw:token:log": "node scripts/utils/token-usage-log.js",
+    "baw:token:auto": "node scripts/utils/token-usage-import.js",
     "baw:workflow:sync": "node scripts/update-workflow-status.js",
     "baw:maintenance:legacy-scan": "node scripts/maintenance/legacy-scan.js",
     "baw:work": "node scripts/unified-dashboard.js",
