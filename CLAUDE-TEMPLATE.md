@@ -4,6 +4,19 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 
 ---
 
+## Repository Purpose
+
+Use this workspace to run a **budget-first agentic development workflow**. All serious work should go through slash commands so that:
+
+- Token usage stays predictable via orchestrated command flows.
+- Workflow status JSON and session notes keep automation state machine-readable.
+- Knowledge persists in the capability workspace instead of ad-hoc docs.
+- Tool roles remain clear (Gemini MCP for docs, Codex MCP for implementation, Claude for orchestration).
+
+Keep the template opinionated: commands teach the workflow; supplemental docs only exist when automation needs context.
+
+---
+
 ## Non-Negotiables
 
 - **Stay inside slash commands.** If the user provides a plain request, run `/baw_agent "<request>"` to suggest the right command (offer the npm fallback only when they are outside the Claude CLI), then ask whether to execute it.
@@ -30,24 +43,37 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 
 ---
 
-## Command Expectations
+## Slash Command System
 
-All custom commands are published with the `baw_` prefix (e.g., `/baw_dev_quick_build`) so they remain grouped in Claude Code. Treat any legacy `/dev_*` alias as equivalent.
+All engineering work flows through `.claude/commands/*.md`. Keep new commands aligned to the existing persona tracks and publish them with the `baw_` prefix (legacy `/dev_*` aliases mirror them).
 
-- `/baw_dev_feature_start` – Initializes feature folder + session log. After running, suggest `/baw_dev_discovery`.
-- `/baw_dev_discovery` – Collects context. On completion, auto-trigger `/baw_dev_verify_discovery`. If confidence <70%, offer targeted re-discovery. Save verification output to `reports/discovery/` and finish with recommended next command.
-- `/baw_dev_execution_prep` – Takes an approved plan slice and writes an execution checklist (owners, validation, missing assets) into `intake/tasks/`. Always reference the original `plans/checklist.json` entry so the backlog stays single-sourced.
-- `/baw_dev_plan` – Produces implementation plan. After writing the plan:
-  1. Print the save path.
-  2. State the verification prompt (`🛑 ...`).
-  3. Suggest `/baw_dev_build_report "<plan path>"` once approved.
-- `/baw_dev_build` & `/baw_dev_build_report` – Implement plan, run git diff, write the session log inside the capability workspace, emit workflow status JSON, and prompt `/baw_dev_test`.
-- `/baw_dev_discovery_build` – Calls `/baw_dev_discovery`, then builds immediately. Still write workflow status + session log and prompt `/baw_dev_test`.
-- `/baw_dev_quick_build` – Lightweight build without plan. Must update the capability workspace session log, write workflow status, and prompt `/baw_dev_test`.
-- `/baw_dev_full_pipeline` – Orchestrates `/baw_dev_discovery`, `/baw_dev_plan`, waits for approval, then `/baw_dev_build_report`. Surface verification message explicitly before waiting.
-- `/baw_dev_test` – Runs suite and tells user whether to deploy (`/baw_dev_deploy_staging`) or fix & rerun.
+**Navigator**
 
-Every command ends with a **Next Steps** section containing literal commands to copy/paste.
+- `/baw_agent [--persona <track>] "<request>"` – Route natural-language requests to the right slash command (CLI fallback: `npm run baw:agent -- "<request>"`).
+
+**Product & Strategy**
+
+- `/baw_product_charter [product]` – Capture personas, value prop, metrics.
+- `/baw_product_capabilities [product]` – Map capabilities, dependencies, readiness signals.
+- `/baw_product_wishlist [product]` – Track stretch goals and activation triggers.
+- `/baw_product_helper [topic]` – Fill discovery gaps with targeted research.
+
+**Developer Delivery**
+
+- `/baw_dev_feature_start [capability]` – Scaffold capability workspace and prompt discovery.
+- `/baw_dev_discovery [capability]` – Gather context; auto-trigger `/baw_dev_verify_discovery`; deposit evidence in `reports/discovery/`.
+- `/baw_dev_plan [capability]` – Write implementation plan, print save path, pause for approval before building.
+- `/baw_dev_execution_prep [task]` – Convert plan slice into `intake/tasks/` checklist tied to `plans/checklist.json`.
+- `/baw_dev_dependency_plan`, `/baw_dev_breakout_plan`, `/baw_dev_test_matrix`, `/baw_dev_deploy_plan` – Support roadmap, breakout, test, and deployment preparation.
+- `/baw_dev_build`, `/baw_dev_build_report`, `/baw_dev_discovery_build`, `/baw_dev_quick_build`, `/baw_dev_full_pipeline` – Implementation flows that must write session logs, emit workflow status JSON, and suggest `/baw_dev_test`.
+- `/baw_dev_test [capability]` – Run suites, save output to `reports/tests/`, and direct users to `/baw_dev_deploy_staging` on pass or re-run on fail.
+
+**Operations & Support**
+
+- `/baw_workflow_radar`, `/baw_provider_functions`, `/baw_support_ticket` – Operational intelligence and support conversion.
+- `/baw_pause_feature`, `/baw_restart_feature`, `/baw_report_failure`, `/baw_hotfix`, `/baw_triage_bug`, `/baw_next` – Guardrails, recovery, and triage helpers.
+
+Each command ends with a **Next Steps** section containing literal commands to copy/paste; never skip it.
 
 ---
 
@@ -78,13 +104,55 @@ This guarantees the recommended workflow executes, even when the user forgets.
 
 ---
 
+## Workflow Status System
+
+Every command writes structured JSON to `ai-docs/capabilities/<capability>/workflow/<timestamp>-<phase>.json`. Keep the schema stable so downstream scripts can aggregate it.
+
+```json
+{
+  "featureId": "kebab-case-id",
+  "featureTitle": "Human Title",
+  "phase": "discovery|execution-prep|plan|build|test|deploy",
+  "status": "pending|in_progress|needs_validation|blocked|completed",
+  "command": "/baw_dev_build",
+  "nextCommand": "/baw_dev_test",
+  "summary": "One-sentence status",
+  "outputPath": "ai-docs/capabilities/<capability>/plans/<timestamp>-plan.md",
+  "documentation": ["paths to supporting docs"],
+  "timestamp": "ISO-8601"
+}
+```
+
+- `npm run baw:workflow:sync` ingests these files into `ai-docs/capabilities/status-index.json`.
+- `npm run baw:work` renders the unified dashboard from the index.
+- When a command pauses, always print:
+
+  ```
+  🛑 Still inside /baw_<command>. Reply 'resume' to continue or 'stop' to exit.
+  resume ➞ /baw_dev_build (describe the next action)
+  ```
+
+---
+
 ## After Each Build/Test Cycle
 
 1. Confirm git diff summary and files touched.
 2. Point to `ai-docs/capabilities/<capability>/sessions/<session>.md` so the user can skim what changed.
-3. Append a token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`) to the session note and run `npm run baw:token:auto -- --path ai-docs/workflow/features/<feature>` so the ledger updates before the next agent starts.
-4. Prompt `/baw_dev_test` ➞ `/baw_dev_deploy_staging` chain.
-5. If tests fail, guide the user to fix and rerun `/baw_dev_test`.
+3. Emit workflow status JSON to `ai-docs/capabilities/<capability>/workflow/` and remind the user to run `npm run baw:workflow:sync`.
+4. Append a token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`) to the session note and run `npm run baw:token:auto -- --path ai-docs/workflow/features/<feature>` so the ledger updates before the next agent starts.
+5. Prompt `/baw_dev_test` ➞ `/baw_dev_deploy_staging` chain.
+6. If tests fail, guide the user to fix and rerun `/baw_dev_test`.
+
+---
+
+## Key Implementation Guardrails
+
+- **Discovery-to-plan loop.** When discovery is thin, rerun `/baw_dev_discovery` against the same capability, update `plans/checklist.json`, and flag the session backlog instead of spawning new plan slices.
+- **Feature ID generation.** Convert titles to kebab-case (strip non-alphanumerics, collapse whitespace/dashes, trim) so automation stays consistent.
+- **Workflow validation.** `scripts/workflow-status.js` enforces the JSON schema; invalid entries are skipped from the index.
+- **Knowledge ledger.** `scripts/utils/knowledge-ledger.js` syncs `ai-docs/knowledge-ledger/ledger.md`; run `npm run baw:knowledge:audit` before closing an initiative.
+- **Budget mode.** Commands invoked with `"budget"` should keep outputs concise (Summary, ≤4 Key Steps, Risks, Tests) and avoid external scraping unless URLs are provided.
+- **Tool delegation.** Gemini MCP covers documentation tasks, Codex MCP does code edits, Claude orchestrates approvals and reporting—respect those roles.
 
 ---
 
