@@ -3,18 +3,18 @@
 Use this guide when emitting structured workflow status updates from slash commands.
 
 ## Directory Layout
-- Status updates live in `ai-docs/workflow/features/<feature-id>/workflow/`.
+- Status updates live in `ai-docs/capabilities/<capability-id>/workflow/`.
 - Each command writes a separate JSON file named `<iso-timestamp>-<phase>.json`.
-- The sync script aggregates the latest file per feature into `ai-docs/workflow/status-index.json`.
+- The sync script aggregates the latest file per feature into `ai-docs/capabilities/status-index.json`.
 
 ## File Schema
 Each status JSON file must include the following fields:
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `featureId` | string | Lowercase kebab-case identifier derived from the feature or plan title. Must match the directory name. |
-| `featureTitle` | string | Human-readable feature name shown on the dashboard. |
-| `phase` | string | Current workflow phase (`product-charter`, `feature-catalog`, `wishlist`, `product-research`, `dependency-plan`, `breakout-plan`, `execution-prep`, `discovery`, `plan`, `build`, `verification`, `deployment`, `ops-coordination`, `provider-functions`, `support-feedback`, etc.). |
+| `featureId` | string | Lowercase kebab-case identifier derived from the capability or plan title. Must match the directory name. |
+| `featureTitle` | string | Human-readable capability name shown on the dashboard. |
+| `phase` | string | Current workflow phase (`product-charter`, `capability-catalog`, `wishlist`, `product-research`, `dependency-plan`, `breakout-plan`, `execution-prep`, `discovery`, `plan`, `build`, `verification`, `deployment`, `ops-coordination`, `provider-functions`, `support-feedback`, etc.). |
 | `status` | string | State within the phase (`pending`, `in_progress`, `needs_docs`, `needs_validation`, `blocked`, `failed`, `completed`). |
 | `command` | string | Slash command that produced this update. |
 | `nextCommand` | string | Ready-to-run follow-up command for the user. Leave an empty string if no immediate action. |
@@ -35,10 +35,10 @@ Each status JSON file must include the following fields:
   "featureTitle": "Add Auth Guard",
   "phase": "plan",
   "status": "needs_validation",
-  "command": "/baw_dev_plan \"Add Auth Guard\" \"\" \"ai-docs/workflow/features/add-auth-guard/intake/requirements.md\"",
+  "command": "/baw_dev_plan \"Add Auth Guard\" \"\" \"ai-docs/capabilities/add-auth-guard/intake/requirements.md\"",
   "nextCommand": "/baw_dev_plan \"Add Auth Guard\" --resume",
   "summary": "Plan drafted and waiting for validation feedback.",
-  "outputPath": "ai-docs/workflow/features/add-auth-guard/plans/20250112-add-auth-guard/plan.md",
+  "outputPath": "ai-docs/capabilities/add-auth-guard/plans/20250112-add-auth-guard/plan.md",
   "documentation": [
     "app-docs/specs/active/add-auth-guard.md"
   ],
@@ -48,20 +48,20 @@ Each status JSON file must include the following fields:
 ```
 
 ## Slugging Rules
-- Convert feature titles to lowercase.
+- Convert capability titles to lowercase.
 - Replace spaces and punctuation with hyphens.
 - Remove characters outside `[a-z0-9-]`.
 - Collapse consecutive hyphens.
 
 ## Dashboards
-- `node scripts/update-workflow-status.js` aggregates per-feature updates.
+- `node scripts/update-workflow-status.js` aggregates per-capability updates.
 - `npm run baw:work` renders the unified dashboard and shows the latest status + resume commands.
 - `npm run baw:session:start` highlights token usage and suggested follow-ups.
 
 ## Recommended Phase Names
 Use the following canonical values when possible so dashboards can group initiatives consistently:
 
-- `product-charter`, `feature-catalog`, `wishlist`, `product-research`
+- `product-charter`, `capability-catalog`, `wishlist`, `product-research`
 - `dependency-plan`, `breakout-plan`, `execution-prep`, `discovery`, `plan`
 - `build`, `verification`, `deployment`
 - `ops-coordination`, `provider-functions`, `support-feedback`

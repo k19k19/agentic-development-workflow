@@ -13,11 +13,11 @@ Generate final documentation, update feature trackers, and prepare for productio
 ## Variables
 FEATURE_ID: $1
 MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
-## Feature Workspace
-- Validate `FEATURE_ID` and confirm the workspace lives at `FEATURE_WORKSPACE_ROOT/<feature-id>/`.
+## Capability Workspace
+- Validate `FEATURE_ID` and confirm the workspace lives at `FEATURE_WORKSPACE_ROOT/<capability-id>/`.
 - Use workspace subdirectories for source material: builds under `builds/`, reports under `reports/`, sessions under `sessions/`.
 - Record final documentation artifacts inside `reports/finalization/` and update `feature-manifest.json` if ownership changed.
 
@@ -31,7 +31,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Workflow
 1. Validate `FEATURE_ID` is provided.
-2. Read the latest build report from `ai-docs/workflow/features/<feature-id>/builds/` (or `reports/build/` for summaries).
+2. Read the latest build report from `ai-docs/capabilities/<capability-id>/builds/` (or `reports/build/` for summaries).
 3. Update `MAPPINGS_FILE` with new file locations.
 4. Check if README.md needs updates (new commands, API changes, etc.).
 5. Generate architecture documentation if applicable.
@@ -63,7 +63,7 @@ Or start a specific feature:
 **Review what was done:**
 ```bash
 cat app-docs/mappings/feature-to-source.md                    # Check feature mappings
-cat ai-docs/workflow/features/<feature-id>/sessions/SESSION-*.md  # Read session history
+cat ai-docs/capabilities/<capability-id>/sessions/SESSION-*.md  # Read session history
 ```
 
 ## Budget

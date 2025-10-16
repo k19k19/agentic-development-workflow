@@ -19,7 +19,7 @@ The previous command catalog focused almost entirely on implementation phases. P
 
 Restructure the command set into persona-aligned tracks:
 
-1. **Product + Strategy** commands (`/baw_product_charter`, `/baw_product_features`, `/baw_product_wishlist`, `/baw_product_helper`) capture vision, personas, and backlog context.
+1. **Product + Strategy** commands (`/baw_product_charter`, `/baw_product_capabilities`, `/baw_product_wishlist`, `/baw_product_helper`) capture vision, personas, and backlog context.
 2. **Developer Delivery** commands (`/baw_dev_dependency_plan`, `/baw_dev_breakout_plan`, `/baw_dev_execution_prep`, `/baw_dev_test_matrix`, `/baw_dev_deploy_plan`) bridge discovery artifacts into build-ready plans.
 3. **Operations + Support** commands (`/baw_workflow_radar`, `/baw_provider_functions`, `/baw_support_ticket`) keep ongoing work, provider tooling, and feedback loops visible.
 

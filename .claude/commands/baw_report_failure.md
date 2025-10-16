@@ -12,7 +12,7 @@ model: claude-sonnet-4-5
 
 ## Variables
 FEATURE_ID: $1
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 FAILURES_DIRECTORY: <feature-workspace>/reports/failures/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
@@ -45,7 +45,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
   - Save to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-report-failure.json`.
   - Use `phase: "report"` and set `status` to `failed` or `blocked` based on severity.
   - Include the generated failure report path and any documentation requiring updates.
-  - Set `nextCommand` to `/baw_restart_feature <feature-id>` or other recovery command the user must run.
+  - Set `nextCommand` to `/baw_restart_feature <capability-id>` or other recovery command the user must run.
 - Prompt the user to run `npm run baw:workflow:sync` so the dashboard shows the failure context.
 
 ## Budget

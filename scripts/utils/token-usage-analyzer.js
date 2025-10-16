@@ -2,7 +2,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { normalizeTokens } = require('./token-budget-calculator');
 
-const TOKEN_USAGE_FILE = path.join(__dirname, '../../ai-docs/workflow/token-usage.jsonl');
+const TOKEN_USAGE_FILE = path.join(__dirname, '../../ai-docs/capabilities/token-usage.jsonl');
 
 function toDate(value) {
   if (!value) return null;

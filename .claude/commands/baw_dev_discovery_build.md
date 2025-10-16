@@ -19,7 +19,7 @@ TASK: $1
 - If `TASK` is missing, stop and ask the user to provide it.
 - For the discovery phase, delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `TASK` and generate optimal `rg` search keywords and file globs.
 - For the build phase, delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate the build based on discovery findings and report the results.
-- Derive or confirm the feature workspace slug from the discovery output and ensure all artifacts land in `ai-docs/workflow/features/<feature-id>/`.
+- Derive or confirm the capability workspace slug from the discovery output and ensure all artifacts land in `ai-docs/capabilities/<capability-id>/`.
 - Skip plan approval gate for speed.
 - Build using existing patterns found during discovery.
 - Run tests automatically after build.
@@ -30,7 +30,7 @@ TASK: $1
 3. Identify existing patterns from discovery results.
 4. Build directly using identified patterns (no plan approval) and execute code edits through Codex MCP.
 5. Run tests using `npm test` or appropriate test command.
-6. Save a session summary under `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-discovery-build.md` and report results with token usage.
+6. Save a session summary under `ai-docs/capabilities/<capability-id>/sessions/SESSION-[date]-discovery-build.md` and report results with token usage.
 
 ## Report
 - Show discovery results (files found).

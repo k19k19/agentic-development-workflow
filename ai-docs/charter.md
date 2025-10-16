@@ -152,7 +152,7 @@ The initial product will **NOT** handle:
 **Recommended Next Steps:**
 - Run `/baw_product_helper` to research Salarium vs Sprout vs PayrollHero API comparison
 - Run `/baw_product_helper` to research BIR Electronic Invoicing System API integration
-- Run `/baw_product_features` to catalog detailed feature breakdown (already completed)
+- Run `/baw_product_capabilities` to catalog detailed feature breakdown (already completed)
 - Run `/baw_dev_dependency_plan` to create phased roadmap (already completed)
 
 ---
@@ -212,9 +212,9 @@ Based on the charter capabilities, Philippines compliance research, and using th
 ## Next Steps
 
 ### Immediate Actions (Week 1-2)
-1. ✅ **Feature Catalog Created** - `ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md`
-2. ✅ **Philippines Compliance Research Completed** - `ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/research/2025-10-15T00-00-00-philippines-compliance.md`
-3. ✅ **Dependency Plan Created** - `ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md`
+1. ✅ **Capability Catalog Created** - `ai-docs/capabilities/2025-10-15T00-00-00-capability-catalog.md`
+2. ✅ **Philippines Compliance Research Completed** - `ai-docs/research/2025-10-15T00-00-00-philippines-compliance.md`
+3. ✅ **Dependency Plan Created** - `ai-docs/capabilities/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md`
 4. **Select Payroll Provider** (Salarium vs Sprout vs PayrollHero)
    - Request demo and API documentation
    - **Decision Deadline:** End of Week 2

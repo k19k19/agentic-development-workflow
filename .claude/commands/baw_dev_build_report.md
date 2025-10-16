@@ -12,7 +12,7 @@ Execute the approved implementation plan and provide a thorough report covering 
 
 ## Variables
 PATH_TO_PLAN: $1
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 BUILD_OUTPUT_DIRECTORY: <feature-workspace>/builds/
 REPORT_OUTPUT_DIRECTORY: <feature-workspace>/reports/
 SESSION_DIRECTORY: <feature-workspace>/sessions/
@@ -21,8 +21,8 @@ MAPPINGS_FILE: app-docs/mappings/feature-to-source.md
 
 ## Workflow
 1. Ensure `PATH_TO_PLAN` is provided; request it if missing.
-2. Read and internalize the plan, noting acceptance criteria and tooling requirements. Derive the feature workspace from the
-   plan path (expect `ai-docs/workflow/features/<feature-id>/plans/...`) and ensure sibling `builds/`, `reports/`, and
+2. Read and internalize the plan, noting acceptance criteria and tooling requirements. Derive the capability workspace from the
+   plan path (expect `ai-docs/capabilities/<capability-id>/plans/...`) and ensure sibling `builds/`, `reports/`, and
    `sessions/` directories exist for new artifacts.
 3. Delegate code implementation to Codex MCP using `mcp__codex__codex`; keep Claude focused on orchestration, validation, and reporting.
 4. Implement the plan step by step, running lint/tests or other safeguards when needed.
@@ -39,7 +39,7 @@ Organize your final message into:
 
 ## Automation Trace
 - Save a workflow status JSON update (`app-docs/guides/workflow-status-format.md`).
-  - Write to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-build.json`.
+  - Write to `ai-docs/capabilities/<capability-id>/workflow/<ISO-timestamp>-build.json`.
   - Use `phase: "build"` and select `status` (`in_progress`, `needs_validation`, `failed`, or `completed`).
   - Reference the generated build report in `outputPath` and list supporting documentation.
   - Set `nextCommand` to the next actionable slash command for the user (e.g., `/baw_dev_test`, `/baw_report_failure`).

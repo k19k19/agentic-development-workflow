@@ -29,8 +29,8 @@ MODE: $3 (default: standard)
 - **Tool Delegation Strategy**:
   - **Discovery Phase**: Delegate to Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate optimal `rg` search keywords and file globs.
   - **Build Phase**: Delegate all code implementation to Codex MCP (`mcp__codex__codex`). Claude's role is to orchestrate, review, and manage approvals.
-- Track the feature workspace slug throughout the run so each downstream command writes to the same
-  `ai-docs/workflow/features/<feature-id>/` directory.
+- Track the capability workspace slug throughout the run so each downstream command writes to the same
+  `ai-docs/capabilities/<capability-id>/` directory.
 
 ## Workflow
 1. Run SlashCommand(`/baw_dev_discovery "[USER_PROMPT]"`) -> `relevant_files_collection_path`.
@@ -44,7 +44,7 @@ After the full workflow completes:
 
 **→ Review the session summary:**
 ```bash
-cat ai-docs/workflow/features/<feature-id>/sessions/SESSION-*.md  # Latest session
+cat ai-docs/capabilities/<capability-id>/sessions/SESSION-*.md  # Latest session
 git diff --stat                                                      # See all changes
 ```
 

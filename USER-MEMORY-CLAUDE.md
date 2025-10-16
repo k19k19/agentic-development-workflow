@@ -275,7 +275,7 @@ git diff --stat
 
 ### Track Token Usage
 
-Detailed workflow logging is retired. Use the session dashboard (`npm run baw:session:start`) and feature workspace summaries to monitor budgets.
+Detailed workflow logging is retired. Use the session dashboard (`npm run baw:session:start`) and capability workspace summaries to monitor budgets.
 
 - Record estimated tokens in each session note when the spend matters.
 - Log actual token spend after each workflow with `npm run baw:token:log -- --claude <tokens> [--gemini <tokens>] [--note "context"]`.
@@ -326,8 +326,8 @@ After every workflow, check report for:
 ```
 feat: Add user authentication (spec: app-docs/specs/auth.md)
 
-Implementation plan: ai-docs/workflow/features/auth-upgrade/plans/2025-10-07-auth/plan.md
-Build report: ai-docs/workflow/features/auth-upgrade/reports/2025-10-07-auth/report.md
+Implementation plan: ai-docs/capabilities/auth-upgrade/plans/2025-10-07-auth/plan.md
+Build report: ai-docs/capabilities/auth-upgrade/reports/2025-10-07-auth/report.md
 
 - Added JWT token generation
 - Implemented login/logout endpoints
@@ -394,7 +394,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### When Joining Existing Project
 
 ```
-1. Review: `ai-docs/workflow/status-index.json` for active features and scale cues
+1. Review: `ai-docs/capabilities/status-index.json` for active capabilities and scale cues
 2. Read: app-docs/guides/ (existing patterns)
 3. Read: app-docs/mappings/feature-to-source.md (when available)
 4. Start with small bug fix (learn codebase)
@@ -515,7 +515,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ```
 1. Don't retry immediately
-2. Read: ai-docs/workflow/features/<feature>/reports/[latest]/report.md
+2. Read: ai-docs/capabilities/<capability>/reports/[latest]/report.md
 3. Identify: Which specific task caused failure
 4. Fix: Use appropriate tool for that task
 5. Re-run: Only that task, not entire build

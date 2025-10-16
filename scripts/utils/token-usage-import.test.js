@@ -37,16 +37,16 @@ describe('token-usage-import', () => {
   });
 
   test('detectSessionId derives id from file path', () => {
-    expect(detectSessionId('ai-docs/workflow/features/demo/sessions/SESSION-2025-01-01.md')).toBe(
+    expect(detectSessionId('ai-docs/capabilities/demo/sessions/SESSION-2025-01-01.md')).toBe(
       'SESSION-2025-01-01.md'
     );
-    expect(detectSessionId('ai-docs/workflow/features/demo/log.md')).toBeUndefined();
+    expect(detectSessionId('ai-docs/capabilities/demo/log.md')).toBeUndefined();
   });
 
   test('runImport appends entries for files with token usage', async () => {
     const tmpDir = await createTempDir();
     const logPath = path.join(tmpDir, 'token-usage.jsonl');
-    const sessionDir = path.join(tmpDir, 'feature', 'sessions');
+    const sessionDir = path.join(tmpDir, 'capability', 'sessions');
     await fs.mkdir(sessionDir, { recursive: true });
     const sessionFile = path.join(sessionDir, 'SESSION-2025-01-01-summary.md');
     await fs.writeFile(
@@ -72,6 +72,6 @@ describe('token-usage-import', () => {
     expect(parsed.tokens.total).toBe(6000);
     expect(parsed.tokens.byModel).toEqual({ claude: { total: 5000 }, gemini: { total: 1000 } });
     expect(parsed.source).toBe('test');
-    expect(parsed.sourceFile).toContain('feature/sessions/SESSION-2025-01-01-summary.md');
+    expect(parsed.sourceFile).toContain('capability/sessions/SESSION-2025-01-01-summary.md');
   });
 });

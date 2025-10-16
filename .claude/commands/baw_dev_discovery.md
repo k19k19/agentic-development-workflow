@@ -16,8 +16,8 @@ USER_PROMPT: $1
 ## Instructions
 - **Delegate Analysis**: Use Gemini MCP (`mcp__gemini-cli__ask-gemini`) to analyze the `USER_PROMPT` and generate a list of optimal `rg` search keywords and relevant file globs.
 - **Execute Search**: Use the keywords and globs from Gemini to search the codebase with `rg`. Only fall back to `find` or `grep` if `rg` is unavailable.
-- Review `ai-docs/workflow/features/` for prior status entries related to the same feature. Always append discoveries to the existing
-  feature workspace instead of starting a parallel thread.
+- Review `ai-docs/capabilities/` for prior status entries related to the same feature. Always append discoveries to the existing
+  capability workspace instead of starting a parallel thread.
 - Capture enough context for the planning phase: existing implementations, shared utilities, constraints, and open questions.
 ## Workflow
 1. Parse `USER_PROMPT` to identify primary feature areas and constraints.
@@ -31,14 +31,14 @@ USER_PROMPT: $1
 - Provide bullet summaries of the most relevant files and excerpts discovered.
 - List any documentation or specs the user should review or update.
 - Call out risks, unknowns, or follow-up questions uncovered during discovery.
-- If this run is clarifying an approved plan slice, explicitly point to the existing feature workspace plan under
-  `ai-docs/workflow/features/<feature-id>/plans/` to update rather than suggesting a new feature or plan file.
+- If this run is clarifying an approved plan slice, explicitly point to the existing capability workspace plan under
+  `ai-docs/capabilities/<capability-id>/plans/` to update rather than suggesting a new feature or plan file.
 - Note: Token usage will be automatically captured if using `complete-auto` command.
 
 ## Automation Trace
 - Emit a workflow status JSON entry following `app-docs/guides/workflow-status-format.md`.
-  - Derive `featureId` from the request title in kebab-case. When the feature workspace already exists, reuse that slug.
-  - Save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-dev-discovery.json`.
+  - Derive `featureId` from the request title in kebab-case. When the capability workspace already exists, reuse that slug.
+  - Save to `ai-docs/capabilities/<capability-id>/workflow/<ISO-timestamp>-dev-discovery.json`.
   - Use `phase: "discovery"` and set `status` to `completed`, `needs_docs`, or `blocked` as appropriate.
   - Set `nextCommand` to the exact follow-up slash command the user should run.
   - Include any documentation paths that must be updated before resuming.

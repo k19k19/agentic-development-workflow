@@ -477,7 +477,7 @@ Philippines uses progressive tax brackets (annual basis):
 
 4. **Update Feature Catalog:**
    ```bash
-   # Manual update to feature-catalog.md
+   # Manual update to capability-catalog.md
    # - Add PH-001, PH-002, PH-003 features
    # - Update PM-001, PM-002, PM-005, SB-002, SB-006 complexity
    # - Revise man-hour estimates
@@ -485,7 +485,7 @@ Philippines uses progressive tax brackets (annual basis):
 
 5. **Create Updated Dependency Plan:**
    ```bash
-   /baw_dev_dependency_plan "Simple Accounting Software for Dev Startup" "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md"
+   /baw_dev_dependency_plan "Simple Accounting Software for Dev Startup" "ai-docs/capabilities/2025-10-15T00-00-00-capability-catalog.md"
    ```
 
 ---

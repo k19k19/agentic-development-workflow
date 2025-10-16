@@ -36,13 +36,13 @@ Each subsection should answer three questions: What was implemented? Why was tha
 ### KL-003 — Large Feature Workflow Governance (Adopted 2025-10-06)
 - **What:** Standardized large feature delivery around scaffolded directories, manifests, and session backlogs so complex initiatives remain within token budgets while maintaining traceability.
 - **Why:** Ad-hoc artifacts made it impossible to split plans, coordinate sessions, or monitor progress at epic scale; a structured workspace keeps automation and humans aligned.
-- **How:** `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, `ai-docs/workflow/features/_template/`, and `scripts/scaffold-feature.js` define and automate the new structure.
+- **How:** `app-docs/guides/large-feature-workflow.md`, `ai-docs/capabilities/README.md`, `ai-docs/capabilities/_template/`, and `scripts/scaffold-capability.js` define and automate the new structure.
 - **Tags:** workflow, governance, features
 
 ### KL-004 — Discovery-to-Plan Revision Policy (Adopted 2025-10-07)
 - **What:** Locked the `/baw_dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.
 - **Why:** Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.
-- **How:** Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.
+- **How:** Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/capabilities/README.md`, and the capability template ensure agents update the same plan/checklist/backlog entries.
 - **Tags:** workflow, discovery, planning
 
 ### KL-005 — Persona-Aligned Command Restructure (Adopted 2025-10-10)
@@ -51,16 +51,16 @@ Each subsection should answer three questions: What was implemented? Why was tha
 - **How:** New command templates in `.claude/commands/`, updated workflow documentation (`README.md`, `CLAUDE.md`, `app-docs/guides/end-to-end-command-workflow.md`), and expanded workflow status guidance capture the structure.
 - **Tags:** commands, personas, workflow
 
-### KL-006 — BAW Namespace & Feature Workspace Unification (Adopted 2025-10-12)
-- **What:** Namespaced all workflow commands with `baw_` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.
+### KL-006 — BAW Namespace & Capability Workspace Unification (Adopted 2025-10-12)
+- **What:** Namespaced all workflow commands with `baw_` and routed automation outputs into per-capability workspaces under `ai-docs/capabilities/`.
 - **Why:** A unified namespace and directory layout eliminate drift between discovery, plan, and build artifacts while keeping dashboards and hand-offs consistent.
 - **How:** Updated `.claude/commands/`, `CLAUDE.md`, repository guides, and workflow scripts (`scripts/workflow-status.js`, installers, dashboards) to read/write the new structure and provide scaffolding updates (including `intake/tasks/`).
 - **Tags:** workflow, namespace, traceability
 
 ### KL-007 — Intake Alignment & Command Traceability (Adopted 2025-10-14)
-- **What:** Expanded the feature template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each feature workspace.
+- **What:** Expanded the capability template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each capability workspace.
 - **Why:** Prevent artifact drift and make it obvious how research flows into plans, builds, tests, deployments, and operations without revisiting legacy folders.
-- **How:** Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.
+- **How:** Updated `.claude/commands/`, template scaffolding under `ai-docs/capabilities/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.
 - **Tags:** intake, traceability, workflow
 
 ### KL-008 — Code Hygiene Enforcement (Adopted 2025-10-16)

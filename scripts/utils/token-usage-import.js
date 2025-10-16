@@ -270,7 +270,7 @@ async function runImport({
   since
 }) {
   const { sourceFiles } = await loadExistingEntries(logPath);
-  const absoluteTarget = targetPath ? path.resolve(targetPath) : path.resolve(process.cwd(), 'ai-docs/workflow/features');
+  const absoluteTarget = targetPath ? path.resolve(targetPath) : path.resolve(process.cwd(), 'ai-docs/capabilities');
 
   let files;
   try {

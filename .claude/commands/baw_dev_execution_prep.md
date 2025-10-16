@@ -16,13 +16,13 @@ TASK_TITLE: $1
 CONTEXT_DOCS: $2
 
 ## Instructions
-- Treat `/baw_dev_execution_prep` as the structured follow-up to `/baw_dev_discovery`: reuse the same feature workspace and transform raw
+- Treat `/baw_dev_execution_prep` as the structured follow-up to `/baw_dev_discovery`: reuse the same capability workspace and transform raw
   discoveries into actionable checklists with owners and validation hooks.
 - Gather requirements from product specs, breakout plans, and relevant code references.
-- Identify missing documentation, data sources, or stakeholder sign-offs. Log each gap in the feature workspace backlog so the
+- Identify missing documentation, data sources, or stakeholder sign-offs. Log each gap in the capability workspace backlog so the
   team can coordinate outside of automation.
 - Use Gemini MCP to generate checklists and acceptance criteria tailored to the task. Save outputs to
-  `ai-docs/workflow/features/<feature-id>/intake/tasks/` (one file per breakout) to keep discovery and implementation artifacts
+  `ai-docs/capabilities/<capability-id>/intake/tasks/` (one file per breakout) to keep discovery and implementation artifacts
   co-located.
 - Recommend updates to knowledge ledger entries or specs when new decisions emerge.
 
@@ -36,10 +36,10 @@ CONTEXT_DOCS: $2
 ## Report
 - Provide a ready-to-execute checklist with owners, documents, and validation steps.
 - Highlight blockers or missing assets.
-- Point to the file paths where task documentation should live (e.g., `ai-docs/workflow/features/<feature-id>/intake/tasks/`).
+- Point to the file paths where task documentation should live (e.g., `ai-docs/capabilities/<capability-id>/intake/tasks/`).
 
 ## Automation Trace
-- Emit status JSON with `phase: "execution-prep"` and save to `ai-docs/workflow/features/<feature-id>/workflow/<ISO-timestamp>-dev-execution-prep.json`.
+- Emit status JSON with `phase: "execution-prep"` and save to `ai-docs/capabilities/<capability-id>/workflow/<ISO-timestamp>-dev-execution-prep.json`.
 - Use `status` values `completed`, `needs_docs`, `needs_validation`, or `blocked`.
 - Set `nextCommand` based on readiness (e.g., `/baw_dev_build`, `/baw_dev_test`, or `/baw_product_helper`).
 - Remind the user to run `npm run baw:workflow:sync` after updates.

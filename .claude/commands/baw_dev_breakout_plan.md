@@ -13,18 +13,18 @@ Design a sequence of buildable increments that deliver value quickly while respe
 ## Variables
 PHASE_TITLE: $1
 DEPENDENCY_PLAN_REFS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 BREAKOUT_OUTPUT_DIRECTORY: <feature-workspace>/plans/breakouts/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - Review the dependency plan, feature specs, and prior breakout plans.
-- Derive the feature workspace slug from `DEPENDENCY_PLAN_REFS` (expected to point at
-  `ai-docs/workflow/features/<feature-id>/plans/dependency/`). If absent, ask the user to confirm the feature ID.
+- Derive the capability workspace slug from `DEPENDENCY_PLAN_REFS` (expected to point at
+  `ai-docs/capabilities/<capability-id>/plans/dependency/`). If absent, ask the user to confirm the feature ID.
 - Use Gemini MCP to propose cohesive breakouts that can be completed within a session or sprint.
 - For each breakout, capture goals, tasks, acceptance criteria, and integration touchpoints.
 - Save each breakout slice to `BREAKOUT_OUTPUT_DIRECTORY/<sequence>-<slug>.md` so plans remain grouped by feature.
-- Highlight missing specifications, test data, or stakeholder approvals and queue them in the feature workspace backlog.
+- Highlight missing specifications, test data, or stakeholder approvals and queue them in the capability workspace backlog.
 
 ## Workflow
 1. Gather context from dependency plan docs and relevant specs.

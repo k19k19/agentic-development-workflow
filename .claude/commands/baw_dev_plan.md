@@ -10,24 +10,24 @@ model: claude-sonnet-4-5
 ## Purpose
 Create a detailed implementation plan with complexity assessment based on user requirements supplied through the `USER_PROMPT`.
 Analyze the request, pull in supporting documentation, reason deeply about the approach, and save a comprehensive specification
-markdown file into the associated feature workspace under `ai-docs/workflow/features/<feature-id>/plans/`.
+markdown file into the associated capability workspace under `ai-docs/capabilities/<capability-id>/plans/`.
 
 ## Variables
 USER_PROMPT: $1
 DOCUMENT_URLS: $2
 RELEVANT_FILES_COLLECTION: $3
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 PLAN_OUTPUT_DIRECTORY: <feature-workspace>/plans/
 DOCUMENTATION_OUTPUT_DIRECTORY: <feature-workspace>/artifacts/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - **Check Knowledge Ledger:** Before planning, review `ai-docs/knowledge-ledger/` for relevant architectural decisions and patterns to reuse.
-- **Locate or Derive Feature Workspace:**
-  - If `RELEVANT_FILES_COLLECTION` or `DOCUMENT_URLS` references an existing workspace (`ai-docs/workflow/features/<feature-id>/`), reuse that slug.
+- **Locate or Derive Capability Workspace:**
+  - If `RELEVANT_FILES_COLLECTION` or `DOCUMENT_URLS` references an existing workspace (`ai-docs/capabilities/<capability-id>/`), reuse that slug.
   - Otherwise, slugify the core feature name from `USER_PROMPT` (trim to the first 6 meaningful words, drop stop words, kebab-case the result) and create the workspace if missing.
   - Ensure the workspace contains `plans/`, `sessions/`, `artifacts/`, and `workflow/` directories. Never write plans to the legacy `ai-docs/plans/` path.
-- **Read the Spec:** Pull any seed specification in `app-docs/specs/` or the feature workspace intake files before drafting the plan.
+- **Read the Spec:** Pull any seed specification in `app-docs/specs/` or the capability workspace intake files before drafting the plan.
 - If any of `USER_PROMPT`, `DOCUMENT_URLS`, or `RELEVANT_FILES_COLLECTION` is missing, stop and ask the user to provide it.
 - Read `RELEVANT_FILES_COLLECTION`; it contains a bullet list of `<path> (offset: N, limit: M)` entries from the discovery phase.
 - Use the Task tool in parallel to scrape each URL in `DOCUMENT_URLS` with Firecrawl (fallback to Webfetch when Firecrawl is unavailable).
@@ -41,7 +41,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Workflow
 1. Analyze Requirements - extract the problem statement, constraints, and success criteria from `USER_PROMPT`.
-2. Confirm Feature Workspace - reuse or create the workspace as described above and update `feature-manifest.json` if new context changes scope or dependencies.
+2. Confirm Capability Workspace - reuse or create the workspace as described above and update `feature-manifest.json` if new context changes scope or dependencies.
 3. Scrape Documentation - parallelize downloads of `DOCUMENT_URLS` to the documentation directory and log their paths (Budget Mode: only when URLs are present).
 4. Design Solution - outline architecture choices, data flow, and tool delegation strategy.
 5. Document Plan - draft a markdown plan that includes summary, implementation steps, risks, testing strategy, and next actions (Budget Mode: use the trimmed section set and stay concise).

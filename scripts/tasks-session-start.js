@@ -6,10 +6,10 @@ const tokenCalculator = require('./utils/token-budget-calculator');
 const tokenUsageAnalyzer = require('./utils/token-usage-analyzer');
 
 const REPO_ROOT = path.join(__dirname, '..');
-const WORKFLOW_DIR = path.join(REPO_ROOT, 'ai-docs/workflow');
-const STATUS_INDEX_FILE = path.join(WORKFLOW_DIR, 'status-index.json');
-const TASKS_FILE = path.join(WORKFLOW_DIR, 'tasks.json');
-const CROSS_SESSION_PROMPT_FILE = path.join(WORKFLOW_DIR, 'cross-session-prompt.md');
+const CAPABILITIES_DIR = path.join(REPO_ROOT, 'ai-docs', 'capabilities');
+const STATUS_INDEX_FILE = path.join(CAPABILITIES_DIR, 'status-index.json');
+const TASKS_FILE = path.join(CAPABILITIES_DIR, 'tasks.json');
+const CROSS_SESSION_PROMPT_FILE = path.join(CAPABILITIES_DIR, 'cross-session-prompt.md');
 
 const { TASK_SIZES, DEFAULT_CONFIG, generateProgressBar, formatTokens, getRemainingBudget, getUsagePercent, getUsageWarningLevel, getDailyTokenLimit, getWeeklyTokenLimit, getContextWindowLimit, getSuggestedWorkflows, getRecommendedTasks } = tokenCalculator;
 
@@ -24,7 +24,7 @@ async function loadStatusIndex() {
     return await readJson(STATUS_INDEX_FILE);
   } catch (error) {
     if (error.code === 'ENOENT') {
-      return { features: [] };
+      return { capabilities: [] };
     }
     throw error;
   }
@@ -66,11 +66,11 @@ function formatWarning(level) {
   return '🟢';
 }
 
-function deriveTasksFromFeatures(features = []) {
-  return features
-    .filter(feature => feature?.nextCommand)
-    .map(feature => {
-      const command = feature.nextCommand.trim();
+function deriveTasksFromCapabilities(capabilities = []) {
+  return capabilities
+    .filter(capability => capability?.nextCommand)
+    .map(capability => {
+      const command = capability.nextCommand.trim();
       const firstToken = command.split(/\s+/)[0];
       const normalizedToken = firstToken.startsWith('/baw_')
         ? firstToken
@@ -95,11 +95,11 @@ function deriveTasksFromFeatures(features = []) {
       }
 
       return {
-        id: feature.featureId || feature.title,
-        title: feature.title || feature.featureId,
+        id: capability.capabilityId || capability.title,
+        title: capability.title || capability.capabilityId,
         command,
-        priority: feature.status === 'blocked' ? 'medium' : 'high',
-        status: feature.status || 'pending',
+        priority: capability.status === 'blocked' ? 'medium' : 'high',
+        status: capability.status || 'pending',
         size,
         estimatedTokens
       };
@@ -126,7 +126,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
   if (!recommended.length) {
     const suggestions = getSuggestedWorkflows(remainingTokens);
     if (suggestions.length === 0) {
-      console.log('No tracked tasks fit today\'s remaining budget. Consider documenting follow-up work or archiving completed features.');
+      console.log('No tracked tasks fit today\'s remaining budget. Consider documenting follow-up work or archiving completed capabilities.');
       return;
     }
 
@@ -243,29 +243,29 @@ function printRecommendedTasks(recommended, remainingTokens) {
     }
 
     const statusIndex = await loadStatusIndex();
-    const features = Array.isArray(statusIndex.features) ? statusIndex.features : [];
+    const capabilities = Array.isArray(statusIndex.capabilities) ? statusIndex.capabilities : [];
     printSection('Cross-Session Workflow');
-    if (features.length === 0) {
+    if (capabilities.length === 0) {
       console.log('No workflow entries recorded. Run a slash command (e.g., /baw_dev_discovery) and sync with `npm run baw:workflow:sync`.');
     } else {
-      console.log(`Tracked features: ${features.length}`);
-      features.slice(0, 3).forEach(feature => {
-        console.log(`  • ${feature.title} (${feature.featureId})`);
-        console.log(`    Phase: ${feature.currentPhase} • Status: ${feature.status}`);
-        if (feature.nextCommand) {
-          console.log(`    Next: ${feature.nextCommand}`);
+      console.log(`Tracked capabilities: ${capabilities.length}`);
+      capabilities.slice(0, 3).forEach(capability => {
+        console.log(`  • ${capability.title} (${capability.capabilityId})`);
+        console.log(`    Phase: ${capability.currentPhase} • Status: ${capability.status}`);
+        if (capability.nextCommand) {
+          console.log(`    Next: ${capability.nextCommand}`);
         }
-        if (feature.summary) {
-          console.log(`    Summary: ${feature.summary}`);
+        if (capability.summary) {
+          console.log(`    Summary: ${capability.summary}`);
         }
       });
-      if (features.length > 3) {
-        console.log(`  …and ${features.length - 3} more features in flight.`);
+      if (capabilities.length > 3) {
+        console.log(`  …and ${capabilities.length - 3} more capabilities in flight.`);
       }
     }
 
     const tasks = await loadTasks();
-    const derivedTasks = deriveTasksFromFeatures(features);
+    const derivedTasks = deriveTasksFromCapabilities(capabilities);
     const allTasks = [...tasks, ...derivedTasks];
     const uniqueTasks = [];
     const seen = new Set();
@@ -286,7 +286,7 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log('2. When `/baw_dev_discovery` surfaces gaps, revise the active plan/checklist/backlog instead of creating a new feature.');
     console.log('3. Default to Gemini MCP for doc summarization/research and Codex MCP for UI or syntax fixes.');
     console.log('4. Reserve Claude for architecture, multi-file reasoning, and verification.');
-    console.log('5. Update app-docs/specs when features complete and trim the cross-session prompt regularly.');
+    console.log('5. Update app-docs/specs when capabilities complete and trim the cross-session prompt regularly.');
 
     console.log('\nStay focused and budget-friendly!');
   } catch (error) {

@@ -22,14 +22,14 @@ const ROUTES = [
     persona: 'product',
     description: 'Define personas, value proposition, and success metrics.',
     keywords: ['charter', 'persona', 'vision', 'positioning', 'value prop', 'market fit'],
-    followUps: ['/baw_product_features "{subject}"', '/baw_product_helper "{subject} discovery gap"']
+    followUps: ['/baw_product_capabilities "{subject}"', '/baw_product_helper "{subject} discovery gap"']
   },
   {
-    id: 'product_features',
-    template: '/baw_product_features "{subject}"',
+    id: 'product_capabilities',
+    template: '/baw_product_capabilities "{subject}"',
     persona: 'product',
-    description: 'Break a product vision into a feature catalogue with dependencies.',
-    keywords: ['feature map', 'roadmap', 'dependency graph', 'catalogue', 'feature list', 'epic plan'],
+    description: 'Break a product vision into a capability catalogue with dependencies.',
+    keywords: ['capability map', 'roadmap', 'dependency graph', 'catalogue', 'capability list', 'epic plan'],
     followUps: ['/baw_product_wishlist "{subject}"', '/baw_product_helper "{subject} research"']
   },
   {
@@ -38,7 +38,7 @@ const ROUTES = [
     persona: 'product',
     description: 'Run focused research to close discovery gaps.',
     keywords: ['research', 'market', 'analysis', 'competitive', 'regulation', 'compliance', 'sizing'],
-    followUps: ['/baw_product_features "{subject}"']
+    followUps: ['/baw_product_capabilities "{subject}"']
   },
   {
     id: 'dev_dependency_plan',

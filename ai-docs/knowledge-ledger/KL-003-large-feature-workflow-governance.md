@@ -6,8 +6,8 @@ date: 2025-10-06
 replaces: null
 links:
   - path: app-docs/guides/large-feature-workflow.md
-  - path: ai-docs/workflow/features/README.md
-  - path: scripts/scaffold-feature.js
+  - path: ai-docs/capabilities/README.md
+  - path: scripts/scaffold-capability.js
   - path: ai-docs/README.md
 tags: [workflow, governance, features]
 ---
@@ -22,7 +22,7 @@ Why this approach was chosen:
 
 - **Alternative A – Continue using ad-hoc plans/baw_dev_build directories:** This left artifacts scattered across `plans/`, `builds/`, and `sessions/`, making it impossible to track progress or respect token budgets at epic scale.
 - **Alternative B – Centralize everything in a single dashboard command:** A monolithic command could not ingest nuanced plan slices or session history, and it masked the need for human-readable artifacts.
-- **Chosen Approach – Structured feature workspaces:** Creating first-class feature directories with manifests, checklists, and session logs gives both humans and automation a shared source of truth.
+- **Chosen Approach – Structured capability workspaces:** Creating first-class feature directories with manifests, checklists, and session logs gives both humans and automation a shared source of truth.
 
 ### Trade-offs
 
@@ -47,14 +47,14 @@ Where to find this decision in the codebase:
 ### Files
 - `app-docs/guides/large-feature-workflow.md` – Playbook describing the lifecycle and artifact expectations.
 - `ai-docs/README.md` – Updated root documentation pointing contributors to structured feature directories.
-- `ai-docs/workflow/features/README.md` – Detailed directory contract for feature workspaces.
-- `ai-docs/workflow/features/_template/` – Canonical scaffolding template copied per feature.
-- `ai-docs/workflow/features/index.json` – Registry of scaffolded features.
-- `scripts/scaffold-feature.js` – CLI script that generates feature workspaces and updates the registry.
+- `ai-docs/capabilities/README.md` – Detailed directory contract for capability workspaces.
+- `ai-docs/capabilities/_template/` – Canonical scaffolding template copied per feature.
+- `ai-docs/capabilities/index.json` – Registry of scaffolded features.
+- `scripts/scaffold-capability.js` – CLI script that generates capability workspaces and updates the registry.
 
 ### Commands
 ```bash
-npm run baw:feature:scaffold -- --title "<Feature Title>"
+npm run baw:capability:scaffold -- --title "<Feature Title>"
 ```
 
 ### Configuration

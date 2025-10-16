@@ -12,7 +12,7 @@ model: claude-sonnet-4-5
 
 ## Instructions
 - **You don't run this manually** - Claude runs it automatically after build.
-- Derive the feature workspace from the build plan path and store critique artifacts under `ai-docs/workflow/features/<feature-id>/reports/review/`.
+- Derive the capability workspace from the build plan path and store critique artifacts under `ai-docs/capabilities/<capability-id>/reports/review/`.
 - Analyze code for complexity, standards adherence, risks.
 - Generate Code Critique Summary (`reports/review/<ISO-timestamp>-critique.md`).
 - **PAUSE** and wait for user approval.
@@ -23,7 +23,7 @@ model: claude-sonnet-4-5
    - Function/file complexity metrics
    - Code standards adherence (linting, formatting)
    - Risk assessment
-3. Generate critique summary with recommendations and save it to the feature workspace review directory.
+3. Generate critique summary with recommendations and save it to the capability workspace review directory.
 4. **PAUSE** and wait for user response (yes/no/revise).
 
 ## Report

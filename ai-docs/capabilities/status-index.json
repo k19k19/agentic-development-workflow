@@ -1,9 +1,9 @@
 {
   "version": "1.1",
-  "generatedAt": "2025-10-15T10:05:51.190Z",
-  "features": [
+  "generatedAt": "2025-10-16T02:42:42.333Z",
+  "capabilities": [
     {
-      "featureId": "simple-accounting-software-for-dev-startup",
+      "capabilityId": "simple-accounting-software-for-dev-startup",
       "title": "Simple Accounting Software for Dev Startup",
       "currentPhase": "dependency-plan",
       "status": "completed",
@@ -11,12 +11,12 @@
       "nextCommand": "/baw_dev_breakout_plan",
       "updatedAt": "2025-10-15T00:00:03.000Z",
       "summary": "5-phase roadmap created spanning 16-20 weeks with Early Access (Week 12) and Full MVP (Week 20) releases",
-      "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
+      "outputPath": "ai-docs/capabilities/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
       "documentation": [
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/research/2025-10-15T00-00-00-philippines-compliance.md",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+        "ai-docs/capabilities/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md",
+        "ai-docs/capabilities/2025-10-15T00-00-00-capability-catalog.md",
+        "ai-docs/research/2025-10-15T00-00-00-philippines-compliance.md",
+        "ai-docs/charter.md"
       ],
       "notes": {
         "totalPhases": 5,
@@ -187,7 +187,7 @@
           "command": "/baw_dev_dependency_plan",
           "nextCommand": "/baw_dev_breakout_plan",
           "summary": "5-phase roadmap created spanning 16-20 weeks with Early Access (Week 12) and Full MVP (Week 20) releases",
-          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md"
+          "outputPath": "ai-docs/capabilities/simple-accounting-software-for-dev-startup/plans/dependency/2025-10-15T00-00-00-dependency-plan.md"
         },
         {
           "phase": "product-research",
@@ -196,73 +196,32 @@
           "command": "/baw_product_helper",
           "nextCommand": "/baw_product_helper",
           "summary": "Philippines compliance research completed; identified 8 feature changes and 3 new requirements, adding ~90 hours to MVP",
-          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/research/2025-10-15T00-00-00-philippines-compliance.md"
+          "outputPath": "ai-docs/research/2025-10-15T00-00-00-philippines-compliance.md"
         },
         {
-          "phase": "feature-catalog",
+          "phase": "capability-catalog",
           "status": "needs_docs",
           "timestamp": "2025-10-15T00:00:01.000Z",
-          "command": "/baw_product_features",
+          "command": "/baw_product_capabilities",
           "nextCommand": "/baw_product_helper",
           "summary": "Feature catalog created with 34 features (23 Must-Have, 9 Should-Have, 2 Could-Have) across 5 capabilities",
-          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/features/2025-10-15T00-00-00-feature-catalog.md"
+          "outputPath": "ai-docs/capabilities/2025-10-15T00-00-00-capability-catalog.md"
         },
         {
           "phase": "product-charter",
           "status": "completed",
           "timestamp": "2025-10-15T00:00:00.000Z",
           "command": "/baw_product_charter",
-          "nextCommand": "/baw_product_features",
+          "nextCommand": "/baw_product_capabilities",
           "summary": "Product charter established with personas, success metrics, and 334-557 hour estimate",
-          "outputPath": "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/intake/product/charter.md"
+          "outputPath": "ai-docs/charter.md"
         }
       ],
       "sourceFiles": [
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-03-dependency-plan.json",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-02-product-research.json",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-01-feature-catalog.json",
-        "ai-docs/workflow/features/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-00-product-charter.json"
-      ]
-    },
-    {
-      "featureId": "dev-management-platform",
-      "title": "Development Management Platform",
-      "currentPhase": "product-charter",
-      "status": "completed",
-      "lastCommand": "/baw_product_charter",
-      "nextCommand": "/baw_product_features \"dev-management-platform\"",
-      "updatedAt": "2025-10-15T00:00:00.000Z",
-      "summary": "Product charter completed with personas, success metrics, 7 core capabilities, and initial man-hour estimate (444-714 hours)",
-      "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md",
-      "documentation": [
-        "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md",
-        "app-docs/guides/product-charter-effort-estimates.md",
-        "ai-docs/workflow/features/dev-management-platform/intake/product/research/2025-10-15T00-00-00Z-billing-models-software-agencies.md"
-      ],
-      "notes": null,
-      "history": [
-        {
-          "phase": "product-charter",
-          "status": "completed",
-          "timestamp": "2025-10-15T00:00:00.000Z",
-          "command": "/baw_product_charter",
-          "nextCommand": "/baw_product_features \"dev-management-platform\"",
-          "summary": "Product charter completed with personas, success metrics, 7 core capabilities, and initial man-hour estimate (444-714 hours)",
-          "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/charter.md"
-        },
-        {
-          "phase": "product-research",
-          "status": "completed",
-          "timestamp": "2025-10-15T00:00:00.000Z",
-          "command": "/baw_product_helper",
-          "nextCommand": "/baw_product_features \"dev-management-platform\" \"\"",
-          "summary": "Research completed on billing models for 2-10 developer software agencies serving SMB clients",
-          "outputPath": "ai-docs/workflow/features/dev-management-platform/intake/product/research/2025-10-15T00-00-00Z-billing-models-software-agencies.md"
-        }
-      ],
-      "sourceFiles": [
-        "ai-docs/workflow/features/dev-management-platform/workflow/2025-10-15T00:00:00.000Z-product-charter.json",
-        "ai-docs/workflow/features/dev-management-platform/workflow/2025-10-15T00-00-00Z-product-research.json"
+        "ai-docs/capabilities/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-03-dependency-plan.json",
+        "ai-docs/capabilities/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-02-product-research.json",
+        "ai-docs/capabilities/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-01-capability-catalog.json",
+        "ai-docs/capabilities/simple-accounting-software-for-dev-startup/workflow/2025-10-15T00-00-00-product-charter.json"
       ]
     }
   ],
@@ -302,7 +261,7 @@
         "adoptedOn": "2025-10-06",
         "what": "Standardized large feature delivery around scaffolded directories, manifests, and session backlogs so complex initiatives remain within token budgets while maintaining traceability.",
         "why": "Ad-hoc artifacts made it impossible to split plans, coordinate sessions, or monitor progress at epic scale; a structured workspace keeps automation and humans aligned.",
-        "how": "`app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, `ai-docs/workflow/features/_template/`, and `scripts/scaffold-feature.js` define and automate the new structure.",
+        "how": "`app-docs/guides/large-feature-workflow.md`, `ai-docs/capabilities/README.md`, `ai-docs/capabilities/_template/`, and `scripts/scaffold-capability.js` define and automate the new structure.",
         "tags": [
           "features",
           "governance",
@@ -315,7 +274,7 @@
         "adoptedOn": "2025-10-07",
         "what": "Locked the `/baw_dev_discovery` feedback loop to existing plan artifacts so refinements enrich a single slice instead of forking duplicate features or plans.",
         "why": "Duplicate scaffolding burned tokens and hid progress across sessions; revising in-place keeps dashboards and backlogs trustworthy.",
-        "how": "Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/workflow/features/README.md`, and the feature template ensure agents update the same plan/checklist/backlog entries.",
+        "how": "Guidance in `CLAUDE.md`, `app-docs/guides/large-feature-workflow.md`, `ai-docs/capabilities/README.md`, and the capability template ensure agents update the same plan/checklist/backlog entries.",
         "tags": [
           "discovery",
           "planning",
@@ -337,9 +296,9 @@
       },
       {
         "id": "KL-006",
-        "title": "BAW Namespace & Feature Workspace Unification",
+        "title": "BAW Namespace & Capability Workspace Unification",
         "adoptedOn": "2025-10-12",
-        "what": "Namespaced all workflow commands with `baw_` and routed automation outputs into per-feature workspaces under `ai-docs/workflow/features/`.",
+        "what": "Namespaced all workflow commands with `baw_` and routed automation outputs into per-capability workspaces under `ai-docs/capabilities/`.",
         "why": "A unified namespace and directory layout eliminate drift between discovery, plan, and build artifacts while keeping dashboards and hand-offs consistent.",
         "how": "Updated `.claude/commands/`, `CLAUDE.md`, repository guides, and workflow scripts (`scripts/workflow-status.js`, installers, dashboards) to read/write the new structure and provide scaffolding updates (including `intake/tasks/`).",
         "tags": [
@@ -352,9 +311,9 @@
         "id": "KL-007",
         "title": "Intake Alignment & Command Traceability",
         "adoptedOn": "2025-10-14",
-        "what": "Expanded the feature template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each feature workspace.",
+        "what": "Expanded the capability template and command documentation so discovery, planning, build, and support outputs all land in consistent subdirectories inside each capability workspace.",
         "why": "Prevent artifact drift and make it obvious how research flows into plans, builds, tests, deployments, and operations without revisiting legacy folders.",
-        "how": "Updated `.claude/commands/`, template scaffolding under `ai-docs/workflow/features/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.",
+        "how": "Updated `.claude/commands/`, template scaffolding under `ai-docs/capabilities/_template/`, onboarding scripts, and maintainer guides (`README.md`, `CLAUDE.md`, `CLAUDE-TEMPLATE.md`) to reference the new layout and clarify the discovery ➝ execution prep split.",
         "tags": [
           "intake",
           "traceability",

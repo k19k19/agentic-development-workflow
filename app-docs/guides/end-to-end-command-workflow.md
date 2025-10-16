@@ -5,12 +5,12 @@ The Budget Agentic Workflow now orients every slash command around the three cor
 ## 1. Product Strategy Track
 | Step | Command | What It Produces | Typical Next Step |
 | --- | --- | --- | --- |
-| Define the charter | `/baw_product_charter "<product>"` | Personas, value prop, success metrics, discovery gaps | `/baw_product_features` or `/baw_product_helper` |
-| Catalog the core features | `/baw_product_features "<product>"` | Priority-ranked feature catalog with dependencies | `/baw_dev_dependency_plan` or `/baw_product_wishlist` |
+| Define the charter | `/baw_product_charter "<product>"` | Personas, value prop, success metrics, discovery gaps | `/baw_product_capabilities` or `/baw_product_helper` |
+| Catalog the core features | `/baw_product_capabilities "<product>"` | Priority-ranked feature catalog with dependencies | `/baw_dev_dependency_plan` or `/baw_product_wishlist` |
 | Capture stretch ideas | `/baw_product_wishlist "<product>"` | Deferred scope with activation signals | `/baw_product_helper` or `/baw_workflow_radar` |
 | Close research gaps | `/baw_product_helper "<topic>"` | Curated research summary with citations | Feeds back into charter, features, or wishlist |
 
-All outputs save workflow status JSON using the `product-charter`, `feature-catalog`, `wishlist`, or `product-research` phases. Documentation lives under `app-docs/` and `ai-docs/workflow/features/<feature-id>/`.
+All outputs save workflow status JSON using the `product-charter`, `capability-catalog`, `wishlist`, or `product-research` phases. Documentation lives under `app-docs/` and `ai-docs/capabilities/<capability-id>/`.
 
 ## 2. Developer Delivery Track
 | Step | Command | What It Produces | Typical Next Step |

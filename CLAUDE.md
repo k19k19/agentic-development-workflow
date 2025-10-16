@@ -28,7 +28,7 @@ All custom commands are published with the `baw_` prefix (e.g., `/baw_dev_quick_
 
 **Product + Strategy:**
 - `/baw_product_charter [product]` – Define personas, value proposition, and metrics.
-- `/baw_product_features [product]` – Catalog core features with dependencies and readiness signals.
+- `/baw_product_capabilities [product]` – Catalog core capabilities with dependencies and readiness signals.
 - `/baw_product_wishlist [product]` – Capture stretch ideas and activation triggers.
 - `/baw_product_helper [topic]` – Run targeted research to close discovery gaps.
 
@@ -49,7 +49,7 @@ All custom commands are published with the `baw_` prefix (e.g., `/baw_dev_quick_
 All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits. Claude orchestrates the workflow, reviews Codex output, and handles approvals/communication.
 
 **Workflow Phases:**
-- Discovery: `/baw_product_charter`, `/baw_product_features`, `/baw_product_wishlist`, `/baw_product_helper`
+- Discovery: `/baw_product_charter`, `/baw_product_capabilities`, `/baw_product_wishlist`, `/baw_product_helper`
 - Planning: `/baw_dev_feature_start`, `/baw_dev_discovery`, `/baw_dev_plan`, `/baw_dev_dependency_plan`, `/baw_dev_breakout_plan`, `/baw_dev_execution_prep`
 - Implementation: `/baw_dev_build`, `/baw_dev_build_report`, `/baw_dev_quick_build`, `/baw_dev_discovery_build`
 - Verification: `/baw_dev_test_matrix`, `/baw_dev_test`, `/baw_uat`, `/baw_report_failure`
@@ -58,9 +58,9 @@ All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits
 
 ### Discovery-to-Plan Feedback Loop
 
-- When a `/baw_dev_discovery` result is too thin to execute an approved plan slice, **re-run `/baw_dev_discovery` against the same feature workspace** instead of creating a new feature. Reference the active plan under `ai-docs/workflow/features/<feature-id>/plans/` and append new findings in-place.
-- Promote all clarified requirements into the existing `plans/checklist.json` entry inside the feature workspace by updating its notes, acceptance criteria, or dependencies. Never spawn a second plan slice just to hold the extra data.
-- Use the feature workspace session backlog to flag "Plan needs revision" so subsequent prompts continue refining the same artifact until it is executable.
+- When a `/baw_dev_discovery` result is too thin to execute an approved plan slice, **re-run `/baw_dev_discovery` against the same capability workspace** instead of creating a new feature. Reference the active plan under `ai-docs/capabilities/<capability-id>/plans/` and append new findings in-place.
+- Promote all clarified requirements into the existing `plans/checklist.json` entry inside the capability workspace by updating its notes, acceptance criteria, or dependencies. Never spawn a second plan slice just to hold the extra data.
+- Use the capability workspace session backlog to flag "Plan needs revision" so subsequent prompts continue refining the same artifact until it is executable.
 - Only call `/baw_dev_plan` again if the scope materially changes and the old plan entry is superseded—record the supersession inside `plans/checklist.json`.
 
 **Discovery vs Execution Prep**
@@ -68,7 +68,7 @@ All implementation phases rely on Codex MCP (`mcp__codex__codex`) for code edits
 - `/baw_dev_execution_prep` is the actionizer—turn a planned slice into an executable checklist with owners, validation hooks, and missing assets. Store those dossiers in `intake/tasks/` and keep them synced with the plan checklist entry.
 
 ### Workflow Status System
-Every command writes structured JSON to `ai-docs/workflow/features/<feature-id>/workflow/<timestamp>-<phase>.json` containing:
+Every command writes structured JSON to `ai-docs/capabilities/<capability-id>/workflow/<timestamp>-<phase>.json` containing:
 ```javascript
 {
   featureId: "kebab-case-id",
@@ -85,7 +85,7 @@ Every command writes structured JSON to `ai-docs/workflow/features/<feature-id>/
 ```
 
 **Key scripts:**
-- `npm run baw:workflow:sync` – Aggregates status JSON → `ai-docs/workflow/status-index.json`
+- `npm run baw:workflow:sync` – Aggregates status JSON → `ai-docs/capabilities/status-index.json`
 - `npm run baw:work` – Renders unified dashboard from status index
 - `npm run baw:session:start` – Shows token budget + recommended tasks
 
@@ -105,7 +105,7 @@ app-docs/                  User-maintained documentation
 ai-docs/                   AI-generated artifacts
   workflow/
     features/
-      <feature-id>/
+      <capability-id>/
         intake/
           requirements.md
           product/        Charter, feature catalog, wishlist, research
@@ -132,7 +132,7 @@ ai-docs/                   AI-generated artifacts
         handoff/           Launch checklists and release notes
         artifacts/         Supporting documents (diagrams, exports, etc.)
   knowledge-ledger/        Architectural decision records
-  logs/, plans/, builds/   Legacy scratch space (read-only; keep new work in feature workspaces)
+  logs/, plans/, builds/   Legacy scratch space (read-only; keep new work in capability workspaces)
 ```
 
 ---
@@ -178,8 +178,8 @@ npm run baw:work                   # Display unified dashboard
 1. **Before command:** Read existing feature spec from `app-docs/specs/active/` if it exists
 2. **During command:** Follow the command's markdown instructions precisely
 3. **After command:**
-   - Write workflow status JSON to `ai-docs/workflow/features/<feature-id>/workflow/<timestamp>-<phase>.json`
-   - Update session log in `ai-docs/workflow/features/<feature-id>/sessions/SESSION-<date>-<slug>.md`
+   - Write workflow status JSON to `ai-docs/capabilities/<capability-id>/workflow/<timestamp>-<phase>.json`
+   - Update session log in `ai-docs/capabilities/<capability-id>/sessions/SESSION-<date>-<slug>.md`
    - Remind user to run `npm run baw:workflow:sync`
    - Print verification message for approval gates:
      ```
@@ -211,8 +211,8 @@ title.toLowerCase()
 ```
 
 ### Progressive Feature Scaffolding
-- `npm run baw:feature:scaffold -- --title "Feature"` now defaults to the minimal workspace profile; add `--profile full` when you explicitly need the legacy tree.
-- When a command requires additional folders (e.g., discovery evidence or breakout plans), have the user run `npm run baw:feature:structure -- --feature <slug> --ensure reports/discovery` (or the relevant section) instead of recreating the feature.
+- `npm run baw:capability:scaffold -- --title "Feature"` now defaults to the minimal workspace profile; add `--profile full` when you explicitly need the legacy tree.
+- When a command requires additional folders (e.g., discovery evidence or breakout plans), have the user run `npm run baw:capability:structure -- --capability <slug> --ensure reports/discovery` (or the relevant section) instead of recreating the capability.
 
 ### Workflow Status Validation
 `scripts/workflow-status.js` enforces required fields:
@@ -228,7 +228,7 @@ title.toLowerCase()
 - Run `npm run baw:knowledge:audit` when wrapping an initiative to confirm every adopted decision has What/Why/How coverage and tagged metadata.
 
 ### Token Budget Tracking
-`scripts/utils/token-usage-analyzer.js` reads entries from `ai-docs/workflow/token-usage.jsonl` and updates:
+`scripts/utils/token-usage-analyzer.js` reads entries from `ai-docs/capabilities/token-usage.jsonl` and updates:
   - Daily limit: 200K tokens (Claude $20 plan)
   - Weekly rolling window
   - Per-model breakdown (Gemini/Codex vs Claude)
@@ -236,9 +236,9 @@ title.toLowerCase()
 
 Add usage to the ledger in one of two ways:
 
-1. **Automatic import (preferred):** Drop session summaries that include a `Token usage:` block into the feature workspace and run:
+1. **Automatic import (preferred):** Drop session summaries that include a `Token usage:` block into the capability workspace and run:
    ```
-   npm run baw:token:auto -- --path ai-docs/workflow/features/<feature-id>
+   npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>
    ```
    The importer scans `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logs the total, and skips files that were already ingested.
 
@@ -289,7 +289,7 @@ Commands that pause for approval:
 
 After each build/baw_dev_test cycle:
 1. Run `git diff --stat` to show files changed
-2. Write or update `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-[slug].md` with:
+2. Write or update `ai-docs/capabilities/<capability-id>/sessions/SESSION-[date]-[slug].md` with:
    - Task summary (1-2 sentences)
    - Files modified
    - Key decisions and rationale
@@ -298,7 +298,7 @@ After each build/baw_dev_test cycle:
    - Token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`)
 3. Emit workflow status JSON
 4. Prompt `npm run baw:workflow:sync`
-5. Run `npm run baw:token:auto -- --path ai-docs/workflow/features/<feature-id>` so the session summary's token block is captured
+5. Run `npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>` so the session summary's token block is captured
 6. Suggest next command (usually `/baw_dev_test`)
 
 ---
@@ -317,14 +317,14 @@ Uses flat config (`eslint.config.mjs`):
 
 After implementation:
 1. Show `git diff --stat`
-2. Point to session log: `ai-docs/workflow/features/<feature-id>/sessions/SESSION-*.md`
+2. Point to session log: `ai-docs/capabilities/<capability-id>/sessions/SESSION-*.md`
 3. Suggest commit only after tests pass
 4. Use commit format:
    ```
    feat: Add feature title (spec: app-docs/specs/...)
 
-   Implementation plan: ai-docs/workflow/features/<feature-id>/plans/<timestamp>-*/plan.md
-   Build report: ai-docs/workflow/features/<feature-id>/reports/...
+   Implementation plan: ai-docs/capabilities/<capability-id>/plans/<timestamp>-*/plan.md
+   Build report: ai-docs/capabilities/<capability-id>/reports/...
 
    - Key change 1
    - Key change 2
@@ -359,7 +359,7 @@ After implementation:
 
 When `/baw_dev_test` command runs:
 - Executes test suite (method depends on project)
-- Captures output to `ai-docs/workflow/features/<feature-id>/builds/[timestamp]/test-output.txt`
+- Captures output to `ai-docs/capabilities/<capability-id>/builds/[timestamp]/test-output.txt`
 - Analyzes results
 - Suggests next action:
   - Pass → `/baw_dev_deploy_staging`

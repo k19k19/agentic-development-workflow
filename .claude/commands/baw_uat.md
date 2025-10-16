@@ -12,14 +12,14 @@ Run user acceptance tests on staging environment using Chrome DevTools MCP for E
 
 ## Variables
 FEATURE_ID: $1 (optional — ask the user if not supplied)
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 UAT_REPORT_DIRECTORY: <feature-workspace>/reports/uat/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - Use Chrome DevTools MCP for E2E test execution.
 - Test critical user flows.
-- Validate against acceptance criteria from feature spec stored in the feature workspace.
+- Validate against acceptance criteria from feature spec stored in the capability workspace.
 - Save results and screenshots to `UAT_REPORT_DIRECTORY/<ISO-timestamp>-uat-report.md` (store images alongside if needed).
 - If failures detected, document and report.
 

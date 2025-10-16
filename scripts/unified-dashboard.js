@@ -4,39 +4,39 @@
  * Unified Dashboard (Workflow Focused)
  *
  * Reads aggregated workflow status and prints a concise dashboard of
- * in-flight features, their current phases, and resume commands.
+ * in-flight capabilities, their current phases, and resume commands.
  */
 
 const {syncWorkflowStatus} = require('./workflow-status');
 
-function formatFeature(feature, index) {
+function formatCapability(capability, index) {
   const lines = [];
-  lines.push(`   ${index}. ${feature.title} (${feature.featureId})`);
-  lines.push(`      Phase: ${feature.currentPhase} • Status: ${feature.status}`);
-  if (feature.lastCommand) {
-    lines.push(`      Last Command: ${feature.lastCommand}`);
+  lines.push(`   ${index}. ${capability.title} (${capability.capabilityId})`);
+  lines.push(`      Phase: ${capability.currentPhase} • Status: ${capability.status}`);
+  if (capability.lastCommand) {
+    lines.push(`      Last Command: ${capability.lastCommand}`);
   }
-  if (feature.nextCommand) {
-    lines.push(`      ▶️  Resume: ${feature.nextCommand}`);
+  if (capability.nextCommand) {
+    lines.push(`      ▶️  Resume: ${capability.nextCommand}`);
   }
-  if (feature.summary) {
-    lines.push(`      📝 ${feature.summary}`);
+  if (capability.summary) {
+    lines.push(`      📝 ${capability.summary}`);
   }
-  if (feature.documentation?.length) {
-    lines.push(`      📚 Docs: ${feature.documentation.join(', ')}`);
+  if (capability.documentation?.length) {
+    lines.push(`      📚 Docs: ${capability.documentation.join(', ')}`);
   }
-  if (feature.outputPath) {
-    lines.push(`      📂 Output: ${feature.outputPath}`);
+  if (capability.outputPath) {
+    lines.push(`      📂 Output: ${capability.outputPath}`);
   }
-  if (feature.notes) {
-    lines.push(`      🧠 ${feature.notes}`);
+  if (capability.notes) {
+    lines.push(`      🧠 ${capability.notes}`);
   }
   return lines.join('\n');
 }
 
-function summarizeByPhase(features) {
-  return features.reduce((acc, feature) => {
-    const phase = feature.currentPhase || 'unknown';
+function summarizeByPhase(capabilities) {
+  return capabilities.reduce((acc, capability) => {
+    const phase = capability.currentPhase || 'unknown';
     acc[phase] = (acc[phase] || 0) + 1;
     return acc;
   }, {});
@@ -44,16 +44,16 @@ function summarizeByPhase(features) {
 
 async function showDashboard() {
   const {index, warnings} = await syncWorkflowStatus({silent: true});
-  const features = index.features || [];
-  const phaseSummary = summarizeByPhase(features);
+  const capabilities = index.capabilities || [];
+  const phaseSummary = summarizeByPhase(capabilities);
   const ledger = index.knowledgeLedger || { adopted: [], superseded: [], source: 'ai-docs/knowledge-ledger/ledger.md' };
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('🎯 WORKFLOW DASHBOARD');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-  console.log(`Features tracked: ${features.length}`);
-  if (features.length > 0) {
+  console.log(`Capabilities tracked: ${capabilities.length}`);
+  if (capabilities.length > 0) {
     console.log('Phase distribution:');
     Object.entries(phaseSummary)
       .sort((a, b) => b[1] - a[1])
@@ -63,18 +63,18 @@ async function showDashboard() {
   }
   console.log('');
 
-  if (features.length === 0) {
+  if (capabilities.length === 0) {
     console.log('No workflow entries found. Run a slash command (e.g., /baw_dev_discovery or /baw_dev_plan) to create status JSON and then rerun this dashboard.\n');
   } else {
-    console.log('Top features:');
-    features
+    console.log('Top capabilities:');
+    capabilities
       .slice(0, 10)
-      .forEach((feature, idx) => {
-        console.log(formatFeature(feature, idx + 1));
+      .forEach((capability, idx) => {
+        console.log(formatCapability(capability, idx + 1));
         console.log('');
       });
-    if (features.length > 10) {
-      console.log(`…and ${features.length - 10} more. Use 'npm run baw:workflow:sync' to inspect the full index.`);
+    if (capabilities.length > 10) {
+      console.log(`…and ${capabilities.length - 10} more. Use 'npm run baw:workflow:sync' to inspect the full index.`);
       console.log('');
     }
   }

@@ -7,8 +7,8 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 ## Non-Negotiables
 - **Stay inside slash commands.** If the user provides a plain request, run `/baw_agent "<request>"` to suggest the right command (offer the npm fallback only when they are outside the Claude CLI), then ask whether to execute it.
 - **Keep automation in sync.** Build-style commands must:
-  1. Write a session summary to `ai-docs/workflow/features/<feature>/sessions/`.
-  2. Emit workflow status JSON under `ai-docs/workflow/features/<feature>/workflow/` describing phase, status, and resume command.
+  1. Write a session summary to `ai-docs/capabilities/<capability>/sessions/`.
+  2. Emit workflow status JSON under `ai-docs/capabilities/<capability>/workflow/` describing phase, status, and resume command.
   3. Remind the user to run `npm run baw:workflow:sync` before checking the dashboard.
 - **Verification clarity.** When a command pauses (plan approval, manual checks, etc.), always print:
   - `🛑 Still inside /baw_<command>. Reply 'resume' to continue or 'stop' to exit.`
@@ -18,8 +18,8 @@ This template assumes the commands inside `.claude/` drive all serious work. Doc
 ---
 
 ## Folder Cheat Sheet
-- `app-docs/specs/{active,archive,reference}` – Feature knowledge maintained by the user.
-- `ai-docs/workflow/features/<feature>/` – Automation outputs organized per feature (intake, plans, builds, reports, sessions, workflow logs).
+- `app-docs/specs/{active,archive,reference}` – Capability knowledge maintained by the user.
+- `ai-docs/capabilities/<capability>/` – Automation outputs organized per capability (intake, plans, builds, reports, sessions, workflow logs).
   - `intake/` – `requirements.md`, `product/`, `personas/`, `support/`, and `tasks/` (outputs from product, persona, support, and `/baw_dev_execution_prep` commands).
   - `plans/` – `checklist.json` plus `dependency/`, `breakouts/`, and `deployment/` subfolders for roadmap outputs.
   - `reports/` – Command-specific evidence (`discovery/`, `tests/`, `uat/`, `deployments/`, `review/`, `failures/`, `ops/`).
@@ -37,9 +37,9 @@ All custom commands are published with the `baw_` prefix (e.g., `/baw_dev_quick_
   1. Print the save path.
   2. State the verification prompt (`🛑 ...`).
   3. Suggest `/baw_dev_build_report "<plan path>"` once approved.
-- `/baw_dev_build` & `/baw_dev_build_report` – Implement plan, run git diff, write the session log inside the feature workspace, emit workflow status JSON, and prompt `/baw_dev_test`.
+- `/baw_dev_build` & `/baw_dev_build_report` – Implement plan, run git diff, write the session log inside the capability workspace, emit workflow status JSON, and prompt `/baw_dev_test`.
 - `/baw_dev_discovery_build` – Calls `/baw_dev_discovery`, then builds immediately. Still write workflow status + session log and prompt `/baw_dev_test`.
-- `/baw_dev_quick_build` – Lightweight build without plan. Must update the feature workspace session log, write workflow status, and prompt `/baw_dev_test`.
+- `/baw_dev_quick_build` – Lightweight build without plan. Must update the capability workspace session log, write workflow status, and prompt `/baw_dev_test`.
 - `/baw_dev_full_pipeline` – Orchestrates `/baw_dev_discovery`, `/baw_dev_plan`, waits for approval, then `/baw_dev_build_report`. Surface verification message explicitly before waiting.
 - `/baw_dev_test` – Runs suite and tells user whether to deploy (`/baw_dev_deploy_staging`) or fix & rerun.
 
@@ -55,8 +55,8 @@ Every command ends with a **Next Steps** section containing literal commands to 
 ---
 
 ## Progressive Feature Scaffolding
-- `npm run baw:feature:scaffold -- --title "Feature"` defaults to the minimal workspace profile. Use `--profile full` only when you truly need the legacy directory tree.
-- When a task expands (e.g., you now need discovery evidence or breakout plans), ask the user to run `npm run baw:feature:structure -- --feature <slug> --ensure reports/discovery` rather than respinning the feature.
+- `npm run baw:capability:scaffold -- --title "Feature"` defaults to the minimal workspace profile. Use `--profile full` only when you truly need the legacy directory tree.
+- When a task expands (e.g., you now need discovery evidence or breakout plans), ask the user to run `npm run baw:capability:structure -- --capability <slug> --ensure reports/discovery` rather than respinning the capability.
 
 ---
 
@@ -72,7 +72,7 @@ This guarantees the recommended workflow executes, even when the user forgets.
 
 ## After Each Build/Test Cycle
 1. Confirm git diff summary and files touched.
-2. Point to `ai-docs/workflow/features/<feature>/sessions/<session>.md` so the user can skim what changed.
+2. Point to `ai-docs/capabilities/<capability>/sessions/<session>.md` so the user can skim what changed.
 3. Prompt `/baw_dev_test` ➞ `/baw_dev_deploy_staging` chain.
 4. If tests fail, guide the user to fix and rerun `/baw_dev_test`.
 

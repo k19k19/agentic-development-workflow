@@ -13,13 +13,13 @@ Convert the feature catalog into a delivery roadmap that sequences buildable inc
 ## Variables
 INITIATIVE_TITLE: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 DEPENDENCY_PLAN_DIRECTORY: <feature-workspace>/plans/dependency/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
-- Review product docs, feature catalog, and prior plans under `ai-docs/workflow/features/`.
-- Derive the feature workspace slug from `CONTEXT_DOCS` (ask for clarification if ambiguous) and ensure `DEPENDENCY_PLAN_DIRECTORY` exists.
+- Review product docs, feature catalog, and prior plans under `ai-docs/capabilities/`.
+- Derive the capability workspace slug from `CONTEXT_DOCS` (ask for clarification if ambiguous) and ensure `DEPENDENCY_PLAN_DIRECTORY` exists.
 - Use Gemini MCP to map dependencies and identify enabling work required for later features.
 - Break down the initiative into phases or milestones with clear completion criteria.
 - Flag missing specs, integrations, or data that must be sourced before build.

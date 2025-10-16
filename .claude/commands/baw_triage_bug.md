@@ -13,7 +13,7 @@ model: claude-sonnet-4-5
 ## Variables
 BUG_ID: $1
 BUG_REPORTS_DIRECTORY: app-docs/debugging/
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 SUPPORT_INTAKE_DIRECTORY: <feature-workspace>/intake/support/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 

@@ -13,13 +13,13 @@ Describe the functional interface and operational capabilities required by provi
 ## Variables
 PRODUCT_TITLE: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 PROVIDER_INTAKE_DIRECTORY: <feature-workspace>/intake/personas/provider/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
-- Review personas, product charter, and feature catalog stored in the feature workspace to understand provider needs.
-- Ensure `PROVIDER_INTAKE_DIRECTORY` exists within the feature workspace (create it when absent).
+- Review personas, product charter, and feature catalog stored in the capability workspace to understand provider needs.
+- Ensure `PROVIDER_INTAKE_DIRECTORY` exists within the capability workspace (create it when absent).
 - Use Gemini MCP to map provider journeys, permissions, and data requirements.
 - Identify required tooling (dashboards, bulk actions, reporting) and integration points with developer workflows.
 - Save the provider playbook to `PROVIDER_INTAKE_DIRECTORY/<ISO-timestamp>-provider-functions.md` (append if updating).

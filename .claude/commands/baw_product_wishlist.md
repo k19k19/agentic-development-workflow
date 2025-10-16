@@ -13,12 +13,13 @@ Record aspirational features, experiments, and deferred scope so the core delive
 ## Variables
 PRODUCT_TITLE: $1
 CONTEXT: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
-PRODUCT_INTAKE_DIRECTORY: <feature-workspace>/intake/product/
-WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
+CAPABILITY_WORKSPACE_ROOT: ai-docs/capabilities/
+PRODUCT_WISHLIST_ROOT: ai-docs/wishlist/
+WORKFLOW_LOG_DIRECTORY: <capability-workspace>/workflow/
 
 ## Instructions
-- Review the feature catalog, personas, and stakeholder notes for deferred asks (look in `PRODUCT_INTAKE_DIRECTORY`).
+- Review the capability catalog, personas, and stakeholder notes for deferred asks (look in `PRODUCT_WISHLIST_ROOT` and `ai-docs/charter.md`).
+- Treat `<capability-workspace>` as `CAPABILITY_WORKSPACE_ROOT/<capability-slug>` and ensure it exists if workflow logging is required.
 - Use Gemini MCP to brainstorm enhancements that extend the product vision without blocking the core launch.
 - For each wishlist item, track customer value, prerequisites, and triggers that would justify activation.
 - Suggest documentation updates or experiments required to validate the idea.
@@ -32,9 +33,9 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Report
 - Provide a table of wishlist items with value statement, persona, dependency notes, and activation signals and save it to
-  `PRODUCT_INTAKE_DIRECTORY/wishlist/<ISO-timestamp>-wishlist.md`.
+  `PRODUCT_WISHLIST_ROOT/<ISO-timestamp>-wishlist.md`.
 - Highlight experiments or metrics needed to validate each idea.
-- End with guidance on where the wishlist lives inside the feature workspace.
+- End with guidance on where the wishlist lives inside the capability workspace.
 
 ## Automation Trace
 - Emit status JSON with `phase: "wishlist"` to `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-wishlist.json`.

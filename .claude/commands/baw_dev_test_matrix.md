@@ -13,12 +13,12 @@ Establish a comprehensive testing approach covering development, staging, and pr
 ## Variables
 SUBJECT: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 TEST_MATRIX_DIRECTORY: <feature-workspace>/reports/test-matrices/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
-- Gather requirements, acceptance criteria, and risk notes from plans and task prep docs located in the feature workspace.
+- Gather requirements, acceptance criteria, and risk notes from plans and task prep docs located in the capability workspace.
 - Derive the feature slug from `CONTEXT_DOCS` or request confirmation from the user if ambiguous.
 - Use Gemini MCP to propose test categories (unit, integration, e2e, data validation, UAT) aligned with personas.
 - Map each test to environment, tooling, owners, and expected evidence.

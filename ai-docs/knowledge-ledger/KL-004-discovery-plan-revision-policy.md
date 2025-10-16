@@ -5,8 +5,8 @@
 - **Linked Artifacts:**
   - `CLAUDE.md`
   - `app-docs/guides/large-feature-workflow.md`
-  - `ai-docs/workflow/features/README.md`
-  - `ai-docs/workflow/features/_template/plans/README.md`
+  - `ai-docs/capabilities/README.md`
+  - `ai-docs/capabilities/_template/plans/README.md`
 
 ## Problem
 
@@ -14,7 +14,7 @@ Early runs of `/baw_dev_discovery` routinely discovered new requirements after a
 
 ## Decision
 
-All `/baw_dev_discovery` refinements must update the existing feature workspace:
+All `/baw_dev_discovery` refinements must update the existing capability workspace:
 
 1. Append clarifications and research directly to the in-flight `plans/<timestamp>-*/plan.md` file.
 2. Update the corresponding row in `plans/checklist.json` with the new context or acceptance criteria.
@@ -29,4 +29,4 @@ Keeping the discovery→plan loop scoped to a single plan slice preserves contex
 
 - Added a "Discovery-to-Plan Feedback Loop" section to `CLAUDE.md` so agents treat `/baw_dev_discovery` revisions as updates, not new features.
 - Documented the revision workflow in the Large Feature Delivery Playbook and feature directory README so humans and automation share the same expectations.
-- Updated the feature template's `plans/README.md` with explicit instructions for recording revisions in-place.
+- Updated the capability template's `plans/README.md` with explicit instructions for recording revisions in-place.

@@ -12,7 +12,7 @@ model: claude-sonnet-4-5
 
 ## Variables
 FEATURE_ID: $1
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 FAILURES_DIRECTORY: <feature-workspace>/reports/failures/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 

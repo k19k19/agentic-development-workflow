@@ -4,15 +4,14 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
-const FEATURES_ROOT = path.join(REPO_ROOT, 'ai-docs', 'workflow', 'features');
-const TEMPLATE_ROOT = path.join(FEATURES_ROOT, '_template');
+const CAPABILITIES_ROOT = path.join(REPO_ROOT, 'ai-docs', 'capabilities');
+const TEMPLATE_ROOT = path.join(CAPABILITIES_ROOT, '_template');
 
 const MINIMAL_FILES = [
   'README.md',
-  'feature-manifest.json',
+  'capability-manifest.json',
   'intake/README.md',
   'intake/requirements.md',
-  'intake/product/README.md',
   'intake/personas/README.md',
   'intake/support/README.md',
   'intake/tasks/README.md',
@@ -77,7 +76,7 @@ const OPTIONAL_SECTIONS = {
 async function ensureTemplateExists() {
   const stats = await fs.stat(TEMPLATE_ROOT).catch(() => null);
   if (!stats || !stats.isDirectory()) {
-    throw new Error('Template directory is missing. Expected at ai-docs/workflow/features/_template');
+    throw new Error('Template directory is missing. Expected at ai-docs/capabilities/_template');
   }
 }
 
@@ -129,7 +128,7 @@ async function copyTemplateTree(destinationRoot) {
 
 module.exports = {
   REPO_ROOT,
-  FEATURES_ROOT,
+  CAPABILITIES_ROOT,
   TEMPLATE_ROOT,
   MINIMAL_FILES,
   OPTIONAL_SECTIONS,

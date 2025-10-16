@@ -13,13 +13,13 @@ Triage and fix production bugs with focused analysis. Creates bug report and jum
 ## Variables
 BUG_ID: $1
 BUG_REPORTS_DIRECTORY: app-docs/debugging/
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 SUPPORT_INTAKE_DIRECTORY: <feature-workspace>/intake/support/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - If `BUG_ID` is missing, stop and ask the user to provide it.
-- Derive or confirm the feature workspace slug (reuse the affected feature when known; otherwise slugify `BUG_ID`).
+- Derive or confirm the capability workspace slug (reuse the affected feature when known; otherwise slugify `BUG_ID`).
 - Create internal bug report: `SUPPORT_INTAKE_DIRECTORY/bug-report-[BUG_ID].md` and mirror a copy under
   `BUG_REPORTS_DIRECTORY` if the organization tracks bugs centrally.
 - Trigger `/baw_triage_bug` for focused root cause analysis.

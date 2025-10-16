@@ -10,16 +10,16 @@ model: claude-sonnet-4-5
 ## Purpose
 Deploy the current build to staging environment for user acceptance testing.
 
-## Feature Workspace
+## Capability Workspace
 - Identify the feature currently moving toward release (usually the subject of the most recent `/baw_dev_build` or `/baw_dev_test`).
-- Confirm the workspace at `ai-docs/workflow/features/<feature-id>/` exists; if unclear, ask the user to specify the feature slug.
-- Write deployment notes to `ai-docs/workflow/features/<feature-id>/reports/deployments/` and automation logs to
-  `ai-docs/workflow/features/<feature-id>/workflow/`.
+- Confirm the workspace at `ai-docs/capabilities/<capability-id>/` exists; if unclear, ask the user to specify the feature slug.
+- Write deployment notes to `ai-docs/capabilities/<capability-id>/reports/deployments/` and automation logs to
+  `ai-docs/capabilities/<capability-id>/workflow/`.
 
 ## Instructions
 - Run pre-deployment validation script.
 - Deploy to staging environment using project-appropriate command.
-- Save deployment console output to `reports/deployments/<ISO-timestamp>-staging.log` inside the feature workspace.
+- Save deployment console output to `reports/deployments/<ISO-timestamp>-staging.log` inside the capability workspace.
 - Verify deployment health checks and capture results in the same directory.
 - Emit a workflow entry (`phase: "deploy-staging"`) so dashboards track the hand-off to `/baw_uat`.
 - No AI calls needed - just orchestration.
@@ -34,7 +34,7 @@ Deploy the current build to staging environment for user acceptance testing.
 ## Report
 - Confirm staging deployment status.
 - Show deployment URL.
-- Display health check results (reference the saved log path under the feature workspace).
+- Display health check results (reference the saved log path under the capability workspace).
 - Suggest running `/baw_uat` for user acceptance testing.
 
 ## Next Steps

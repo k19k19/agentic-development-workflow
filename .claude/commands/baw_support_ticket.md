@@ -13,13 +13,13 @@ Transform customer or support feedback into prioritized actions for product, dev
 ## Variables
 QUEUE_OR_ISSUE: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 SUPPORT_INTAKE_DIRECTORY: <feature-workspace>/intake/support/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - Review support logs, analytics, and workflow status to understand recurring issues.
-- Derive or confirm the affected feature workspace (reuse the feature slug referenced in `CONTEXT_DOCS` or ask the user when ambiguous).
+- Derive or confirm the affected capability workspace (reuse the feature slug referenced in `CONTEXT_DOCS` or ask the user when ambiguous).
 - Ensure `SUPPORT_INTAKE_DIRECTORY` exists and store synthesized ticket analyses there.
 - Use Gemini MCP to classify tickets by severity, persona impacted, and root cause.
 - Recommend fixes, documentation updates, or new feature requests.

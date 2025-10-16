@@ -12,7 +12,7 @@ Run hermetic unit and integration tests in an isolated environment. Automaticall
 
 ## Variables
 FEATURE_ID: $1 (optional — if omitted derive from latest `/baw_dev_build` output)
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 TEST_OUTPUT_DIRECTORY: <feature-workspace>/reports/tests/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
@@ -28,14 +28,14 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 2. Run integration tests with mocks.
 3. Collect test results and coverage data.
 4. If failures detected, trigger `/baw_report_failure` and enter learning loop.
-5. Save test output into the feature workspace reports directory and update coverage metrics.
+5. Save test output into the capability workspace reports directory and update coverage metrics.
 6. Emit `WORKFLOW_LOG_DIRECTORY/<ISO-timestamp>-test.json` with `phase: "test"` and the summary results.
 
 ## Report
 - Display test results summary (passed/failed counts).
 - Show code coverage percentage.
 - List failed tests with error messages (if any).
-- Provide path to full test output inside the feature workspace.
+- Provide path to full test output inside the capability workspace.
 - Suggest next step: `/baw_dev_deploy_staging` if passing, or review failures.
 
 ## Next Steps
@@ -46,7 +46,7 @@ WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 ```
 
 **❌ If tests fail:**
-1. Review test output: `ai-docs/workflow/features/<feature-id>/reports/tests/<timestamp>-test-results.json`
+1. Review test output: `ai-docs/capabilities/<capability-id>/reports/tests/<timestamp>-test-results.json`
 2. Fix the failing tests
 3. Re-run tests: `/baw_dev_test`
 

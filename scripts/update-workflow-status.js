@@ -6,7 +6,7 @@ const { syncWorkflowStatus, INDEX_FILE } = require('./workflow-status');
 (async () => {
   try {
     const { index, warnings } = await syncWorkflowStatus();
-    console.log(`\n📦 Features tracked: ${index.features.length}`);
+    console.log(`\n📦 Capabilities tracked: ${index.capabilities.length}`);
     if (warnings.length > 0) {
       console.log('⚠️  Some workflow entries were skipped:');
       warnings.forEach(message => {

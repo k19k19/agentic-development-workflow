@@ -13,14 +13,14 @@ Select the next feature to work on from the product roadmap.
 ## Variables
 ROADMAP_FILE: app-docs/roadmap.md
 SPECS_DIRECTORY: app-docs/specs/
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 
 ## Instructions
 - Read the product roadmap.
 - Identify next priority feature.
 - Check if spec exists for that feature.
-- Suggest running `/baw_dev_feature_start [feature-id]` to begin, ensuring a feature workspace skeleton exists at
-  `FEATURE_WORKSPACE_ROOT/<feature-id>/`.
+- Suggest running `/baw_dev_feature_start [feature-id]` to begin, ensuring a capability workspace skeleton exists at
+  `FEATURE_WORKSPACE_ROOT/<capability-id>/`.
 
 ## Workflow
 1. Read `ROADMAP_FILE` to see feature priority list.
@@ -32,7 +32,7 @@ FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
 - Display next feature ID and title.
 - Show feature priority and estimated complexity.
 - Indicate if spec exists or needs to be created.
-- Highlight whether `ai-docs/workflow/features/<feature-id>/` already exists or should be scaffolded via `npm run baw_scaffold:feature`.
+- Highlight whether `ai-docs/capabilities/<capability-id>/` already exists or should be scaffolded via `npm run baw_scaffold:feature`.
 - Suggest running `/baw_dev_feature_start "[feature-id]"` to begin.
 
 ## Budget

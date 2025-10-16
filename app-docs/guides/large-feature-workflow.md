@@ -1,6 +1,6 @@
 # Large Feature Delivery Playbook
 
-This playbook codifies the operating model for features that span multiple prompts, agents, and development days. It expands the lightweight defaults into a structure that scales without breaking token budgets or losing traceability.
+This playbook codifies the operating model for capabilities that span multiple prompts, agents, and development days. It expands the lightweight defaults into a structure that scales without breaking token budgets or losing traceability.
 
 ## Guiding Principles
 
@@ -14,7 +14,7 @@ This playbook codifies the operating model for features that span multiple promp
 
 | Phase | Artifacts | Commands |
 | --- | --- | --- |
-| **Intake** | `feature-manifest.json`, `intake/requirements.md` | `npm run baw:feature:scaffold -- --title "Fleet Dispatch" --token 20000 --owner ops`
+| **Intake** | `capability-manifest.json`, `intake/requirements.md` | `npm run baw:capability:scaffold -- --title "Fleet Dispatch" --token 20000 --owner ops`
 | **Discovery** | `intake/requirements.md`, `intake/tasks/` | `/baw_dev_discovery` with follow-ups captured in `intake/`
 | **Planning** | `plans/<timestamp>-*/plan.md`, `plans/checklist.json` | `/baw_dev_plan` per manageable slice (`maxPlanTokens` in manifest)
 | **Build / Test** | `builds/<timestamp>-*/`, `reports/<timestamp>-*/report.md` | `/baw_dev_build`, `/baw_dev_build_report`, `/baw_dev_test`
@@ -33,7 +33,7 @@ Each iteration through the table is scoped to a plan slice that fits within the 
 
 ## Multi-Command Build Strategy
 
-Relying on a single `build-w-report` command for massive features is fragile. Instead:
+Relying on a single `build-w-report` command for massive capabilities is fragile. Instead:
 
 1. Run `/baw_dev_build` for each plan slice, committing after a focused set of changes.
 2. Generate reports with `/baw_dev_build_report` scoped to the same slice (or use `reports/` for manually written summaries).
@@ -51,11 +51,11 @@ This pipeline keeps pull requests reviewable and avoids token overruns.
 
 ## ai-docs/ Folder Organization
 
-Feature work now lives under `ai-docs/workflow/features/<feature-slug>/` with the following canonical layout:
+Feature work now lives under `ai-docs/capabilities/<capability-slug>/` with the following canonical layout:
 
 ```
 feature-slug/
-  feature-manifest.json
+  capability-manifest.json
   README.md
   intake/
     tasks/
@@ -73,7 +73,7 @@ Automation, scripts, and humans all read from the same structure, making it triv
 
 ## Knowledge Ledger Integration
 
-- Every feature manifest references the `KL-` entries that govern its approach.
+- Every capability manifest references the `KL-` entries that govern its approach.
 - New process rules (like this playbook) are captured via a `KL-` proposal and added to `ledger.md` once adopted.
 - Session backlog items link to ledger entries when they depend on a decision, providing traceability from task to rationale.
 
@@ -81,8 +81,8 @@ Automation, scripts, and humans all read from the same structure, making it triv
 
 The unified dashboard remains useful for quick status checks, but large programs require additional slices:
 
-1. **Feature Backlog View** – Reads `features/index.json` and each manifest to display lifecycle status, owners, and token budgets.
-2. **Session Timeline View** – Aggregates `sessions/*.md` across features to show continuity and hand-offs.
+1. **Feature Backlog View** – Reads `capabilities/index.json` and each manifest to display lifecycle status, owners, and token budgets.
+2. **Session Timeline View** – Aggregates `sessions/*.md` across capabilities to show continuity and hand-offs.
 3. **Risk & Debt View** – Surfaces ledger entries tagged with `risk`, `debt`, or `follow-up` alongside open backlog items.
 
 These views are planned as incremental enhancements to `scripts/unified-dashboard.js`, driven by the structured files introduced above.
@@ -97,7 +97,7 @@ Keeping the ledger current ensures every contributor can reason about the system
 
 ## Next Steps
 
-1. Adopt the directory structure immediately for all new features (use the scaffolding script below).
-2. Migrate existing features into the structure as they are touched; capture migration notes in `handoff/` and the ledger.
+1. Adopt the directory structure immediately for all new capabilities (use the scaffolding script below).
+2. Migrate existing capabilities into the structure as they are touched; capture migration notes in `handoff/` and the ledger.
 3. Prioritize dashboard enhancements once at least one feature has active intake, plans, and sessions recorded under the new layout.
 

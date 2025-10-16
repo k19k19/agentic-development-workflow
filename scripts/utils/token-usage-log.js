@@ -14,7 +14,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { normalizeTokens } = require('./token-budget-calculator');
 
-const LOG_PATH = path.join(__dirname, '../../ai-docs/workflow/token-usage.jsonl');
+const LOG_PATH = path.join(__dirname, '../../ai-docs/capabilities/token-usage.jsonl');
 
 function parseArguments(argv) {
   const result = {};

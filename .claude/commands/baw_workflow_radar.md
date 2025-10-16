@@ -13,13 +13,13 @@ Provide a management-grade view of open tasks, missing documentation, data fixes
 ## Variables
 INITIATIVE_TITLE: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 RADAR_REPORT_DIRECTORY: <feature-workspace>/reports/ops/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - Aggregate workflow status JSON, feature manifests, and knowledge ledger decisions.
-- Derive the initiative's feature workspace (use the slug referenced in `CONTEXT_DOCS` or ask the user) and create `RADAR_REPORT_DIRECTORY` if missing.
+- Derive the initiative's capability workspace (use the slug referenced in `CONTEXT_DOCS` or ask the user) and create `RADAR_REPORT_DIRECTORY` if missing.
 - Use Gemini MCP to classify outstanding work into categories: missing specs, in-flight builds, testing gaps, data fixes, bugs, support follow-ups.
 - Highlight owner assignments, due dates, and dependencies that affect downstream phases.
 - Recommend automation or dashboard updates (`npm run baw:work`) to keep stakeholders aligned.

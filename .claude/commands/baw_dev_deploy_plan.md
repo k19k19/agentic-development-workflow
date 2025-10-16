@@ -13,13 +13,13 @@ Coordinate release steps across environments, owners, and rollback procedures so
 ## Variables
 RELEASE_NAME: $1
 CONTEXT_DOCS: $2
-FEATURE_WORKSPACE_ROOT: ai-docs/workflow/features/
+FEATURE_WORKSPACE_ROOT: ai-docs/capabilities/
 DEPLOYMENT_PLAN_DIRECTORY: <feature-workspace>/plans/deployment/
 WORKFLOW_LOG_DIRECTORY: <feature-workspace>/workflow/
 
 ## Instructions
 - Review dependency plans, breakout notes, and test matrices for the release.
-- Derive the feature workspace slug from `CONTEXT_DOCS` or the active release manifest; confirm the directory exists.
+- Derive the capability workspace slug from `CONTEXT_DOCS` or the active release manifest; confirm the directory exists.
 - Use Gemini MCP to build a deployment checklist covering staging, production, validation, and communication steps.
 - Capture required approvals, runbooks, monitoring, and rollback strategies.
 - Save the plan to `DEPLOYMENT_PLAN_DIRECTORY/<ISO-timestamp>-<release-slug>.md` alongside related assets.

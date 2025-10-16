@@ -85,24 +85,35 @@ else
     log_info "Preserved existing ai-docs/"
 fi
 
-LEGACY_AI_DOCS_DIRS=(plans builds sessions failures logs discovery tasks)
-for relative_dir in "${LEGACY_AI_DOCS_DIRS[@]}"; do
-    if [ ! -d "$PROJECT_ROOT/ai-docs/$relative_dir" ]; then
-        mkdir -p "$PROJECT_ROOT/ai-docs/$relative_dir"
-        touch "$PROJECT_ROOT/ai-docs/$relative_dir/.gitkeep"
+CHARTER_FILE="$PROJECT_ROOT/ai-docs/charter.md"
+if [ ! -f "$CHARTER_FILE" ]; then
+    cat > "$CHARTER_FILE" <<'EOF'
+# Product Charter (Stub)
+
+Use `/baw_product_charter "<product>"` to replace this stub with the current
+vision, personas, metrics, and guardrails.
+EOF
+    log_success "Created ai-docs/charter.md"
+fi
+
+TOP_LEVEL_DIRS=(wishlist helper research)
+for relative_dir in "${TOP_LEVEL_DIRS[@]}"; do
+    target="$PROJECT_ROOT/ai-docs/$relative_dir"
+    if [ ! -d "$target" ]; then
+        mkdir -p "$target"
+        touch "$target/.gitkeep"
+        log_success "Created ai-docs/$relative_dir/"
+    else
+        log_info "Preserved ai-docs/$relative_dir/"
     fi
 done
 
-WORKFLOW_ROOT="$PROJECT_ROOT/ai-docs/workflow"
-mkdir -p "$WORKFLOW_ROOT"
-if [ ! -f "$WORKFLOW_ROOT/status-index.json" ]; then
-    echo '{"features":[],"generatedAt":null,"version":"1.1","warnings":[]}' > "$WORKFLOW_ROOT/status-index.json"
-    log_success "Initialized ai-docs/workflow/status-index.json"
+CAPABILITIES_ROOT="$PROJECT_ROOT/ai-docs/capabilities"
+mkdir -p "$CAPABILITIES_ROOT"
+if [ ! -f "$CAPABILITIES_ROOT/status-index.json" ]; then
+    echo '{"capabilities":[],"generatedAt":null,"version":"1.1","warnings":[]}' > "$CAPABILITIES_ROOT/status-index.json"
+    log_success "Initialized ai-docs/capabilities/status-index.json"
 fi
-
-FEATURES_ROOT="$WORKFLOW_ROOT/features"
-mkdir -p "$FEATURES_ROOT"
-touch "$FEATURES_ROOT/.gitkeep"
 
 # Ensure knowledge ledger scaffold exists
 KNOWLEDGE_LEDGER_DIR="$PROJECT_ROOT/ai-docs/knowledge-ledger"
@@ -256,10 +267,10 @@ GIT_IGNORE_PATTERNS=(
     ".env.local"
     "*.log"
     ".DS_Store"
-    "ai-docs/workflow/features/*/builds/"
-    "ai-docs/workflow/features/*/reports/"
-    "ai-docs/workflow/features/*/sessions/"
-    "ai-docs/workflow/features/*/workflow/"
+    "ai-docs/capabilities/*/builds/"
+    "ai-docs/capabilities/*/reports/"
+    "ai-docs/capabilities/*/sessions/"
+    "ai-docs/capabilities/*/workflow/"
     "!ai-docs/.gitkeep"
     "!ai-docs/**/.gitkeep"
     "!ai-docs/README.md"
@@ -289,7 +300,7 @@ echo ""
 
 # --- 6. Prepare Workflow Automation ---
 log_info "🧭 Step 6/7: Preparing workflow automation..."
-mkdir -p "$PROJECT_ROOT/ai-docs/workflow/features"
+mkdir -p "$PROJECT_ROOT/ai-docs/capabilities"
 log_info "Workflow automation directories confirmed."
 
 echo ""

@@ -27,8 +27,8 @@ TASK: $1
 1. Validate `TASK` is provided and suitable for quick mode.
 2. Use Gemini to generate `rg` keywords, then use `rg` to find the relevant file context.
 3. Use `mcp__codex__codex` to implement the `TASK` using the gathered file context.
-4. Derive or confirm the feature workspace slug (reuse an existing feature when possible; otherwise slugify the task) and write automation outputs inside `ai-docs/workflow/features/<feature-id>/`.
-5. Capture a short session summary in `ai-docs/workflow/features/<feature-id>/sessions/SESSION-[date]-quick.md`.
+4. Derive or confirm the capability workspace slug (reuse an existing feature when possible; otherwise slugify the task) and write automation outputs inside `ai-docs/capabilities/<capability-id>/`.
+5. Capture a short session summary in `ai-docs/capabilities/<capability-id>/sessions/SESSION-[date]-quick.md`.
 5. Trigger `npm run baw:session:start` so the ledger reflects the change.
 6. Report results with token usage.
 

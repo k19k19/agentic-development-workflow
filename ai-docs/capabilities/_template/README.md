@@ -1,4 +1,4 @@
-# Feature Overview
+# Capability Overview
 
 - **Title:** 
 - **Owner:** 
@@ -20,7 +20,7 @@ matching checklist row.
 - Latest session file: `sessions/SESSION-YYYYMMDD.md`
 - Backlog file: `sessions/session-backlog.json`
 - Task prep folder: `intake/tasks/`
-- Product discovery artifacts: `intake/product/`
+- Product strategy references: `ai-docs/charter.md`, `ai-docs/capabilities/`
 - Persona playbooks: `intake/personas/`
 - Support reviews: `intake/support/`
 
@@ -29,4 +29,3 @@ matching checklist row.
 1. 
 2. 
 3. 
-

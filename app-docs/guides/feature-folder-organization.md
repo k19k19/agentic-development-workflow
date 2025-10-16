@@ -4,7 +4,7 @@
 - **Prefer domain-based slices.** Organize feature folders around the user or business capability they deliver (e.g., `billing`, `analytics`, `user-preferences`). This keeps related UI, API, and data logic co-located and reduces cross-team coupling.
 - **Avoid rearranging purely for release phases.** Release timing changes frequently; using directory structure to mirror phases or quarters creates churn, inflates merge conflicts, and hides long-lived modules. Track release plans in planning docs or issue metadata instead.
 - **Expose dependency information with metadata.** Instead of embedding dependency order into folder names, keep a lightweight `README.md` or `status.yml` inside each feature folder that lists upstream/downstream dependencies and readiness. This keeps source layout stable while making sequencing explicit.
-- **Highlight unfinished work with status dashboards.** Use tags in your backlog tool or per-feature status files to surface "not yet implemented" slices. Stable directory names combined with accurate status metadata give a clearer signal than reorganizing folders after every phase.
+- **Highlight unfinished work with status dashboards.** Use tags in your backlog tool or per-capability status files to surface "not yet implemented" slices. Stable directory names combined with accurate status metadata give a clearer signal than reorganizing folders after every phase.
 
 ## Handling Shared or Reusable Components
 - **Extract into a shared package.** Move reusable UI components, hooks, or utilities into a dedicated `packages/shared-*` workspace (in a monorepo) or a versioned library repository. Publish with semantic versioning to document compatibility.
