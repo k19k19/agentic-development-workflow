@@ -9,6 +9,7 @@
 **Shift Knowledge from Context to Retrieval**—making all project intelligence persistent, structured, and instantly accessible via targeted retrieval (discovery/planning agents) rather than relying on the limited AI context window.
 
 **R&D Framework** (Reduce and Delegate):
+
 - Use token-efficient models for discovery and boilerplate
 - Delegate to specialized tools (Gemini, Codex, Chrome DevTools)
 - Reserve Claude for complex logic and architecture
@@ -64,6 +65,7 @@ Step 3: Execute with minimal context
    - `app-docs/mappings/feature-to-source.md` (create if missing)
 
 2. ✅ **Check existing patterns**
+
    ```bash
    # Search for similar implementations
    grep -r "pattern_keyword" app/
@@ -71,6 +73,7 @@ Step 3: Execute with minimal context
    ```
 
 3. ✅ **Confirm approach with user**
+
    ```markdown
    📋 Implementation Approach:
 
@@ -94,6 +97,7 @@ Step 3: Execute with minimal context
 ### Workflow Selection by Project Scale
 
 **Small Projects** (<10 files, <5K LOC):
+
 ```
 User: "Add health check endpoint"
 Claude: [uses Codex MCP directly]
@@ -101,20 +105,21 @@ Claude: [uses Codex MCP directly]
 ```
 
 **Medium Projects** (10-50 files, 5K-20K LOC):
+
 ```bash
 /baw_dev_discovery_build "Add user authentication" "" "budget"  # drop "budget" for full plan
 # Discovery (10K) → Build + Report (40K) = ~50K total
 ```
 
 **Large Projects** (>50 files, >20K LOC):
+
 ```bash
 /baw_dev_full_pipeline "Implement OAuth2" "https://oauth.net/2/" "budget"  # rerun with "standard" if more detail needed
 # Discovery (10K) → Plan (30K) → Build (50K) → Report (5K) = ~95K total
 ```
 
-
-
 ### Budget Mode Defaults
+
 - Start every multi-agent run with `/baw_dev_discovery_build "<task>" "<docs>" "budget"` unless the user explicitly asks for a full plan.
 - Expect discovery scale 2 and a ~350-word plan; escalate to `standard` only when the lean summary is insufficient.
 - Keep manual repository searches focused—surface at most three strong candidates before escalating to deeper investigation.
@@ -154,11 +159,13 @@ Claude: [uses Codex MCP directly]
 ## 📋 Code Quality Standards (Universal)
 
 ### Testing Requirements
+
 - **Unit tests**: >80% coverage on business logic
 - **Integration tests**: API, database, external services
 - **E2E tests**: Critical user flows (use Chrome DevTools MCP)
 
 ### Security Checklist
+
 - [ ] No secrets in version control (.env + .gitignore)
 - [ ] Input validation on all user inputs
 - [ ] Parameterized queries (prevent SQL injection)
@@ -169,6 +176,7 @@ Claude: [uses Codex MCP directly]
 - [ ] Principle of least privilege
 
 ### Code Organization Principles
+
 - **File size**: Target 300-500 lines per file
 - **DRY**: Reuse patterns, don't reinvent
 - **Separation of concerns**: Data, logic, presentation
@@ -182,6 +190,7 @@ Claude: [uses Codex MCP directly]
 ### Required Documentation
 
 **Every project needs:**
+
 1. **CLAUDE.md** (from template) - Project memory
 2. **README.md** - Setup, usage, quick reference
 3. **app-docs/specs/** - Feature specifications
@@ -191,17 +200,20 @@ Claude: [uses Codex MCP directly]
 ### Documentation Workflow
 
 **Before implementation:**
+
 - Write spec in `app-docs/specs/[feature].md`
 - Run `/baw_dev_plan` which reads spec automatically
 - Get user approval
 
 **After implementation:**
+
 - `/baw_dev_build_report` phase auto-updates:
   - `app-docs/mappings/feature-to-source.md` (create if missing)
   - `README.md` (if needed)
   - Architecture docs (if structural changes)
 
 **Never:**
+
 - Duplicate information across docs
 - Write docs without testing first
 - Let docs get out of sync (use pre-commit hooks)
@@ -264,10 +276,10 @@ git diff --stat
 
 ## 🚀 Token Optimization Rules
 
-1.  **Token Budget Detection**: Estimate project scale manually—Small (<10 files) go direct, Medium (10-50 files) run `/baw_dev_discovery_build`, Large tasks use `/baw_dev_full_pipeline`.
-2.  **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
-3.  **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
-4.  **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **discovery phase** and the **feature-to-source.md mapping file** to find the minimal required context.
+1. **Token Budget Detection**: Estimate project scale manually—Small (<10 files) go direct, Medium (10-50 files) run `/baw_dev_discovery_build`, Large tasks use `/baw_dev_full_pipeline`.
+2. **CRITICAL Pre-Implementation Protocol**: **NEVER skip the pre-approval phase.** This is the primary token gate. The AI must present its **Files to modify, Pattern, Token estimate, and Risks** and **WAIT for explicit user approval** before touching code.
+3. **Delegate Documentation Reading**: Use cheaper tools (like Gemini MCP) to summarize or read documentation and specs. **Do not waste Claude's tokens on reading large documentation files.**
+4. **Avoid Directory Reading**: The AI should **never** read an entire directory (e.g., src/). It must rely exclusively on the **discovery phase** and the **feature-to-source.md mapping file** to find the minimal required context.
 
 ---
 
@@ -285,11 +297,13 @@ Detailed workflow logging is retired. Use the session dashboard (`npm run baw:se
 ### Learn from Each Workflow
 
 After every workflow, check report for:
+
 - ✅ What worked well
 - ⚠️ What could improve
 - 🚀 Try next time
 
 **Update your patterns:**
+
 - Add successful patterns to `app-docs/guides/`
 - Document common bugs in `app-docs/debugging/`
 - Adjust token budgets based on actual usage
@@ -338,13 +352,12 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Format:**
+
 - **Type**: feat, fix, refactor, docs, test, chore
 - **Description**: What changed (not how)
 - **Reference**: Link to plan/spec
 - **Details**: Bullet points of key changes
 - **Credit**: Claude Code attribution
-
-
 
 ### Git Safety Rules
 
@@ -359,6 +372,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### When to Suggest Commits
 
 **Always proactively suggest a commit after:**
+
 - ✅ Completing a logical unit of work (feature, refactor, bug fix)
 - ✅ Moving/reorganizing files (refactoring)
 - ✅ Updating documentation that affects project understanding
@@ -366,12 +380,14 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - ✅ After successful test runs
 
 **Don't suggest commits:**
+
 - ❌ In the middle of incomplete work
 - ❌ When user explicitly said "don't commit yet"
 - ❌ During exploratory/experimental changes
 - ❌ When tests are failing
 
 **Protocol:**
+
 1. Show `git status` and `git diff --stat`
 2. Propose commit message following standards above
 3. Execute commit with proper attribution
@@ -419,12 +435,14 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### DON'T Use AI For
 
 **Manual tasks that are faster:**
+
 - Checking port availability (`lsof -i :80`)
 - Validating JSON syntax (`jq . < file.json`)
 - Counting files (`find app/ -type f | wc -l`)
 - Git operations (`git status`, `git diff`)
 
 **One-time setups:**
+
 - Environment variable configuration (edit .env manually)
 - API key management (don't share with AI)
 - Simple file renames (use `mv` command)
@@ -432,16 +450,19 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ### DON'T Skip Steps
 
 **Never skip pre-approval:**
+
 - Even for "simple" tasks
 - Saves tokens by catching wrong approaches
 - User knows their project better than AI
 
 **Never skip testing:**
+
 - Run test suite after changes
 - Manual testing for user-facing features
 - Performance testing for critical paths
 
 **Never skip documentation:**
+
 - Update README if commands changed
 - Update app-docs/mappings/ for new features
 - Add to app-docs/debugging/ if issues found
@@ -451,18 +472,23 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## 🛠️ Tool-Specific Guidelines
 
 ### Gemini MCP
+
 **Best for:**
+
 - Reading/summarizing documentation
 - Quick code searches
 - Format conversions
 - Initial drafts of specs
 
 **Not for:**
+
 - Complex logic (use Claude)
 - Production code (use Codex or Claude)
 
 ### Codex MCP
+
 **Best for:**
+
 - CRUD endpoints
 - Database models
 - React components
@@ -470,21 +496,27 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Test boilerplate
 
 **Not for:**
+
 - Architectural decisions (use Claude)
 - Complex algorithms (use Claude)
 
 ### Chrome DevTools MCP
+
 **Best for:**
+
 - E2E test generation
 - User flow testing
 - Visual regression tests
 
 **Not for:**
+
 - Unit tests (use Codex)
 - Backend API tests (use Codex)
 
 ### Claude
+
 **Best for:**
+
 - Multi-agent orchestration
 - Architectural planning
 - Complex multi-file refactoring
@@ -492,6 +524,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 - Security reviews
 
 **Not for:**
+
 - Simple boilerplate (use Codex)
 - Documentation reading (use Gemini)
 
@@ -593,16 +626,19 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ## 📚 Reference
 
 **Template location:**
+
 - GitHub: [your-template-repo]
 - Local: `~/templates/budget-agentic-workflow/`
 
 **Key documents:**
+
 - [README.md](README.md) - Complete template docs
 - [GETTING-STARTED.md](GETTING-STARTED.md) - 5-minute setup guide
 - [MIGRATION-GUIDE.md](MIGRATION-GUIDE.md) - Old SDK → New
 
 **Support:**
-- Claude Code: https://docs.claude.com/claude-code
+
+- Claude Code: <https://docs.claude.com/claude-code>
 - Template issues: [GitHub issues]
 
 ---
