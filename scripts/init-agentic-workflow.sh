@@ -227,7 +227,13 @@ node -e "
   pkg.scripts['baw:work'] = pkg.scripts['baw:work'] || 'node scripts/unified-dashboard.js';
   pkg.scripts['baw:workflow:sync'] = pkg.scripts['baw:workflow:sync'] || 'node scripts/update-workflow-status.js';
   pkg.scripts['baw:smoke'] = pkg.scripts['baw:smoke'] || 'bash scripts/smoke-test.sh';
-  pkg.scripts.test = pkg.scripts.test || 'jest --passWithNoTests';
+
+  const currentTestScript = (pkg.scripts.test || '').trim();
+  const isPlaceholderTest = !currentTestScript
+    || currentTestScript.toLowerCase().includes('no test specified');
+  if (isPlaceholderTest) {
+    pkg.scripts.test = 'jest --passWithNoTests';
+  }
   pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
   pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
   pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
