@@ -139,7 +139,7 @@ Every command writes structured JSON to `ai-docs/capabilities/<capability>/workf
 1. Confirm git diff summary and files touched.
 2. Point to `ai-docs/capabilities/<capability>/sessions/<session>.md` so the user can skim what changed.
 3. Emit workflow status JSON to `ai-docs/capabilities/<capability>/workflow/` and remind the user to run `npm run baw:workflow:sync`.
-4. Append a token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`) to the session note and run `npm run baw:token:auto -- --path ai-docs/workflow/features/<feature>` so the ledger updates before the next agent starts.
+4. Append a token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`) to the session note and run `npm run baw:token:auto -- --path ai-docs/capabilities/<capability>` so the ledger updates before the next agent starts.
 5. Prompt `/baw_dev_test` ➞ `/baw_dev_deploy_staging` chain.
 6. If tests fail, guide the user to fix and rerun `/baw_dev_test`.
 
@@ -158,14 +158,14 @@ Every command writes structured JSON to `ai-docs/capabilities/<capability>/workf
 
 ## Token Budget Workflow
 
-- `npm run baw:session:start` reads `ai-docs/workflow/token-usage.jsonl` to show the remaining Claude/Gemini budget. Without new entries, the warning thresholds (75%/90%) never fire.
-- Prefer the automatic importer: after each session log is written under `ai-docs/workflow/features/<feature>/sessions/`, run:
+- `npm run baw:session:start` reads `ai-docs/capabilities/token-usage.jsonl` to show the remaining Claude/Gemini budget. Without new entries, the warning thresholds (75%/90%) never fire.
+- Prefer the automatic importer: after each session log is written under `ai-docs/capabilities/<capability>/sessions/`, run:
 
   ```bash
-  npm run baw:token:auto -- --path ai-docs/workflow/features/<feature>
+  npm run baw:token:auto -- --path ai-docs/capabilities/<capability>
   ```
 
-  It scans `.md`/`.txt` files for token usage blocks, appends totals to the ledger, and skips files it has already ingested.
+  It scans `.md`/`.txt` files for token usage blocks, appends totals to the ledger, and skips files it has already ingested. If you omit `--path`, it auto-detects capability workspaces and legacy `ai-docs/workflow/features` directories.
 - If no session file exists yet, log usage manually:
 
   ```bash

@@ -262,7 +262,7 @@ title.toLowerCase()
 - Daily limit: 200K tokens (Claude $20 plan)
 - Weekly rolling window
 - Per-model breakdown (Gemini/Codex vs Claude)
-- Efficiency warnings at 70% (🟠) and 90% (🔴)
+- Efficiency warnings at 75% (🟠) and 90% (🔴)
 
 Add usage to the ledger in one of two ways:
 
@@ -272,7 +272,7 @@ Add usage to the ledger in one of two ways:
    npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>
    ```
 
-   The importer scans `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logs the total, and skips files that were already ingested.
+   The importer scans `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logs the total, and skips files that were already ingested. When you omit `--path`, it auto-detects existing capability workspaces and legacy `ai-docs/workflow/features` directories.
 
 2. **Manual entry:**
 

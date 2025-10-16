@@ -189,6 +189,11 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log(`Used today: ${formatTokens(dailyUsed)} tokens`);
     console.log(`Remaining:  ${formatTokens(dailyRemaining)} tokens`);
     console.log(`${formatWarning(dailyWarning)} Usage: ${dailyPercent.toFixed(1)}% ${generateProgressBar(dailyPercent)}`);
+    if (dailyWarning === 'warning') {
+      console.log('⚠️  Daily usage is past 75% of the Claude allowance. Route simple work to Gemini/Codex for the rest of the day.');
+    } else if (dailyWarning === 'critical') {
+      console.log('🚨 Daily token limit almost exhausted. Pause new Claude-heavy commands or upgrade the plan before continuing.');
+    }
 
     const suggestedWorkflows = getSuggestedWorkflows(dailyRemaining);
     if (suggestedWorkflows.length > 0) {
@@ -203,6 +208,11 @@ function printRecommendedTasks(recommended, remainingTokens) {
     console.log(`Used:       ${formatTokens(weeklyUsed)} tokens`);
     console.log(`Remaining:  ${formatTokens(weeklyRemaining)} tokens`);
     console.log(`${formatWarning(weeklyWarning)} Usage: ${weeklyPercent.toFixed(1)}% ${generateProgressBar(weeklyPercent)}`);
+    if (weeklyWarning === 'warning') {
+      console.log('⚠️  Weekly usage is above 75% of the rolling allowance. Plan lighter Claude work until the budget resets.');
+    } else if (weeklyWarning === 'critical') {
+      console.log('🚨 Weekly token limit nearly depleted. Shift upcoming tasks off Claude or wait for the allowance to refresh.');
+    }
 
     const cheapShare = getCheapModelShare(usageSummary.weekly.byModel, weeklyUsed);
     if (weeklyUsed > 0) {

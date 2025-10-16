@@ -221,22 +221,37 @@ node -e "
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 
   pkg.scripts = pkg.scripts || {};
-  pkg.scripts['baw:agent'] = pkg.scripts['baw:agent'] || 'node scripts/baw-agent.js';
-  pkg.scripts['baw:knowledge:manage'] = pkg.scripts['baw:knowledge:manage'] || 'node scripts/manage-knowledge.js';
-  pkg.scripts['baw:session:start'] = pkg.scripts['baw:session:start'] || 'node scripts/tasks-session-start.js';
-  pkg.scripts['baw:work'] = pkg.scripts['baw:work'] || 'node scripts/unified-dashboard.js';
-  pkg.scripts['baw:workflow:sync'] = pkg.scripts['baw:workflow:sync'] || 'node scripts/update-workflow-status.js';
-  pkg.scripts['baw:smoke'] = pkg.scripts['baw:smoke'] || 'bash scripts/smoke-test.sh';
+  const scriptMappings = {
+    'baw:agent': 'node scripts/baw-agent.js',
+    'baw:capability:scaffold': 'node scripts/scaffold-capability.js',
+    'baw:capability:structure': 'node scripts/capability-structure.js',
+    'baw:knowledge:audit': 'node scripts/knowledge-ledger-audit.js',
+    'baw:knowledge:manage': 'node scripts/manage-knowledge.js',
+    'baw:maintenance:legacy-scan': 'node scripts/maintenance/legacy-scan.js',
+    'baw:session:start': 'node scripts/tasks-session-start.js',
+    'baw:token:log': 'node scripts/utils/token-usage-log.js',
+    'baw:token:auto': 'node scripts/utils/token-usage-import.js',
+    'baw:work': 'node scripts/unified-dashboard.js',
+    'baw:workflow:sync': 'node scripts/update-workflow-status.js',
+    'baw:smoke': 'bash scripts/smoke-test.sh',
+    test: 'jest --passWithNoTests',
+    lint: 'eslint .',
+    'lint:fix': 'eslint . --fix',
+    format: 'prettier --write .'
+  };
+
+  Object.entries(scriptMappings).forEach(([name, command]) => {
+    if (!pkg.scripts[name]) {
+      pkg.scripts[name] = command;
+    }
+  });
 
   const currentTestScript = (pkg.scripts.test || '').trim();
-  const isPlaceholderTest = !currentTestScript
-    || currentTestScript.toLowerCase().includes('no test specified');
+  const isPlaceholderTest =
+    !currentTestScript || currentTestScript.toLowerCase().includes('no test specified');
   if (isPlaceholderTest) {
-    pkg.scripts.test = 'jest --passWithNoTests';
+    pkg.scripts.test = scriptMappings.test;
   }
-  pkg.scripts.lint = pkg.scripts.lint || 'eslint .';
-  pkg.scripts['lint:fix'] = pkg.scripts['lint:fix'] || 'eslint . --fix';
-  pkg.scripts.format = pkg.scripts.format || 'prettier --write .';
 
   pkg.devDependencies = pkg.devDependencies || {};
   if (!pkg.devDependencies.eslint) pkg.devDependencies.eslint = '^9.37.0';
@@ -249,9 +264,14 @@ node -e "
   if (!pkg.dependencies.glob) pkg.dependencies.glob = '^10.3.10';
   if (!pkg.dependencies['@xenova/transformers']) pkg.dependencies['@xenova/transformers'] = '^2.17.2';
 
-  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
-  console.log('✓ Scripts added: baw:agent, baw:knowledge:manage, baw:session:start, baw:work, baw:workflow:sync, baw:smoke, test, lint, format');
-  console.log('✓ Dependencies added: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\\n');
+  console.log('✓ Scripts ensured:');
+  Object.keys(scriptMappings).forEach(name => {
+    if (pkg.scripts[name] === scriptMappings[name]) {
+      console.log(\`  - \${name}\`);
+    }
+  });
+  console.log('✓ Dependencies ensured: glob, @xenova/transformers, eslint, @eslint/js, globals, jest, prettier');
 " || log_error "Failed to merge package.json"
 
 log_success "package.json merged."

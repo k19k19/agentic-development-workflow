@@ -74,4 +74,34 @@ describe('token-usage-import', () => {
     expect(parsed.source).toBe('test');
     expect(parsed.sourceFile).toContain('capability/sessions/SESSION-2025-01-01-summary.md');
   });
+
+  test('runImport falls back to legacy workflow directory when capabilities missing', async () => {
+    const tmpDir = await createTempDir();
+    const originalCwd = process.cwd();
+    const logPath = path.join(tmpDir, 'token-usage.jsonl');
+
+    try {
+      process.chdir(tmpDir);
+      const sessionDir = path.join(tmpDir, 'ai-docs', 'workflow', 'features', 'demo', 'sessions');
+      await fs.mkdir(sessionDir, { recursive: true });
+      const sessionFile = path.join(sessionDir, 'SESSION-2025-legacy.md');
+      await fs.writeFile(
+        sessionFile,
+        'Token usage:\nClaude: 2,500 tokens\nGemini: 500 tokens\nTotal tokens: 3,000\n'
+      );
+
+      const { entries, processed, skipped } = await runImport({
+        logPath,
+        source: 'test',
+        dryRun: false
+      });
+
+      expect(processed).toHaveLength(1);
+      expect(skipped).toHaveLength(0);
+      expect(entries[0].tokens.total).toBe(3000);
+      expect(entries[0].sourceFile).toContain('ai-docs/workflow/features/demo/sessions/SESSION-2025-legacy.md');
+    } finally {
+      process.chdir(originalCwd);
+    }
+  });
 });

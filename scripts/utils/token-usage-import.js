@@ -240,6 +240,48 @@ async function discoverFiles(target, includePattern = DEFAULT_INCLUDE) {
   return results;
 }
 
+async function resolveTargetRoots(targetPath) {
+  if (targetPath) {
+    return [path.resolve(targetPath)];
+  }
+
+  const cwd = process.cwd();
+  const capabilitiesDir = path.resolve(cwd, 'ai-docs/capabilities');
+  const legacyFeaturesDir = path.resolve(cwd, 'ai-docs/workflow/features');
+  const candidates = [capabilitiesDir, legacyFeaturesDir];
+  const existing = [];
+  for (const candidate of candidates) {
+    try {
+      const stats = await fs.stat(candidate);
+      if (stats.isDirectory()) {
+        existing.push(candidate);
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        throw error;
+      }
+    }
+  }
+
+  return existing.length ? existing : [capabilitiesDir];
+}
+
+async function collectFiles(targetRoots, includePattern) {
+  const allFiles = [];
+  for (const root of targetRoots) {
+    try {
+      const discovered = await discoverFiles(root, includePattern);
+      allFiles.push(...discovered);
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        continue;
+      }
+      throw error;
+    }
+  }
+  return allFiles;
+}
+
 async function extractUsageFromFile(filePath) {
   const content = await readFileSafe(filePath);
   if (!content) {
@@ -270,16 +312,10 @@ async function runImport({
   since
 }) {
   const { sourceFiles } = await loadExistingEntries(logPath);
-  const absoluteTarget = targetPath ? path.resolve(targetPath) : path.resolve(process.cwd(), 'ai-docs/capabilities');
-
-  let files;
-  try {
-    files = await discoverFiles(absoluteTarget, include);
-  } catch (error) {
-    if (error.code === 'ENOENT') {
-      return { entries: [], processed: [], skipped: [] };
-    }
-    throw error;
+  const targetRoots = await resolveTargetRoots(targetPath);
+  const files = await collectFiles(targetRoots, include);
+  if (files.length === 0) {
+    return { entries: [], processed: [], skipped: [] };
   }
 
   const processed = [];
