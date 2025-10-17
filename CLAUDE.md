@@ -269,10 +269,10 @@ Add usage to the ledger in one of two ways:
 1. **Automatic import (preferred):** Drop session summaries that include a `Token usage:` block into the capability workspace and run:
 
    ```
-   npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>
+   npm run baw:workflow:sync
    ```
 
-   The importer scans `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logs the total, and skips files that were already ingested. When you omit `--path`, it auto-detects existing capability workspaces and legacy `ai-docs/workflow/features` directories.
+   The sync script now runs the importer automatically, scanning `.md/.txt` files for lines such as `Claude: 12,345 tokens`, logging totals, and skipping files that were already ingested. If you need to target a specific directory manually, you can still run `npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>`.
 
 2. **Manual entry:**
 
@@ -337,7 +337,7 @@ After each build/baw_dev_test cycle:
    - Token usage block (e.g., `Claude: 12,345 tokens`, `Gemini: 2,000 tokens`, `Total tokens: 14,345`)
 3. Emit workflow status JSON
 4. Prompt `npm run baw:workflow:sync`
-5. Run `npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>` so the session summary's token block is captured
+5. Let `npm run baw:workflow:sync` ingest the session’s token block automatically (use `npm run baw:token:auto -- --path ai-docs/capabilities/<capability-id>` only for manual re-runs)
 6. Suggest next command (usually `/baw_dev_test`)
 
 ---
