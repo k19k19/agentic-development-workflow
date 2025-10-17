@@ -2,7 +2,7 @@
 description: Prepare deployment and release readiness plan
 argument-hint: [release_name] [context_docs]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_deploy_plan

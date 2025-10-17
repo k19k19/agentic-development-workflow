@@ -2,7 +2,7 @@
 description: Verify discovery results quality (AI-internal command)
 argument-hint: [discovery-results-path]
 allowed-tools: ["Read", "Write", "mcp__gemini-cli__ask-gemini"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_verify_discovery

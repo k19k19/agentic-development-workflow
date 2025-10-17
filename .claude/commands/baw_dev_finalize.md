@@ -2,7 +2,7 @@
 description: Generate documentation and update trackers
 argument-hint: [feature-id]
 allowed-tools: ["Read", "Write", "Edit", "run_shell_command"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_finalize

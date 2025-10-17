@@ -2,7 +2,7 @@
 description: Restart feature after failure with lessons learned (AI-internal command)
 argument-hint: [feature-id]
 allowed-tools: ["Read", "run_shell_command"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_restart_feature

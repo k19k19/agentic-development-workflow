@@ -2,7 +2,7 @@
 description: Analyze support feedback and convert it into actionable follow-ups
 argument-hint: [queue_or_issue] [context_docs]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_support_ticket

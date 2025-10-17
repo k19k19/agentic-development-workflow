@@ -2,7 +2,7 @@
 description: Design provider-facing workflows and administrative functions
 argument-hint: [product_title] [context_docs]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_provider_functions

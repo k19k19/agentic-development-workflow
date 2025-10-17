@@ -2,7 +2,7 @@
 description: Collect specifications, documents, and acceptance criteria for a breakout task
 argument-hint: [task_title] [context_docs]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_execution_prep

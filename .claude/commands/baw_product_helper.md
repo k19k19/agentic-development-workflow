@@ -2,7 +2,7 @@
 description: Run focused research to close product discovery gaps
 argument-hint: [topic] [context]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "mcp__gemini-cli__web-search", "Read", "Glob", "Grep", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_product_helper

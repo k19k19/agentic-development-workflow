@@ -2,7 +2,7 @@
 description: Route plain-language requests to the correct `/baw_` command
 argument-hint: '[--persona product|dev|ops|support] "<request>"'
 allowed-tools: ["run_shell_command"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_agent

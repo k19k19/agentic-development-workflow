@@ -2,7 +2,7 @@
 description: Capture future enhancements and stretch goals for the product
 argument-hint: [product_title] [context]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_product_wishlist

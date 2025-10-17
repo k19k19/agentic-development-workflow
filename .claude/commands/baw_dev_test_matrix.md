@@ -2,7 +2,7 @@
 description: Define end-to-end testing strategy across environments
 argument-hint: [initiative_or_task] [context_docs]
 allowed-tools: ["mcp__gemini-cli__ask-gemini", "Read", "Edit", "Glob", "Grep", "MultiEdit", "Bash"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_test_matrix
