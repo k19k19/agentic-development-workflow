@@ -4,9 +4,6 @@
   "description": "Lean agentic development workflow focused on budget-first execution.",
   "main": "index.js",
   "scripts": {
-    "agent:start": "node .agent/cli.js start",
-    "agent:status": "node .agent/cli.js status",
-    "agent:finish": "node .agent/cli.js finish",
     "baw:agent": "node scripts/baw-agent.js",
     "baw:capability:scaffold": "node scripts/scaffold-capability.js",
     "baw:capability:structure": "node scripts/capability-structure.js",
