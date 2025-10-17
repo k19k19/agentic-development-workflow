@@ -2,7 +2,7 @@
 description: Run hermetic unit and integration tests
 argument-hint: []
 allowed-tools: ["run_shell_command", "Read", "Write"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_test

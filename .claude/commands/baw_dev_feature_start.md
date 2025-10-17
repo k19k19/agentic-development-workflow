@@ -2,7 +2,7 @@
 description: Initialize clean environment for new feature
 argument-hint: [feature-id]
 allowed-tools: ["Read", "Write", "run_shell_command"]
-model: claude-sonnet-4-5
+model: claude-haiku-4-5
 ---
 
 # /baw_dev_feature_start
