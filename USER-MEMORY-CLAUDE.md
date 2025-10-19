@@ -59,6 +59,19 @@ Step 3: Execute with minimal context
 
 **BEFORE ANY CODE CHANGES, Claude must:**
 
+1. ✅ **Check Context Budget**
+   - Before starting a new task, estimate the token size of the existing context.
+   - Estimate the tokens required for the upcoming task (discovery, planning, implementation).
+   - If the total exceeds 80% of the context window, warn the user:
+
+   ```markdown
+   ⚠️ Context window is at [XX]%. The next task requires ~[YYYY] tokens.
+   There may not be enough context for the full task.
+
+   Reply 'compact' to summarize and trim the current context, or 'proceed' to continue anyway.
+   ```
+   - **WAIT** for user response before continuing.
+
 1. ✅ **Read project documentation** (via Gemini MCP)
    - `app-docs/specs/[round-type]-[feature].md` if exists
    - `app-docs/guides/implementation-guidelines.md`
